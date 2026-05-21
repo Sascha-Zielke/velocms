@@ -1,5 +1,7 @@
+<?php declare(strict_types=1); ?>
 <!DOCTYPE html>
-<html lang="<?= e($_COOKIE['vcms_lang'] ?? 'de') ?>">
+<?php $lang = in_array($_COOKIE['vcms_lang'] ?? 'de', ['de', 'en'], true) ? $_COOKIE['vcms_lang'] : 'de'; ?>
+<html lang="<?= e($lang) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

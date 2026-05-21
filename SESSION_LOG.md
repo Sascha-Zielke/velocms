@@ -18,6 +18,27 @@
 
 ---
 
+## 2026-05-21 — Session 2
+
+**Duration:** ~1h
+**Done:**
+- Auth-Modul komplett mit TDD-Workflow + Reviewer-Audit nach jeder Komponente
+- UserModel: role allowlist (privilege-escalation-Guard), password guard, lastInsertId check
+- AuthController: CSRF auf login + logout, filter_var email, password_verify, no user enumeration
+- DashboardController: requireAuth im Constructor
+- AuthModule: logout als POST registriert (vorher GET — CSRF-Lücke)
+- Admin-Layout: Logout als POST-Form (kein CSRF-angreifbarer GET-Link mehr)
+- Alle Views: declare(strict_types=1) + $_COOKIE lang-Whitelist nachgerüstet
+- 16 Unit-Tests, 27 Assertions — alle grün
+
+**Issues:**
+- Reviewer flaggte redirectWithError()-Terminierung als false positive (never-Rückgabetyp verifiziert)
+
+**Next:**
+- MySQL Datenbank anlegen, .env befüllen, php velocms migrate ausführen
+
+---
+
 ## 2026-05-21 — Session 1
 
 **Duration:** ~1h

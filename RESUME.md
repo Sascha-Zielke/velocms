@@ -1,53 +1,42 @@
 # VeloCMS — Aktueller Stand
 
 ## Status
-Core Framework fertig — bereit für erstes Modul
+Auth-Modul fertig — bereit für MySQL-Datenbank + Nginx-Setup
 
 ## Was erledigt ist
-- Server: Ubuntu 22.04, PHP 8.2, MySQL, Nginx, Node.js
-- GitHub Repo: https://github.com/Sascha-Zielke/velocms
-- velocms-skills installiert in .claude/
-- **Core Framework vollständig gebaut:**
-  - `core/Router.php` — URL-Routing mit Named Segments
-  - `core/Controller.php` — Base Controller mit View-Integration, Flash, Auth-Guards
-  - `core/View.php` — Layout-Vererbung (extend/section/endSection/yield)
-  - `core/Model.php` — Base Model mit find/getAll/softDelete
-  - `core/Database.php` — PDO Singleton + Testverbindung
-  - `core/Auth.php` — Login/Logout/CSRF-Verifikation
-  - `core/Module.php` — Abstrakte Modul-Basis mit RouterProxy
-  - `core/AdminMenu.php` — Statische Admin-Menüregistrierung
-  - `core/ModuleLoader.php` — Scannt und bootet alle Module
-  - `core/Migration.php` — Abstrakte Migration-Basis
-  - `core/MigrationRunner.php` — CLI-Migrationsverwaltung mit Batches
-  - `core/Services/TranslationService.php` — DeepL + Anthropic Fallback
-  - `core/functions.php` — e(), t(), localized(), csrf_field(), safe_html()
-  - `bootstrap/App.php` — Bootstrap: .env → DB → Module → Router
-  - `public/index.php` — Einstiegspunkt
-  - `lang/de.php` + `lang/en.php` — UI-Strings (Layer 1 i18n)
-  - `views/layouts/admin.php` + `views/layouts/frontend.php`
-  - `views/admin/login.php` — Login-Seite (standalone, kein Layout)
-  - `migrations/001_create_sites_table.php`
-  - `migrations/002_create_users_table.php`
-  - `tests/bootstrap.php` + `phpunit.xml`
-  - `tests/Unit/Core/RouterTest.php` + `AuthTest.php` — 10 Tests ✅
-  - `velocms` CLI — `php velocms migrate|rollback|status`
-  - `.env.example`
+- Core Framework vollständig (Session 1)
+- **Auth-Modul vollständig gebaut und auditiert:**
+  - `modules/Auth/AuthModule.php` — Routen: GET/POST /admin/login, POST /admin/logout, GET /admin
+  - `modules/Auth/Controllers/AuthController.php` — showLogin/login/logout (logout POST-only + CSRF)
+  - `modules/Auth/Controllers/DashboardController.php` — requireAuth + Dashboard
+  - `modules/Auth/Models/UserModel.php` — getByEmail, create (role allowlist, password_hash), updateLastLogin
+  - `modules/Auth/views/admin/login.php` — standalone Login-View (declare + lang whitelist)
+  - `modules/Auth/views/admin/dashboard.php` — Layout-View
+  - `tests/Unit/Modules/Auth/UserModelTest.php` — 6 Tests inkl. Hashing + Role-Guard
+- Alle Views: `declare(strict_types=1)` + `$_COOKIE['vcms_lang']` Whitelist nachgerüstet
+- Logout als POST (CSRF-Schutz gegen Forced-Logout-Angriff)
+- 16 Unit-Tests, alle grün ✅
 
 ## Nächster Schritt
-Erstes Modul bauen: **Auth-Modul** (Login-Controller + UserModel)
+**MySQL Datenbank einrichten:**
+1. Master-DB `velocms_master` anlegen
+2. Site-DB `velocms_site_a` (oder Name nach Wunsch) anlegen
+3. MySQL-User `velocms` mit Rechten auf beide DBs
+4. `.env` befüllen
+5. `php velocms migrate` ausführen → velocms_sites + velocms_users anlegen
+6. Ersten Admin-User per Seed-Script anlegen
 
-- `modules/Auth/AuthModule.php` — Routen registrieren (/admin/login, /admin/logout)
-- `modules/Auth/Controllers/AuthController.php` — GET/POST login, logout
-- `modules/Auth/Models/UserModel.php` — getByEmail(), create()
-- `modules/Auth/migrations/001_create_users_table.php` (ggf. global Migration nutzen)
-- MySQL-Datenbank anlegen: `velocms_master` + Site-DB
-- `.env` befüllen
+**Danach:**
+- Nginx Rewrite-Config: alle Requests → public/index.php
+- SSL mit Certbot
+- GitHub Actions CI/CD
 
 ## Offene TODOs
 - [x] Core Framework
-- [ ] Auth-Modul (Login/Logout/UserModel)
+- [x] Auth-Modul
 - [ ] MySQL Datenbank einrichten + .env befüllen
-- [ ] Nginx konfigurieren + .htaccess/Rewrite
+- [ ] Nginx Rewrite-Config
 - [ ] SSL mit Certbot
-- [ ] Erstes Content-Modul (Pages)
+- [ ] Seed-Script: ersten Admin-User anlegen
+- [ ] Pages-Modul (Visual Editor Grid)
 - [ ] GitHub Actions CI/CD

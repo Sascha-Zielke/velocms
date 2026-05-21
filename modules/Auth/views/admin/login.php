@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeloCMS Login</title>
+    <title>VeloCMS &mdash; <?= t('auth.login') ?></title>
     <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body class="vcms-login-page">
@@ -18,6 +18,12 @@
         <?= e($_SESSION['flash_error']) ?>
     </div>
     <?php unset($_SESSION['flash_error']); endif ?>
+
+    <?php if (!empty($_SESSION['flash_success'])): ?>
+    <div class="vcms-alert vcms-alert--success">
+        <?= e($_SESSION['flash_success']) ?>
+    </div>
+    <?php unset($_SESSION['flash_success']); endif ?>
 
     <form method="POST" action="/admin/login">
         <?= csrf_field() ?>

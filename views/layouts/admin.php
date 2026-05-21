@@ -1,5 +1,7 @@
+<?php declare(strict_types=1); ?>
 <!DOCTYPE html>
-<html lang="<?= e($_COOKIE['vcms_lang'] ?? 'de') ?>">
+<?php $lang = in_array($_COOKIE['vcms_lang'] ?? 'de', ['de', 'en'], true) ? $_COOKIE['vcms_lang'] : 'de'; ?>
+<html lang="<?= e($lang) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +30,12 @@
 
     <div class="vcms-nav-footer">
         <span class="vcms-nav__user"><?= e(\VeloCMS\Core\Auth::name() ?? '') ?></span>
-        <a href="/admin/logout" class="vcms-nav__item"><?= t('nav.logout') ?></a>
+        <form method="POST" action="/admin/logout" style="display:inline">
+            <?= csrf_field() ?>
+            <button type="submit" class="vcms-nav__item vcms-btn-link">
+                <?= t('nav.logout') ?>
+            </button>
+        </form>
     </div>
 </div>
 
