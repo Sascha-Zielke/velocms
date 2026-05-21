@@ -1,0 +1,1 @@
+/var/www/velocms-skills/agents/velocms-debugger.md
