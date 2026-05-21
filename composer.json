@@ -1,0 +1,31 @@
+{
+    "name": "velocms/velocms",
+    "description": "Modular PHP 8.2+ CMS",
+    "type": "project",
+    "require": {
+        "php": ">=8.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11"
+    },
+    "autoload": {
+        "psr-4": {
+            "VeloCMS\\Core\\": "core/",
+            "VeloCMS\\Modules\\": "modules/"
+        },
+        "files": [
+            "core/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "VeloCMS\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --configuration phpunit.xml"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

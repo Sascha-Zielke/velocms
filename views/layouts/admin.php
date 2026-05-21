@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="<?= e($_COOKIE['vcms_lang'] ?? 'de') ?>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?= e($_SESSION['csrf_token'] ?? '') ?>">
+    <title>VeloCMS Admin</title>
+    <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body class="vcms-admin">
+
+<div class="vcms-sidebar">
+    <div class="vcms-logo">
+        <a href="/admin">VeloCMS</a>
+    </div>
+
+    <nav class="vcms-nav">
+        <a href="/admin" class="vcms-nav__item">
+            <?= t('nav.dashboard') ?>
+        </a>
+
+        <?php foreach (\VeloCMS\Core\AdminMenu::getItems() as $item): ?>
+        <a href="<?= e($item['url']) ?>" class="vcms-nav__item">
+            <?= e($item['label']) ?>
+        </a>
+        <?php endforeach ?>
+    </nav>
+
+    <div class="vcms-nav-footer">
+        <span class="vcms-nav__user"><?= e(\VeloCMS\Core\Auth::name() ?? '') ?></span>
+        <a href="/admin/logout" class="vcms-nav__item"><?= t('nav.logout') ?></a>
+    </div>
+</div>
+
+<div class="vcms-main">
+    <div class="vcms-content">
+
+        <?php if (!empty($_SESSION['flash_success'])): ?>
+        <div class="vcms-alert vcms-alert--success">
+            <?= e($_SESSION['flash_success']) ?>
+        </div>
+        <?php unset($_SESSION['flash_success']); endif ?>
+
+        <?php if (!empty($_SESSION['flash_error'])): ?>
+        <div class="vcms-alert vcms-alert--error">
+            <?= e($_SESSION['flash_error']) ?>
+        </div>
+        <?php unset($_SESSION['flash_error']); endif ?>
+
+        <?= $this->yield('content') ?>
+
+    </div>
+</div>
+
+<script src="/assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+define('BASE_PATH', __DIR__);
+
+require BASE_PATH . '/vendor/autoload.php';
+
+// Load .env
+$envFile = BASE_PATH . '/.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if (str_starts_with($line, '#') || !str_contains($line, '=')) {
+            continue;
+        }
+        [$key, $value] = explode('=', $line, 2);
+        $key   = trim($key);
+        $value = trim($value, " \t\n\r\0\x0B\"'");
+        if (!array_key_exists($key, $_ENV)) {
+            $_ENV[$key] = $value;
+            putenv("{$key}={$value}");
+        }
+    }
+}
+
+// Connect DB for migration commands
+function connectDb(): \PDO
+{
+    $config = require BASE_PATH . '/config/config.php';
+    return \VeloCMS\Core\Database::connect(
+        $config['db_host'],
+        $config['db_port'],
+        $config['db_name'],
+        $config['db_user'],
+        $config['db_pass']
+    )->getPdo();
+}
+
+$command = $argv[1] ?? 'help';
+
+match ($command) {
+    'migrate' => (function () {
+        $db     = connectDb();
+        $runner = new \VeloCMS\Core\MigrationRunner($db);
+        $runner->run();
+    })(),
+    'migrate:rollback' => (function () {
+        $db     = connectDb();
+        $runner = new \VeloCMS\Core\MigrationRunner($db);
+        $runner->rollback();
+    })(),
+    'migrate:status' => (function () {
+        $db     = connectDb();
+        $runner = new \VeloCMS\Core\MigrationRunner($db);
+        $runner->status();
+    })(),
+    default => (function () use ($command) {
+        if ($command !== 'help') {
+            echo "Unknown command: {$command}\n\n";
+        }
+        echo "VeloCMS CLI\n\n";
+        echo "Usage: php velocms <command>\n\n";
+        echo "Commands:\n";
+        echo "  migrate           Run all pending migrations\n";
+        echo "  migrate:rollback  Roll back the last batch\n";
+        echo "  migrate:status    Show migration status\n";
+        echo "  help              Show this help\n";
+    })(),
+};
