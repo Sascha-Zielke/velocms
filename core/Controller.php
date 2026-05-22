@@ -6,6 +6,8 @@ namespace VeloCMS\Core;
 
 class Controller
 {
+    public function __construct() {}
+
     protected function render(string $view, array $data = []): void
     {
         $parts     = explode('\\', static::class);

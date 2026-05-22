@@ -1,7 +1,7 @@
 # VeloCMS — Aktueller Stand
 
 ## Status
-Auth-Modul fertig — bereit für MySQL-Datenbank + Nginx-Setup
+App läuft — Admin-Login erreichbar. Noch kein Superadmin-User vorhanden, SSL fehlt noch.
 
 ## Was erledigt ist
 - Core Framework vollständig (Session 1)
@@ -18,25 +18,23 @@ Auth-Modul fertig — bereit für MySQL-Datenbank + Nginx-Setup
 - 16 Unit-Tests, alle grün ✅
 
 ## Nächster Schritt
-**MySQL Datenbank einrichten:**
-1. Master-DB `velocms_master` anlegen
-2. Site-DB `velocms_site_a` (oder Name nach Wunsch) anlegen
-3. MySQL-User `velocms` mit Rechten auf beide DBs
-4. `.env` befüllen
-5. `php velocms migrate` ausführen → velocms_sites + velocms_users anlegen
-6. Ersten Admin-User per Seed-Script anlegen
+**Superadmin anlegen (interaktiv im Terminal):**
+```bash
+php scripts/seed-admin.php s.zielke84@gmail.com "Sascha Zielke"
+```
 
 **Danach:**
-- Nginx Rewrite-Config: alle Requests → public/index.php
-- SSL mit Certbot
+- SSL mit Certbot (`apt install certbot python3-certbot-nginx && certbot --nginx -d webzite-newmedia.com`)
 - GitHub Actions CI/CD
+- Pages-Modul (Visual Editor Grid)
 
 ## Offene TODOs
 - [x] Core Framework
 - [x] Auth-Modul
-- [ ] MySQL Datenbank einrichten + .env befüllen
-- [ ] Nginx Rewrite-Config
-- [ ] SSL mit Certbot
+- [x] MySQL Datenbank einrichten + .env befüllen
+- [x] Nginx Rewrite-Config
+- [x] Migrations ausgeführt (velocms_sites + velocms_users)
 - [ ] Seed-Script: ersten Admin-User anlegen
-- [ ] Pages-Modul (Visual Editor Grid)
+- [ ] SSL mit Certbot
 - [ ] GitHub Actions CI/CD
+- [ ] Pages-Modul (Visual Editor Grid)

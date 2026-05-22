@@ -18,6 +18,28 @@
 
 ---
 
+## 2026-05-22 — Session 3
+
+**Duration:** ~15min
+**Done:**
+- Fix: Controller::__construct() ergänzt — parent::__construct() in PHP 8 wirft "Cannot call constructor" wenn Parent keinen Constructor definiert
+- Fix: Database::getTestConnection() fehlende PDO-Attribute ergänzt (FETCH_ASSOC, EMULATE_PREPARES)
+- Admin-Login-Seite jetzt erreichbar (war 500 Internal Server Error)
+- Nginx-Config bereits gesetzt, Migrations bereits gelaufen — .env bereits befüllt
+- 16 Tests, alle grün
+
+**Issues:**
+- Kein Superadmin-User vorhanden — seed-admin.php muss interaktiv ausgeführt werden
+- SSL (certbot) noch nicht installiert
+
+**Next:**
+- Superadmin anlegen: `php scripts/seed-admin.php`
+- SSL mit certbot einrichten
+- GitHub Actions CI/CD
+- Pages-Modul (Visual Editor Grid)
+
+---
+
 ## 2026-05-21 — Session 2
 
 **Duration:** ~1h
