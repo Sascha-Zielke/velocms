@@ -8,7 +8,7 @@
 <?php /* Meta is handled by layout */ ?>
 <?php endif ?>
 
-<main class="vcms-frontend-page">
+<main class="vcms-page">
 <?php foreach ($sections as $section): ?>
     <?php
     $settings = $section['settings'];
@@ -27,35 +27,35 @@
             <div class="vcms-row">
             <?php foreach ($row['boxes'] as $box): ?>
                 <?php
-                $cols = (int)($box['data']['layout']['cols'] ?? 12);
-                $content = $box['data']['content'] ?? [];
+                $cols    = 12; // full width by default
+                $boxData = $box['data']; // flat array: {text, text_en, src, alt, ...}
                 ?>
                 <div class="vcms-col vcms-col-<?= $cols ?>">
                     <?php if ($box['type'] === 'text'): ?>
                         <div class="vcms-text-box">
-                            <?= safe_html(localized($content, 'text')) ?>
+                            <?= safe_html(localized($boxData, 'text')) ?>
                         </div>
 
                     <?php elseif ($box['type'] === 'image'): ?>
-                        <?php if (!empty($content['src'])): ?>
-                        <img src="<?= e($content['src']) ?>"
-                             alt="<?= e($content['alt'] ?? '') ?>"
+                        <?php if (!empty($boxData['src'])): ?>
+                        <img src="<?= e($boxData['src']) ?>"
+                             alt="<?= e($boxData['alt'] ?? '') ?>"
                              loading="lazy"
                              class="vcms-img-box">
                         <?php endif ?>
 
                     <?php elseif ($box['type'] === 'button'): ?>
-                        <?php if (!empty($content['href'])): ?>
-                        <a href="<?= e($content['href']) ?>" class="vcms-btn-frontend">
-                            <?= e($content['label'] ?? 'Button') ?>
+                        <?php if (!empty($boxData['href'])): ?>
+                        <a href="<?= e($boxData['href']) ?>" class="vcms-btn-frontend">
+                            <?= e($boxData['label'] ?? 'Button') ?>
                         </a>
                         <?php endif ?>
 
                     <?php elseif ($box['type'] === 'video'): ?>
-                        <?php if (!empty($content['video_id'])): ?>
+                        <?php if (!empty($boxData['video_id'])): ?>
                         <!-- DSGVO: 2-Click Video -->
-                        <div class="vcms-video-consent" data-video-id="<?= e($content['video_id']) ?>"
-                             data-provider="<?= e($content['provider'] ?? 'youtube') ?>">
+                        <div class="vcms-video-consent" data-video-id="<?= e($boxData['video_id']) ?>"
+                             data-provider="<?= e($boxData['provider'] ?? 'youtube') ?>">
                             <div class="vcms-video-placeholder">
                                 <button class="vcms-video-consent-btn">
                                     ▶ <?= t('video.consent_btn') ?>
@@ -67,7 +67,7 @@
 
                     <?php elseif ($box['type'] === 'spacer'): ?>
                         <div class="vcms-spacer"
-                             style="height: <?= (int)($box['data']['settings']['height'] ?? 40) ?>px;"></div>
+                             style="height: <?= (int)($boxData['height'] ?? 40) ?>px;"></div>
                     <?php endif ?>
                 </div>
             <?php endforeach ?>
