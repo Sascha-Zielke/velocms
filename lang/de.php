@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 return [
@@ -19,15 +18,18 @@ return [
     'action.new'         => 'Neu erstellen',
     'action.cancel'      => 'Abbrechen',
     'action.back'        => 'Zurück',
+    'action.preview'     => 'Vorschau',
     'action.publish'     => 'Veröffentlichen',
     'action.unpublish'   => 'Depublizieren',
     'action.login'       => 'Anmelden',
     'action.logout'      => 'Abmelden',
     'action.confirm'     => 'Bestätigen',
     'action.search'      => 'Suchen',
+    'action.home'        => 'Zur Startseite',
 
     // Fields
     'field.title'        => 'Titel',
+    'field.title_en'     => 'Titel (EN)',
     'field.slug'         => 'Slug',
     'field.content'      => 'Inhalt',
     'field.status'       => 'Status',
@@ -40,6 +42,15 @@ return [
     'field.updated_at'   => 'Aktualisiert am',
     'field.author'       => 'Autor',
     'field.description'  => 'Beschreibung',
+    'field.meta_title'   => 'Meta-Titel (SEO)',
+    'field.meta_description' => 'Meta-Beschreibung (SEO)',
+    'field.image_path'   => 'Bildpfad',
+    'field.alt'          => 'Alt-Text',
+    'field.label'        => 'Beschriftung',
+    'field.url'          => 'URL',
+    'field.height'       => 'Höhe',
+    'field.video_id'     => 'Video-ID',
+    'field.video_provider' => 'Anbieter',
 
     // Status values
     'status.draft'       => 'Entwurf',
@@ -53,7 +64,7 @@ return [
 
     // Error messages
     'error.not_found'        => 'Eintrag nicht gefunden.',
-    'error.required'         => 'Pflichtfeld fehlt: :field',
+    'error.required'         => 'Pflichtfeld fehlt.',
     'error.invalid_email'    => 'Ungültige E-Mail-Adresse.',
     'error.invalid_login'    => 'Ungültige Anmeldedaten.',
     'error.unauthorized'     => 'Nicht autorisiert.',
@@ -74,8 +85,32 @@ return [
     'dashboard.headline'     => 'Dashboard',
     'dashboard.welcome'      => 'Willkommen im VeloCMS Admin.',
 
+    // Pages module
+    'pages.headline'     => 'Seiten',
+    'pages.new'          => 'Neue Seite',
+    'pages.edit'         => 'Seite bearbeiten',
+    'pages.empty'        => 'Noch keine Seiten vorhanden.',
+
+    // Visual Editor
+    'editor.headline'        => 'Seiten-Editor',
+    'editor.add_section'     => '+ Abschnitt',
+    'editor.add_row'         => '+ Zeile',
+    'editor.section'         => 'Abschnitt',
+    'editor.row'             => 'Zeile',
+    'editor.overlay'         => 'Overlay',
+    'editor.bg_color'        => 'Hintergrundfarbe',
+    'editor.cols'            => 'Spaltenbreite',
+    'editor.video_2click_hint' => 'Video wird erst nach Klick geladen (DSGVO).',
+
+    // Video consent (Frontend)
+    'video.consent_btn'      => 'Video laden',
+    'video.consent_hint'     => 'Klicken Sie, um das Video zu laden. Dabei werden Daten an den Anbieter übertragen.',
+
+    // Confirm
+    'confirm.delete'     => 'Wirklich löschen?',
+
     // Pagination
-    'pagination.prev'        => 'Zurück',
-    'pagination.next'        => 'Weiter',
-    'pagination.of'          => 'von',
+    'pagination.prev'    => 'Zurück',
+    'pagination.next'    => 'Weiter',
+    'pagination.of'      => 'von',
 ];

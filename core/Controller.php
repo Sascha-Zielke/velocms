@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace VeloCMS\Core;
@@ -15,18 +14,18 @@ class Controller
 
     protected function render(string $view, array $data = []): void
     {
-        $parts = explode('\\', static::class);
+        $parts    = explode('\\', static::class);
         $moduleIdx = array_search('Modules', $parts);
 
         if ($moduleIdx !== false && isset($parts[$moduleIdx + 1])) {
             $moduleName = $parts[$moduleIdx + 1];
-            $viewPath = BASE_PATH . "/modules/{$moduleName}/views/{$view}.php";
+            $viewPath   = BASE_PATH . "/modules/{$moduleName}/views/{$view}.php";
         } else {
             $viewPath = BASE_PATH . "/views/{$view}.php";
         }
 
         if (!file_exists($viewPath)) {
-            throw new \RuntimeException("View not found: {$view}");
+            throw new \RuntimeException("View not found: {$view} (looked in: {$viewPath})");
         }
 
         $this->view->renderFile($viewPath, $data);
@@ -35,6 +34,48 @@ class Controller
     protected function redirect(string $url): never
     {
         header('Location: ' . $url);
+        exit;
+    }
+
+    protected function redirectWithSuccess(string $url, string $message): never
+    {
+        $_SESSION['flash_success'] = $message;
+        $this->redirect($url);
+    }
+
+    protected function redirectWithError(string $url, string $message): never
+    {
+        $_SESSION['flash_error'] = $message;
+        $this->redirect($url);
+    }
+
+    protected function requireAuth(): void
+    {
+        if (!Auth::check()) {
+            $this->redirect('/admin/login');
+        }
+    }
+
+    protected function requireRole(string $role): void
+    {
+        $this->requireAuth();
+        if (!Auth::hasRole($role)) {
+            http_response_code(403);
+            echo t('error.forbidden');
+            exit;
+        }
+    }
+
+    protected function input(string $key, mixed $default = null): mixed
+    {
+        return $_POST[$key] ?? $_GET[$key] ?? $default;
+    }
+
+    protected function json(array $data, int $status = 200): never
+    {
+        http_response_code($status);
+        header('Content-Type: application/json');
+        echo json_encode($data);
         exit;
     }
 }

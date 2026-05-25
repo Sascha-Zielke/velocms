@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace VeloCMS\Core;
@@ -8,13 +7,7 @@ class Router
 {
     private static array $routes = [];
 
-    /**
-     * Diese Methode sorgt für die Kompatibilität mit dem App-Boot-Prozess.
-     */
-    public function run(): void
-    {
-        self::dispatch();
-    }
+    public function run(): void { self::dispatch(); }
 
     public static function get(string $path, string $handler): void
     {
@@ -30,12 +23,12 @@ class Router
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri    = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri    = rtrim($uri ?: '/', '/') ?: '/';
 
         foreach (self::$routes as $route) {
             if ($route['method'] !== $method) {
                 continue;
             }
-
             $pattern = self::buildPattern($route['path']);
             if (preg_match($pattern, $uri, $matches)) {
                 array_shift($matches);
@@ -45,12 +38,26 @@ class Router
         }
 
         http_response_code(404);
-        echo '404 Not Found';
+        // Try to render 404 page
+        $viewPath = BASE_PATH . '/views/404.php';
+        if (file_exists($viewPath)) {
+            include $viewPath;
+        } else {
+            echo '<h1>404 Not Found</h1>';
+        }
     }
 
     private static function buildPattern(string $path): string
     {
-        $pattern = preg_replace('/\[[\*a-z]+:([a-z_]+)\]/', '([^/]+)', $path);
+        // [i:id] → integer segment, [*:slug] → any chars including slashes, [a:name] → alphanumeric
+        $pattern = preg_replace_callback('/\[([a-z\*]+):([a-z_]+)\]/', function ($m) {
+            return match($m[1]) {
+                'i'     => '(\d+)',
+                'a'     => '([a-zA-Z0-9_\-]+)',
+                '*'     => '(.+)',
+                default => '([^/]+)',
+            };
+        }, $path);
         return '#^' . $pattern . '$#';
     }
 
@@ -64,7 +71,7 @@ class Router
         }
 
         if (!class_exists($namespace)) {
-            throw new \RuntimeException("Controller {$class} not found");
+            throw new \RuntimeException("Controller not found: {$class} (tried: VeloCMS\\Modules\\{$class})");
         }
 
         $controller = new $namespace();
