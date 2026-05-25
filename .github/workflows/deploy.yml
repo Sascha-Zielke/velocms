@@ -1,0 +1,29 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: SSH Deploy → VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            set -e
+            cd /var/www/velocms
+            git pull --ff-only origin main
+            php -d memory_limit=512M /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
+            php velocms migrate
+            sudo systemctl reload php8.2-fpm
+            echo "Deploy complete: $(date -u)"
