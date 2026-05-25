@@ -1,6 +1,7 @@
 <?php declare(strict_types=1); ?>
 <?php $this->section('title') ?><?= e(localized($post, 'meta_title') ?: localized($post, 'title')) ?><?php $this->endSection() ?>
 <?php $this->section('meta_description') ?><?= e($post['meta_description'] ?? '') ?><?php $this->endSection() ?>
+<?php if (!empty($post['cover_image'])): ?><?php $this->section('og_image') ?><?= e($post['cover_image']) ?><?php $this->endSection() ?><?php endif ?>
 <?php $this->section('content') ?>
 
 <article class="vcms-blog-post">

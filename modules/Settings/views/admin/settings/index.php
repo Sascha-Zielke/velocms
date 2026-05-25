@@ -83,6 +83,20 @@
             <input type="text" id="meta_keywords_default" name="meta_keywords_default"
                    value="<?= $s('meta_keywords_default') ?>" class="vcms-input">
         </div>
+
+        <div class="vcms-form-group">
+            <label for="app_url"><?= t('settings.app_url') ?></label>
+            <input type="url" id="app_url" name="app_url"
+                   value="<?= $s('app_url') ?>" class="vcms-input" placeholder="https://meine-website.de">
+            <small class="vcms-hint"><?= t('settings.app_url_hint') ?></small>
+        </div>
+
+        <div class="vcms-form-group">
+            <label for="robots_txt"><?= t('settings.robots_txt') ?></label>
+            <textarea id="robots_txt" name="robots_txt" rows="5" class="vcms-input"
+                      placeholder="User-agent: *&#10;Allow: /&#10;Disallow: /admin"><?= $s('robots_txt') ?></textarea>
+            <small class="vcms-hint"><?= t('settings.robots_txt_hint') ?></small>
+        </div>
     </fieldset>
 
     <!-- ── Social ────────────────────────────────────────── -->

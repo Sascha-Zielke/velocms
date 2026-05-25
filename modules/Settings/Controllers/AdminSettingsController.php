@@ -19,6 +19,7 @@ class AdminSettingsController extends Controller
         'social_facebook', 'social_instagram', 'social_linkedin', 'social_twitter',
         'footer_text', 'footer_impressum_url', 'footer_datenschutz_url',
         'homepage_slug', 'maintenance_mode',
+        'app_url', 'robots_txt',
     ];
 
     public function __construct()

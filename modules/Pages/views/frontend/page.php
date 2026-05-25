@@ -1,12 +1,10 @@
 <?php declare(strict_types=1); ?>
 <?php $this->extend('frontend') ?>
+<?php $this->section('title') ?><?= e(localized($page, 'meta_title') ?: localized($page, 'title')) ?><?php $this->endSection() ?>
+<?php $this->section('meta_description') ?><?= e($page['meta_description'] ?? '') ?><?php $this->endSection() ?>
 <?php $this->section('content') ?>
 
 <?php $lang = $_COOKIE['vcms_lang'] ?? 'de'; ?>
-
-<?php if (!empty($page['meta_title']) || !empty($page['title'])): ?>
-<?php /* Meta is handled by layout */ ?>
-<?php endif ?>
 
 <main class="vcms-page">
 <?php foreach ($sections as $section): ?>
