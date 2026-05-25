@@ -61,7 +61,14 @@ class Controller
         $this->requireAuth();
         if (!Auth::hasRole($role)) {
             http_response_code(403);
-            echo t('error.forbidden');
+            $errorPage = BASE_PATH . '/views/errors/403.php';
+            if (file_exists($errorPage)) {
+                include $errorPage;
+            } else {
+                echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>403</title></head>'
+                   . '<body><h1>403 – Zugriff verweigert</h1>'
+                   . '<p><a href="/admin">Zum Dashboard</a></p></body></html>';
+            }
             exit;
         }
     }

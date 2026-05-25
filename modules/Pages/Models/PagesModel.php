@@ -27,6 +27,15 @@ class PagesModel extends Model
         return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 
+    public function getFirstPublished(): ?array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM {$this->table} WHERE status = 'published' AND deleted_at IS NULL ORDER BY created_at ASC LIMIT 1"
+        );
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+    }
+
     public function getBySlug(string $slug): ?array
     {
         $stmt = $this->db->prepare(
