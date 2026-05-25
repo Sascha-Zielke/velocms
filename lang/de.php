@@ -113,4 +113,16 @@ return [
     'pagination.prev'    => 'Zurück',
     'pagination.next'    => 'Weiter',
     'pagination.of'      => 'von',
+
+    // Media module
+    'media.headline'    => 'Mediathek',
+    'media.upload'      => 'Hochladen',
+    'media.drop_hint'   => 'Dateien hier ablegen oder oben auf "Hochladen" klicken (JPG, PNG, GIF, WebP, PDF · max. 10 MB)',
+    'media.empty'       => 'Noch keine Dateien hochgeladen.',
+    'media.alt_title'   => 'Alt-Text bearbeiten',
+    'media.alt_de'      => 'Alt-Text (Deutsch)',
+    'media.alt_en'      => 'Alt-Text (Englisch)',
+    'media.copy_url'    => 'URL kopieren',
+    'media.delete_confirm' => 'Datei unwiderruflich löschen?',
+
 ];

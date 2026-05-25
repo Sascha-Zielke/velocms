@@ -131,3 +131,22 @@ body.vcms-admin { display: flex; min-height: 100vh; }
 /* ADD ROW/BOX BUTTONS */
 .vcms-add-btn { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; font-size: 12px; border: 1px dashed var(--vcms-accent); color: var(--vcms-accent); border-radius: var(--vcms-radius); cursor: pointer; background: none; transition: background .15s; }
 .vcms-add-btn:hover { background: rgba(59,130,246,.06); }
+
+/* MEDIA MODULE */
+.vcms-upload-zone { border: 2px dashed var(--vcms-accent); border-radius: var(--vcms-radius); padding: 20px; text-align: center; margin-bottom: 24px; background: rgba(59,130,246,.04); transition: background .2s; cursor: pointer; }
+.vcms-upload-zone.drag-over { background: rgba(59,130,246,.12); border-style: solid; }
+.vcms-upload-hint { color: var(--vcms-muted); font-size: 13px; }
+.vcms-upload-progress { margin-top: 12px; background: var(--vcms-bg); border-radius: 4px; height: 24px; overflow: hidden; }
+.vcms-progress-bar { height: 100%; background: var(--vcms-accent); width: 0%; transition: width .3s; display: flex; align-items: center; padding-left: 8px; font-size: 12px; color: white; min-width: fit-content; }
+.vcms-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.vcms-media-item { background: var(--vcms-white); border: 1px solid var(--vcms-border); border-radius: var(--vcms-radius); overflow: hidden; transition: box-shadow .15s; }
+.vcms-media-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.vcms-media-thumb { aspect-ratio: 16/10; background: var(--vcms-bg); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.vcms-media-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.vcms-media-thumb--file { font-size: 36px; }
+.vcms-media-info { padding: 8px; }
+.vcms-media-name { display: block; font-size: 11px; color: var(--vcms-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+.vcms-media-actions { display: flex; gap: 4px; }
+.vcms-media-empty { grid-column: 1/-1; text-align: center; padding: 40px; color: var(--vcms-muted); }
+.vcms-pagination { display: flex; gap: 6px; margin-top: 24px; flex-wrap: wrap; }
+.vcms-pagination .active { background: var(--vcms-accent); color: var(--vcms-white); border-color: var(--vcms-accent); }
