@@ -1,30 +1,87 @@
 <?php declare(strict_types=1); ?>
 <!DOCTYPE html>
-<?php $lang = in_array($_COOKIE['vcms_lang'] ?? 'de', ['de', 'en'], true) ? $_COOKIE['vcms_lang'] : 'de'; ?>
+<?php $lang = ($lang_raw = $_COOKIE['vcms_lang'] ?? 'de') && in_array($lang_raw, ['de', 'en'], true) ? $lang_raw : 'de'; ?>
+<?php
+$siteName   = setting('site_name', 'VeloCMS');
+$logoPath   = setting('logo_path');
+$titleSuffix = setting('meta_title_suffix');
+$navItems   = nav();
+$currentUri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+?>
 <html lang="<?= e($lang) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $this->yield('title', 'VeloCMS') ?></title>
-    <meta name="description" content="<?= $this->yield('meta_description') ?>">
+    <title><?= $this->yield('title', e($siteName)) ?><?= $this->yield('title') !== '' ? e($titleSuffix) : '' ?></title>
+    <meta name="description" content="<?= $this->yield('meta_description', e(setting('meta_description_default'))) ?>">
+    <?php if ($favicon = setting('favicon_path')): ?>
+    <link rel="icon" href="<?= e($favicon) ?>">
+    <?php endif ?>
     <link rel="stylesheet" href="/assets/css/frontend.css">
     <?= $this->yield('head') ?>
 </head>
 <body class="vcms-frontend">
 
-    <header class="vcms-header">
-        <?= $this->yield('header') ?>
-    </header>
+<header class="vcms-header">
+    <div class="vcms-header-inner vcms-container">
+        <a href="/" class="vcms-logo">
+            <?php if ($logoPath): ?>
+                <img src="<?= e($logoPath) ?>" alt="<?= e($siteName) ?>" class="vcms-logo-img">
+            <?php else: ?>
+                <?= e($siteName) ?>
+            <?php endif ?>
+        </a>
 
-    <main class="vcms-page">
-        <?= $this->yield('content') ?>
-    </main>
+        <?php if (!empty($navItems)): ?>
+        <nav class="vcms-nav-bar" aria-label="Hauptnavigation">
+            <ul class="vcms-nav-list">
+                <?php foreach ($navItems as $item): ?>
+                <?php
+                $itemUrl  = $item['url'] ?? '/';
+                $isActive = rtrim($currentUri, '/') === rtrim($itemUrl, '/');
+                $target   = ($item['target'] ?? '_self') === '_blank' ? '_blank' : '_self';
+                $rel      = $target === '_blank' ? ' rel="noopener noreferrer"' : '';
+                ?>
+                <li>
+                    <a href="<?= e($itemUrl) ?>"
+                       target="<?= e($target) ?>"<?= $rel ?>
+                       class="vcms-nav-link<?= $isActive ? ' vcms-nav-link--active' : '' ?>"
+                       <?= $isActive ? 'aria-current="page"' : '' ?>>
+                        <?= e($lang === 'en' && !empty($item['label_en']) ? $item['label_en'] : $item['label']) ?>
+                    </a>
+                </li>
+                <?php endforeach ?>
+            </ul>
+        </nav>
+        <?php endif ?>
+    </div>
+</header>
 
-    <footer class="vcms-footer">
-        <?= $this->yield('footer') ?>
-    </footer>
+<main class="vcms-page">
+    <?= $this->yield('content') ?>
+</main>
 
-    <script src="/assets/js/frontend.js"></script>
-    <?= $this->yield('scripts') ?>
+<footer class="vcms-footer">
+    <div class="vcms-footer-inner vcms-container">
+        <p class="vcms-footer-copy"><?= setting('footer_text', '&copy; ' . date('Y')) ?></p>
+        <?php
+        $impressumUrl   = setting('footer_impressum_url');
+        $datenschutzUrl = setting('footer_datenschutz_url');
+        ?>
+        <?php if ($impressumUrl || $datenschutzUrl): ?>
+        <nav class="vcms-footer-nav" aria-label="Rechtliches">
+            <?php if ($impressumUrl): ?>
+                <a href="<?= e($impressumUrl) ?>">Impressum</a>
+            <?php endif ?>
+            <?php if ($datenschutzUrl): ?>
+                <a href="<?= e($datenschutzUrl) ?>">Datenschutz</a>
+            <?php endif ?>
+        </nav>
+        <?php endif ?>
+    </div>
+</footer>
+
+<script src="/assets/js/frontend.js"></script>
+<?= $this->yield('scripts') ?>
 </body>
 </html>

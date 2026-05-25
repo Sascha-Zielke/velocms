@@ -25,7 +25,13 @@ class Router
         $uri    = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri    = rtrim($uri ?: '/', '/') ?: '/';
 
-        foreach (self::$routes as $route) {
+        // Sort: wildcard [*:] routes last so specific routes always win
+        $routes = self::$routes;
+        usort($routes, static fn($a, $b) =>
+            (str_contains($a['path'], '[*:') ? 1 : 0) <=> (str_contains($b['path'], '[*:') ? 1 : 0)
+        );
+
+        foreach ($routes as $route) {
             if ($route['method'] !== $method) {
                 continue;
             }
@@ -38,12 +44,13 @@ class Router
         }
 
         http_response_code(404);
-        // Try to render 404 page
-        $viewPath = BASE_PATH . '/views/404.php';
-        if (file_exists($viewPath)) {
-            include $viewPath;
+        $errorPage = BASE_PATH . '/views/errors/404.php';
+        if (file_exists($errorPage)) {
+            include $errorPage;
         } else {
-            echo '<h1>404 Not Found</h1>';
+            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>404</title></head>'
+               . '<body><h1>404 – Seite nicht gefunden</h1>'
+               . '<p><a href="/">Zur Startseite</a></p></body></html>';
         }
     }
 
