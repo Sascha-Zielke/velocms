@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace VeloCMS\Core;
@@ -14,7 +13,11 @@ class App
 
         $config = require BASE_PATH . '/config/config.php';
 
-        if (!empty($config['db_host']) && !empty($config['db_name'])) {
+        // Phase 8: Multi-Tenancy — resolve domain → tenant DB
+        // Falls back to direct DB_NAME connection if master_db is empty (single-site mode)
+        if (!empty($config['master_db'])) {
+            Tenant::resolve($config);
+        } elseif (!empty($config['db_host']) && !empty($config['db_name'])) {
             Database::connect(
                 $config['db_host'],
                 $config['db_port'],
