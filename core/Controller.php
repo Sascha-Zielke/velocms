@@ -6,7 +6,12 @@ namespace VeloCMS\Core;
 
 class Controller
 {
-    public function __construct() {}
+    protected ?View $view = null;
+
+    public function __construct()
+    {
+        $this->view = new View();
+    }
 
     protected function render(string $view, array $data = []): void
     {
@@ -24,7 +29,7 @@ class Controller
             throw new \RuntimeException("View not found: {$view}");
         }
 
-        (new View())->renderFile($viewPath, $data);
+        $this->view->renderFile($viewPath, $data);
     }
 
     protected function input(string $key, mixed $default = null): mixed

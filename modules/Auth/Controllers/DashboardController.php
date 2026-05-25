@@ -17,7 +17,8 @@ class DashboardController extends Controller
 
     public function index(): void
     {
-        $this->render('admin/dashboard', [
+        $this->view->extend('admin');
+        $this->render('dashboard', [
             'userName' => Auth::name() ?? '',
         ]);
     }
