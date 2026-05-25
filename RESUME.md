@@ -1,40 +1,53 @@
 # VeloCMS — Aktueller Stand
 
 ## Status
-App läuft — Admin-Login erreichbar. Noch kein Superadmin-User vorhanden, SSL fehlt noch.
+**2026-05-25 — Neuer Hetzner-Server (ABSOLUTE ZERO). Provisioning steht an.**  
+Codebase lokal vollständig (Core + Auth). Server ist neu deployed, keinerlei Pakete installiert.
 
 ## Was erledigt ist
 - Core Framework vollständig (Session 1)
-- **Auth-Modul vollständig gebaut und auditiert:**
+- Auth-Modul vollständig gebaut und auditiert:
   - `modules/Auth/AuthModule.php` — Routen: GET/POST /admin/login, POST /admin/logout, GET /admin
   - `modules/Auth/Controllers/AuthController.php` — showLogin/login/logout (logout POST-only + CSRF)
   - `modules/Auth/Controllers/DashboardController.php` — requireAuth + Dashboard
   - `modules/Auth/Models/UserModel.php` — getByEmail, create (role allowlist, password_hash), updateLastLogin
-  - `modules/Auth/views/admin/login.php` — standalone Login-View (declare + lang whitelist)
+  - `modules/Auth/views/admin/login.php` — standalone Login-View
   - `modules/Auth/views/admin/dashboard.php` — Layout-View
   - `tests/Unit/Modules/Auth/UserModelTest.php` — 6 Tests inkl. Hashing + Role-Guard
-- Alle Views: `declare(strict_types=1)` + `$_COOKIE['vcms_lang']` Whitelist nachgerüstet
-- Logout als POST (CSRF-Schutz gegen Forced-Logout-Angriff)
 - 16 Unit-Tests, alle grün ✅
+- `task_plan.md` generiert (9 Phasen, vollständig)
 
-## Nächster Schritt
-**Superadmin anlegen (interaktiv im Terminal):**
-```bash
-php scripts/seed-admin.php s.zielke84@gmail.com "Sascha Zielke"
-```
+## Server-Stand (2026-05-25)
+| Was | Status |
+|-----|--------|
+| Hetzner VPS 95.217.185.113 | ✅ Deployed |
+| Nginx | ✅ Installiert |
+| PHP 8.2.31 | ✅ Installiert |
+| MySQL 8.0 | ✅ Installiert |
+| Git / Composer 2.9.8 | ✅ Installiert |
+| System-User `velocms` | ✅ Angelegt |
+| Verzeichnisstruktur | ✅ `/var/www/velocms`, `/storage/tenants` |
+| App deployed | ❌ Nicht geklont |
+| Migrations | ❌ Nicht ausgeführt |
+| SSL | ❌ Nicht konfiguriert |
+| CI/CD | ❌ Nicht konfiguriert |
 
-**Danach:**
-- SSL mit Certbot (`apt install certbot python3-certbot-nginx && certbot --nginx -d webzite-newmedia.com`)
-- GitHub Actions CI/CD
-- Pages-Modul (Visual Editor Grid)
+## Nächster Schritt — PHASE 5 (GitHub Actions CI/CD)
+Deploy-Key, Sudo-Regel, Workflow-File, Secrets in GitHub.
 
-## Offene TODOs
-- [x] Core Framework
-- [x] Auth-Modul
-- [x] MySQL Datenbank einrichten + .env befüllen
-- [x] Nginx Rewrite-Config
-- [x] Migrations ausgeführt (velocms_sites + velocms_users)
-- [ ] Seed-Script: ersten Admin-User anlegen
-- [ ] SSL mit Certbot
-- [ ] GitHub Actions CI/CD
-- [ ] Pages-Modul (Visual Editor Grid)
+## Offene TODOs (priorisiert)
+- [x] **PHASE 0:** Server provisionieren — ✅ 2026-05-25 (PHP 8.2.31, Composer 2.9.8, Nginx, MySQL, Git)
+- [x] **PHASE 1:** MySQL einrichten — ✅ 2026-05-25 (velocms_master, velocms_site_1, vcms_sites mit UUID b2847a9e-913a-4f46-9cf1-0617bc93214c)
+- [x] **PHASE 2:** App deployen — ✅ 2026-05-25 (2 Migrations, superadmin s.zielke84@gmail.com angelegt)
+- [x] **PHASE 3:** Nginx + PHP-FPM — ✅ 2026-05-25 (HTTP 200, socket active, nginx -t OK)
+- [x] **PHASE 4:** SSL + Security Hardening — ✅ 2026-05-25 (HTTPS 200, HSTS+CSP+X-Frame+X-Content-Type je einmal, certbot dry-run OK)
+- [ ] **PHASE 5:** GitHub Actions CI/CD
+- [ ] **PHASE 6:** Pages-Modul (Visual Editor Grid)
+- [ ] **PHASE 7:** Media-Modul (EXIF-Stripping, Tenant-Storage)
+- [ ] **PHASE 8:** Multi-Tenancy Hardening
+- [ ] **PHASE 9:** DSGVO Compliance Layer
+
+## Double-Audit Gate — Letztes bestandenes Audit
+- **Phase:** Phase 4 — SSL + Security Hardening
+- **Datum:** 2026-05-25
+- **Ergebnis:** HTTPS 200 ✅, HSTS/CSP/X-Frame/X-Content-Type je einmal ✅, certbot --dry-run ✅
