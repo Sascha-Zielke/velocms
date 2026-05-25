@@ -6,7 +6,7 @@ namespace VeloCMS\Core;
 
 class Controller
 {
-    protected ?View $view = null;
+    protected View $view;
 
     public function __construct()
     {
