@@ -1,0 +1,91 @@
+name: CI + Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: PHPUnit 11 / PHP 8.2
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: velocms_test
+          MYSQL_USER: velocms
+          MYSQL_PASSWORD: VeloCMS_DB_Secure_2026!
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_mysql, mbstring, gd, exif, fileinfo, json
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Create test .env
+        run: |
+          cat > .env << 'ENV'
+          APP_ENV=testing
+          APP_URL=http://localhost
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_NAME=velocms_test
+          DB_USER=velocms
+          DB_PASS=VeloCMS_DB_Secure_2026!
+          MASTER_DB=velocms_test
+          ENV
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --configuration phpunit.xml --no-interaction
+
+  deploy:
+    name: SSH Deploy → VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            set -e
+            cd /var/www/velocms
+            git pull --ff-only origin main
+            php -d memory_limit=512M /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
+            php velocms migrate
+            sudo systemctl reload php8.2-fpm
+            echo "Deploy complete: $(date -u)"

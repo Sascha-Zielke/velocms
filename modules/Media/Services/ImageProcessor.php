@@ -65,12 +65,13 @@ class ImageProcessor
 
     private function loadImage(string $path, string $mime): ?\GdImage
     {
-        return match ($mime) {
+        $result = match ($mime) {
             'image/jpeg' => @imagecreatefromjpeg($path),
             'image/png'  => @imagecreatefrompng($path),
             'image/webp' => @imagecreatefromwebp($path),
-            default      => null,
+            default      => false,
         };
+        return ($result instanceof \GdImage) ? $result : null;
     }
 
     private function applyExifOrientation(\GdImage $image, string $path): \GdImage
