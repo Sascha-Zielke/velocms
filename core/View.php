@@ -42,11 +42,9 @@ class View
         include $viewPath;
 
         if ($this->layout !== null) {
-            // Wir bauen den Pfad explizit aus dem Layout-Namen zusammen
             $layoutPath = BASE_PATH . '/views/layouts/' . $this->layout . '.php';
 
             if (!file_exists($layoutPath)) {
-                // Zur Sicherheit: Zeig uns, wo genau gesucht wird
                 throw new \RuntimeException("Layout not found: {$this->layout}. Expected file at: {$layoutPath}");
             }
 
