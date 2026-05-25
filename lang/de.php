@@ -132,6 +132,35 @@ return [
     'blog.edit'        => 'Beitrag bearbeiten',
     'blog.empty'       => 'Noch keine Beiträge vorhanden.',
     'blog.back'        => 'Zum Blog',
+
+    // User management
+    'users.headline'         => 'Benutzerverwaltung',
+    'users.new'              => 'Neuer Benutzer',
+    'users.edit'             => 'Benutzer bearbeiten',
+    'users.empty'            => 'Noch keine Benutzer vorhanden.',
+    'users.status'           => 'Status',
+    'users.active'           => 'Aktiv',
+    'users.inactive'         => 'Inaktiv',
+    'users.you'              => 'Du',
+    'users.last_login'       => 'Letzter Login',
+    'users.section_profile'  => 'Profil',
+    'users.section_password' => 'Passwort setzen',
+    'users.password_hint'    => '(mind. 8 Zeichen)',
+    'users.password_confirm' => 'Passwort bestätigen',
+    'users.set_password'     => 'Passwort speichern',
+
+    // Roles
+    'role.editor'            => 'Editor',
+    'role.admin'             => 'Admin',
+    'role.superadmin'        => 'Superadmin',
+
+    // User errors + success
+    'error.email_taken'          => 'Diese E-Mail-Adresse wird bereits verwendet.',
+    'error.password_min'         => 'Das Passwort muss mindestens 8 Zeichen lang sein.',
+    'error.password_mismatch'    => 'Die Passwörter stimmen nicht überein.',
+    'error.cannot_delete_self'   => 'Du kannst deinen eigenen Account nicht löschen.',
+    'success.user_created'       => 'Benutzer erfolgreich angelegt.',
+    'success.password_changed'   => 'Passwort erfolgreich geändert.',
     'blog.cover_image' => 'Titelbild (Pfad)',
     'blog.excerpt'     => 'Teaser (DE)',
     'blog.excerpt_en'  => 'Teaser (EN)',

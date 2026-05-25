@@ -6,6 +6,13 @@ namespace VeloCMS\Core;
 
 class Auth
 {
+    /** Role weight: higher = more permissions. */
+    private const ROLE_WEIGHT = [
+        'editor'     => 1,
+        'admin'      => 2,
+        'superadmin' => 3,
+    ];
+
     public static function verifyCsrf(): void
     {
         $token = $_POST['_csrf'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
@@ -61,5 +68,17 @@ class Auth
     public static function name(): ?string
     {
         return $_SESSION['user_name'] ?? null;
+    }
+
+    /**
+     * Returns true if the current user's role weight >= the required role weight.
+     * e.g. hasRole('admin') → true for admin AND superadmin
+     */
+    public static function hasRole(string $required): bool
+    {
+        $current  = self::role() ?? 'editor';
+        $reqLevel = self::ROLE_WEIGHT[$required]  ?? 99;
+        $curLevel = self::ROLE_WEIGHT[$current]   ?? 0;
+        return $curLevel >= $reqLevel;
     }
 }
