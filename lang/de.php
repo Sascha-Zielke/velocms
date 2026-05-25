@@ -125,4 +125,17 @@ return [
     'media.copy_url'    => 'URL kopieren',
     'media.delete_confirm' => 'Datei unwiderruflich löschen?',
 
+
+    // Blog module
+    'blog.headline'     => 'Blog',
+    'blog.new'         => 'Neuer Beitrag',
+    'blog.edit'        => 'Beitrag bearbeiten',
+    'blog.empty'       => 'Noch keine Beiträge vorhanden.',
+    'blog.back'        => 'Zum Blog',
+    'blog.cover_image' => 'Titelbild (Pfad)',
+    'blog.excerpt'     => 'Teaser (DE)',
+    'blog.excerpt_en'  => 'Teaser (EN)',
+    'blog.content'     => 'Inhalt (DE — HTML)',
+    'blog.content_en'  => 'Inhalt (EN — HTML)',
+
 ];
