@@ -64,7 +64,7 @@ jobs:
           ENV
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --configuration phpunit.xml --no-interaction
+        run: vendor/bin/phpunit --configuration phpunit.xml
 
   deploy:
     name: SSH Deploy → VPS
