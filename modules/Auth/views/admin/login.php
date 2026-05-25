@@ -27,6 +27,11 @@
 
     <form method="POST" action="/admin/login">
         <?= csrf_field() ?>
+        <!-- Honeypot: real users never see or fill this -->
+        <div class="vcms-hp-field" aria-hidden="true" tabindex="-1">
+            <label for="vcms_name">Name</label>
+            <input type="text" id="vcms_name" name="vcms_name" autocomplete="off" tabindex="-1">
+        </div>
 
         <div class="vcms-field">
             <label for="email"><?= t('auth.email') ?></label>

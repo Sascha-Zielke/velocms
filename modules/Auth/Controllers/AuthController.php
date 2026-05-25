@@ -31,6 +31,13 @@ class AuthController extends Controller
     {
         Auth::verifyCsrf();
 
+        // Honeypot: bots fill hidden fields, humans never do
+        if ($this->input('vcms_name', '') !== '') {
+            // Log silently and pretend success to confuse bots
+            error_log('[VeloCMS] Honeypot triggered from IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+            $this->redirect('/admin');
+        }
+
         $email    = filter_var($this->input('email', ''), FILTER_VALIDATE_EMAIL);
         $password = (string) $this->input('password', '');
 
