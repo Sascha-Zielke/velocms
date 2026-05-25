@@ -8,6 +8,14 @@ class Router
 {
     private static array $routes = [];
 
+    /**
+     * Diese Methode sorgt für die Kompatibilität mit dem App-Boot-Prozess.
+     */
+    public function run(): void
+    {
+        self::dispatch();
+    }
+
     public static function get(string $path, string $handler): void
     {
         self::$routes[] = ['method' => 'GET', 'path' => $path, 'handler' => $handler];
