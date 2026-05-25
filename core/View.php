@@ -6,8 +6,8 @@ namespace VeloCMS\Core;
 
 class View
 {
-    private ?string $layout       = null;
-    private array   $sections     = [];
+    private ?string $layout = null;
+    private array $sections = [];
     private ?string $currentSection = null;
 
     public function extend(string $layout): void
@@ -42,10 +42,12 @@ class View
         include $viewPath;
 
         if ($this->layout !== null) {
+            // Wir bauen den Pfad explizit aus dem Layout-Namen zusammen
             $layoutPath = BASE_PATH . '/views/layouts/' . $this->layout . '.php';
 
             if (!file_exists($layoutPath)) {
-                throw new \RuntimeException("Layout not found: {$this->layout}");
+                // Zur Sicherheit: Zeig uns, wo genau gesucht wird
+                throw new \RuntimeException("Layout not found: {$this->layout}. Expected file at: {$layoutPath}");
             }
 
             include $layoutPath;
