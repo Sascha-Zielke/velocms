@@ -150,10 +150,4 @@ class AdminPagesController extends Controller
         $this->json(['ok' => true]);
     }
 
-    private function json(array $data): never
-    {
-        header('Content-Type: application/json');
-        echo json_encode($data);
-        exit;
-    }
 }

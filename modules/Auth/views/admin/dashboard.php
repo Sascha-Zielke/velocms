@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-$this->extend('layouts/admin');
+$this->extend('admin');
 ?>
 
 <?php $this->section('content') ?>

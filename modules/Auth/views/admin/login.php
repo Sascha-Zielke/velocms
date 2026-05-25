@@ -1,6 +1,6 @@
 <?php declare(strict_types=1); ?>
 <!DOCTYPE html>
-<?php $lang = in_array($_COOKIE['vcms_lang'] ?? 'de', ['de', 'en'], true) ? $_COOKIE['vcms_lang'] : 'de'; ?>
+<?php $lang = ($lang_raw = ($_COOKIE['vcms_lang'] ?? 'de')) && in_array($lang_raw, ['de', 'en'], true) ? $lang_raw : 'de'; ?>
 <html lang="<?= e($lang) ?>">
 <head>
     <meta charset="UTF-8">
