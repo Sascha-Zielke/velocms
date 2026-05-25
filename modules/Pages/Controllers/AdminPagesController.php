@@ -104,12 +104,14 @@ class AdminPagesController extends Controller
     public function saveBox(string $id): void
     {
         Auth::verifyCsrf();
-        $type    = $this->input('type', 'text');
-        $allowed = ['text', 'image', 'video', 'button', 'spacer'];
-        $type    = in_array($type, $allowed, true) ? $type : 'text';
-        $rawData = $this->input('data', '{}');
-        $data    = is_array($rawData) ? $rawData : (json_decode((string)$rawData, true) ?? []);
-        $this->model->saveBox((int) $id, $type, $data);
+        // Requests come as JSON (Content-Type: application/json)
+        $payload = json_decode(file_get_contents('php://input'), true) ?? [];
+        // Preserve box type from DB if not overridden
+        $box     = $this->model->getBox((int) $id);
+        $type    = $box['type'] ?? 'text';
+        // Remove meta keys, rest is box data
+        unset($payload['_csrf']);
+        $this->model->saveBox((int) $id, $type, $payload);
         $this->json(['ok' => true]);
     }
 

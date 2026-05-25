@@ -145,7 +145,17 @@ class PagesModel extends Model
         $this->db->prepare("DELETE FROM velocms_rows WHERE id=:id")->execute([':id' => $id]);
     }
 
-    public function getBoxes(int $rowId): array
+    public function getBox(int $boxId): ?array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM velocms_boxes WHERE id = :id");
+        $stmt->execute([':id' => $boxId]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (!$row) return null;
+        $row['data'] = json_decode($row['data'] ?? '[]', true) ?? [];
+        return $row;
+    }
+
+        public function getBoxes(int $rowId): array
     {
         $stmt = $this->db->prepare(
             "SELECT * FROM velocms_boxes WHERE row_id=:rid ORDER BY sort_order ASC"
