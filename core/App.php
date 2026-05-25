@@ -9,6 +9,7 @@ class App
     {
         self::loadEnv(BASE_PATH . '/.env');
         self::configureErrors();
+        self::registerExceptionHandler();
         self::startSession();
 
         $config = require BASE_PATH . '/config/config.php';
@@ -55,6 +56,44 @@ class App
                 putenv("{$key}={$value}");
             }
         }
+    }
+
+    private static function registerExceptionHandler(): void
+    {
+        set_exception_handler(function (\Throwable $e): void {
+            // CSRF mismatch — show simple message, no stack trace
+            if ($e instanceof \RuntimeException && str_contains($e->getMessage(), 'CSRF')) {
+                http_response_code(403);
+                echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>403</title></head>'
+                   . '<body><h1>403 – Ungültiges Sicherheitstoken</h1>'
+                   . '<p><a href="javascript:history.back()">Zurück</a></p></body></html>';
+                exit;
+            }
+
+            $code = $e->getCode();
+            $status = (is_int($code) && $code >= 400 && $code < 600) ? $code : 500;
+            http_response_code($status);
+
+            error_log('[VeloCMS] Uncaught: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+
+            $env = $_ENV['APP_ENV'] ?? 'production';
+            if ($env === 'development') {
+                echo '<pre style="padding:20px">' . htmlspecialchars($e->getMessage()) . "\n\n"
+                   . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+                exit;
+            }
+
+            // Production: render 500 error page
+            $errorPage = BASE_PATH . '/views/errors/500.php';
+            if (file_exists($errorPage)) {
+                include $errorPage;
+            } else {
+                echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>500</title></head>'
+                   . '<body><h1>500 – Interner Serverfehler</h1>'
+                   . '<p>Bitte versuche es später erneut.</p></body></html>';
+            }
+            exit;
+        });
     }
 
     private static function configureErrors(): void

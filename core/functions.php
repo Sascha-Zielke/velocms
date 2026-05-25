@@ -66,3 +66,47 @@ function safe_html(string $html): string
 {
     return strip_tags($html, '<p><br><strong><em><ul><ol><li><a><h2><h3><h4><blockquote>');
 }
+
+/**
+ * Get a tenant setting value — cached per request.
+ */
+function setting(string $key, string $default = ''): string
+{
+    static $cache = null;
+
+    if ($cache === null) {
+        try {
+            $db    = \VeloCMS\Core\Database::getInstance()->getPdo();
+            $stmt  = $db->query('SELECT `key`, value FROM velocms_settings');
+            $cache = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR) ?: [];
+        } catch (\Throwable) {
+            $cache = [];
+        }
+    }
+
+    return (string) ($cache[$key] ?? $default);
+}
+
+/**
+ * Get active navigation items — cached per request.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nav(): array
+{
+    static $cache = null;
+
+    if ($cache === null) {
+        try {
+            $db    = \VeloCMS\Core\Database::getInstance()->getPdo();
+            $stmt  = $db->query(
+                'SELECT * FROM velocms_nav_items WHERE active = 1 AND deleted_at IS NULL ORDER BY position ASC, id ASC'
+            );
+            $cache = $stmt->fetchAll() ?: [];
+        } catch (\Throwable) {
+            $cache = [];
+        }
+    }
+
+    return $cache;
+}

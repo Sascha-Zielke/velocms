@@ -133,6 +133,44 @@ return [
     'blog.empty'       => 'Noch keine Beiträge vorhanden.',
     'blog.back'        => 'Zum Blog',
 
+    // Navigation module
+    'nav.navigation'          => 'Navigation',
+    'nav.new_item'            => 'Neuer Menüpunkt',
+    'nav.edit_item'           => 'Menüpunkt bearbeiten',
+    'nav.empty'               => 'Noch keine Navigationspunkte vorhanden.',
+    'nav.col_order'           => 'Reihenfolge',
+    'action.move_up'          => 'Nach oben',
+    'action.move_down'        => 'Nach unten',
+
+    // Settings module
+    'settings.section_site'            => 'Website',
+    'settings.section_branding'        => 'Branding',
+    'settings.section_seo'             => 'SEO',
+    'settings.section_social'          => 'Social Media',
+    'settings.section_footer'          => 'Footer',
+    'settings.site_name'               => 'Website-Name',
+    'settings.site_tagline'            => 'Tagline / Slogan',
+    'settings.site_email'              => 'Kontakt-E-Mail',
+    'settings.homepage_slug'           => 'Homepage-Slug',
+    'settings.homepage_slug_hint'      => 'Slug der Seite, die als Startseite angezeigt wird (z.B. startseite).',
+    'settings.maintenance_mode'        => 'Wartungsmodus',
+    'settings.logo_path'               => 'Logo-Pfad',
+    'settings.favicon_path'            => 'Favicon-Pfad',
+    'settings.meta_title_suffix'       => 'Meta-Titel-Suffix',
+    'settings.meta_description_default'=> 'Standard-Meta-Beschreibung',
+    'settings.meta_keywords_default'   => 'Standard-Meta-Keywords',
+    'settings.footer_text'             => 'Footer-Text',
+    'settings.footer_impressum_url'    => 'Impressum-URL',
+    'settings.footer_datenschutz_url'  => 'Datenschutz-URL',
+
+    // Error pages
+    'error.404_headline'     => 'Seite nicht gefunden',
+    'error.404_text'         => 'Die gesuchte Seite existiert nicht oder wurde verschoben.',
+    'error.403_headline'     => 'Zugriff verweigert',
+    'error.403_text'         => 'Du hast keine Berechtigung für diesen Bereich.',
+    'error.500_headline'     => 'Interner Serverfehler',
+    'error.500_text'         => 'Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.',
+
     // User management
     'users.headline'         => 'Benutzerverwaltung',
     'users.new'              => 'Neuer Benutzer',
