@@ -2,6 +2,7 @@ vendor/
 .env
 *.log
 .DS_Store
+.phpunit.result.cache
 
 public/uploads/*
 !public/uploads/.gitkeep
