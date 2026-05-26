@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-26 | Letzte Session: Bugfix — Navigation + Sites 500-Fehler behoben
+> Stand: 2026-05-26 | Letzte Session: Codebase-Audit + Cleanup (totes Code entfernt, Blog-404-Bug behoben)
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -52,9 +52,9 @@
 
 ## Nächste Phase
 
-**Offen — nach Absprache mit dem Nutzer**
-- Sites/create: Dropdown für Web-Technologie (aktuell nur PHP, später erweiterbar)
-- Weitere CMS-Features nach Bedarf
+**Translation-App für VeloCMS** (nächstes Sub-Produkt von veloSolution)
+- Translation-Modul: Übersetzungsverwaltung im Admin, Layer-2-i18n-Unterstützung
+- Ggf. DeepL-API-Integration via `core/Services/TranslationService.php`
 
 ## Wichtige Server-Hinweise (neu)
 - PHP-Error-Log: `/var/log/fpm-php.www.log` — jetzt dauerhaft aktiv

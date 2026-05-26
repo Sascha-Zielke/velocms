@@ -18,6 +18,33 @@
 
 ---
 
+## 2026-05-26 — Session 13
+
+**Duration:** ~30min
+**Done:**
+- Codebase-Audit: vollständiger Scan auf toten Code, veraltete Dateien, TODO/FIXMEs
+- Gelöscht (tote Dateien / nie geladen):
+  - `modules/Pages/Controller/PageController.php` — altes Demo-Stub, falscher Namespace, nie PSR-4 geladen
+  - `modules/Pages/Controller/` (Verzeichnis) — jetzt leer, entfernt
+  - `modules/Pages/routes.php` — wurde nirgends required, referenzierte toten PageController
+  - `views/admin/login.php` — alte Version ohne Honeypot/Forgot-Password-Link, durch `modules/Auth/views/admin/login.php` ersetzt (nicht mehr referenziert)
+  - `views/admin/` (Verzeichnis) — jetzt leer, entfernt
+  - `task_plan.md` — Dev-Planungs-Artefakt, alle 22 Phasen abgeschlossen
+  - `modules/Pages/views/frontend/404.php` — PagesController nutzt direkt `views/errors/404.php`
+  - `modules/Blog/views/frontend/404.php` — nach Bugfix ebenfalls entfernt
+- Bugfix `modules/Blog/Controllers/BlogController.php`:
+  - Blog-404-Fall renderte `frontend/404` ohne `extend('frontend')` → komplett leere HTTP-Response
+  - Fix: nutzt nun `include BASE_PATH . '/views/errors/404.php'` wie PagesController (konsistent)
+- Codebase ist jetzt sauber: kein toter Code, keine Stubs, keine Dev-Artefakte
+
+**Issues:**
+- keine
+
+**Next:**
+- Translation-App für VeloCMS entwickeln
+
+---
+
 ## 2026-05-26 — Session 12
 
 **Duration:** ~1h

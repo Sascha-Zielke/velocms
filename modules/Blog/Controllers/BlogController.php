@@ -31,8 +31,8 @@ class BlogController extends Controller
         $post = $this->model->getBySlug($slug);
         if (!$post) {
             http_response_code(404);
-            $this->render('frontend/404', []);
-            return;
+            include BASE_PATH . '/views/errors/404.php';
+            exit;
         }
         $this->view->extend('frontend');
         $this->render('frontend/show', ['post' => $post]);
