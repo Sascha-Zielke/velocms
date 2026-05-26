@@ -29,6 +29,75 @@ class TranslationEngine
     }
 
     /**
+     * Translate all UI strings from lang/en.php into every active non-default language
+     * that has no static lang/{lang}.php file. Results are cached in velocms_translations
+     * with table_name='velocms_ui' and row_id=0.
+     */
+    public function translateUiStrings(): void
+    {
+        $enPath = BASE_PATH . '/lang/en.php';
+        if (!file_exists($enPath)) {
+            return;
+        }
+
+        $strings = require $enPath;
+        if (!is_array($strings)) {
+            return;
+        }
+
+        foreach ($this->targetLangs as $lang) {
+            if (file_exists(BASE_PATH . "/lang/{$lang}.php")) {
+                continue;
+            }
+            try {
+                $this->translateUiIntoLang($strings, $lang);
+            } catch (\Throwable $e) {
+                error_log('[TranslationEngine] UI lang=' . $lang . ': ' . $e->getMessage());
+            }
+        }
+    }
+
+    /** @param array<string,string> $strings */
+    private function translateUiIntoLang(array $strings, string $lang): void
+    {
+        $pending     = [];
+        $pendingKeys = [];
+
+        foreach ($strings as $key => $text) {
+            if (!is_string($key) || !is_string($text) || trim($text) === '') {
+                continue;
+            }
+
+            $existing = $this->model->get('velocms_ui', 0, $key, $lang);
+            if ($existing && $existing['source'] === 'manual') {
+                continue;
+            }
+
+            $hash = md5($text);
+            if ($existing && $existing['content_hash'] === $hash) {
+                continue;
+            }
+
+            $pending[]     = $text;
+            $pendingKeys[] = [$key, $hash];
+        }
+
+        if (empty($pending)) {
+            return;
+        }
+
+        // Translate in chunks of 50 to stay within API limits
+        foreach (array_chunk($pending, 50) as $ci => $chunk) {
+            $keyChunk   = array_slice($pendingKeys, $ci * 50, 50);
+            $translated = $this->service->translateBatch($chunk, strtoupper($lang), 'EN');
+
+            foreach ($keyChunk as $i => [$key, $hash]) {
+                $this->model->upsert('velocms_ui', 0, $key, $lang, $translated[$i], 'auto', $hash);
+            }
+        }
+    }
+
+    /**
      * Translate all given fields for a DB row into every active non-default language.
      *
      * @param string            $table  DB table name (e.g. 'velocms_blog_posts')

@@ -38,7 +38,23 @@ function t(string $key, array $params = []): string
         } elseif (file_exists($langPath)) {
             $strings = array_merge($de, require $langPath);
         } else {
+            // Start with EN fallback, then overlay DB-cached UI translations
             $strings = array_merge($de, $en);
+            try {
+                $db   = \VeloCMS\Core\Database::getInstance()->getPdo();
+                $stmt = $db->prepare(
+                    "SELECT field, value FROM velocms_translations
+                     WHERE table_name = 'velocms_ui' AND row_id = 0
+                       AND language = :l AND stale = 0"
+                );
+                $stmt->execute([':l' => $lang]);
+                $ui = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+                if (!empty($ui)) {
+                    $strings = array_merge($strings, $ui);
+                }
+            } catch (\Throwable) {
+                // DB not yet available — English fallback stays
+            }
         }
     }
 

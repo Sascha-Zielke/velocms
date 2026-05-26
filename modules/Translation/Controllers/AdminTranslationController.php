@@ -120,9 +120,9 @@ class AdminTranslationController extends Controller
         Auth::verifyCsrf();
 
         $knownLangs = [
-            'bg','cs','da','de','el','en','es','et','fi','fr',
+            'ar','bg','cs','da','de','el','en','es','et','fi','fr',
             'hu','id','it','ja','ko','lt','lv','nb','nl','pl',
-            'pt','ro','ru','sk','sl','sv','tr','uk','zh',
+            'pt','ro','ru','sk','sl','sr','sv','tr','uk','zh',
         ];
         $selected   = array_filter(
             (array) ($_POST['active_languages'] ?? []),
@@ -157,7 +157,12 @@ class AdminTranslationController extends Controller
             $this->saveSetting('anthropic_api_key', $anthropicKey);
         }
 
-        $this->redirectWithSuccess('/admin/apps/translation/settings', t('translation.settings_saved'));
+        $engine = new \VeloCMS\Modules\Translation\Services\TranslationEngine();
+        $this->redirectWithSuccessAndBackground(
+            '/admin/apps/translation/settings',
+            t('translation.settings_saved'),
+            fn() => $engine->translateUiStrings()
+        );
     }
 
     private function saveSetting(string $key, string $value): void

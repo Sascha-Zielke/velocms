@@ -79,14 +79,14 @@
 <script>
 (function () {
     const LANGS = {
-        'BG':'Bulgarisch','CS':'Tschechisch','DA':'Dänisch','DE':'Deutsch',
-        'EL':'Griechisch','EN':'Englisch','ES':'Spanisch','ET':'Estnisch',
-        'FI':'Finnisch','FR':'Französisch','HU':'Ungarisch','ID':'Indonesisch',
-        'IT':'Italienisch','JA':'Japanisch','KO':'Koreanisch','LT':'Litauisch',
-        'LV':'Lettisch','NB':'Norwegisch','NL':'Niederländisch','PL':'Polnisch',
-        'PT':'Portugiesisch','RO':'Rumänisch','RU':'Russisch','SK':'Slowakisch',
-        'SL':'Slowenisch','SV':'Schwedisch','TR':'Türkisch','UK':'Ukrainisch',
-        'ZH':'Chinesisch'
+        'AR':'Arabisch','BG':'Bulgarisch','CS':'Tschechisch','DA':'Dänisch',
+        'DE':'Deutsch','EL':'Griechisch','EN':'Englisch','ES':'Spanisch',
+        'ET':'Estnisch','FI':'Finnisch','FR':'Französisch','HU':'Ungarisch',
+        'ID':'Indonesisch','IT':'Italienisch','JA':'Japanisch','KO':'Koreanisch',
+        'LT':'Litauisch','LV':'Lettisch','NB':'Norwegisch','NL':'Niederländisch',
+        'PL':'Polnisch','PT':'Portugiesisch','RO':'Rumänisch','RU':'Russisch',
+        'SK':'Slowakisch','SL':'Slowenisch','SR':'Serbisch','SV':'Schwedisch',
+        'TR':'Türkisch','UK':'Ukrainisch','ZH':'Chinesisch'
     };
 
     const DEFAULT_LANG  = '<?= strtoupper(e($defaultLang)) ?>';
