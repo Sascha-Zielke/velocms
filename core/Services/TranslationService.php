@@ -110,6 +110,10 @@ class TranslationService
     ): array {
         $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? setting('deepl_api_key', '');
 
+        error_log('[DEBUG-TRANS] ENV DEEPL_API_KEY=' . (isset($_ENV['DEEPL_API_KEY']) ? 'SET' : 'NOT_SET')
+            . ' setting(deepl_api_key)=' . (setting('deepl_api_key', '') !== '' ? 'HAS_VALUE' : 'EMPTY')
+            . ' final_key=' . ($key !== '' ? 'HAS_VALUE' : 'EMPTY'));
+
         if (empty($key)) {
             throw new TranslationException('No DeepL API key configured. Add DEEPL_API_KEY to .env or enter it in Translation Settings.');
         }
