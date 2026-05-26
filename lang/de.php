@@ -129,10 +129,15 @@ return [
 
     // Blog module
     'blog.headline'     => 'Blog',
-    'blog.new'         => 'Neuer Beitrag',
-    'blog.edit'        => 'Beitrag bearbeiten',
-    'blog.empty'       => 'Noch keine Beiträge vorhanden.',
-    'blog.back'        => 'Zum Blog',
+    'blog.new'          => 'Neuer Beitrag',
+    'blog.edit'         => 'Beitrag bearbeiten',
+    'blog.empty'        => 'Noch keine Beiträge vorhanden.',
+    'blog.back'         => 'Zum Blog',
+    'blog.excerpt'      => 'Auszug',
+    'blog.content'      => 'Inhalt',
+    'blog.cover_image'  => 'Cover-Bild',
+    'blog.translations' => 'Übersetzungen',
+    'blog.trans_notice' => 'Automatisch übersetzt — bearbeitbar.',
 
     // Navigation module
     'nav.navigation'          => 'Navigation',

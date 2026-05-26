@@ -216,6 +216,18 @@ return [
     'lang.it'                          => 'Italian',
     'lang.nl'                          => 'Dutch',
 
+    // Blog module
+    'blog.headline'     => 'Blog',
+    'blog.new'          => 'New post',
+    'blog.edit'         => 'Edit post',
+    'blog.empty'        => 'No posts yet.',
+    'blog.back'         => 'Back to blog',
+    'blog.excerpt'      => 'Excerpt',
+    'blog.content'      => 'Content',
+    'blog.cover_image'  => 'Cover image',
+    'blog.translations' => 'Translations',
+    'blog.trans_notice' => 'Auto-translated — edit to override.',
+
     // Maintenance mode
     'maintenance.title'    => 'Maintenance',
     'maintenance.headline' => 'We\'ll be back soon',

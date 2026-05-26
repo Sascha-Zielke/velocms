@@ -27,8 +27,17 @@ class AdminBlogController extends Controller
 
     public function new(): void
     {
+        $activeLangs = json_decode(setting('active_languages', '["de","en"]'), true) ?: ['de', 'en'];
+        $defaultLang = setting('default_language', 'de');
+        $targetLangs = array_values(array_filter($activeLangs, fn(string $l) => $l !== $defaultLang));
+
         $this->view->extend('admin');
-        $this->render('admin/edit', ['post' => null]);
+        $this->render('admin/edit', [
+            'post'         => null,
+            'translations' => [],
+            'targetLangs'  => $targetLangs,
+            'defaultLang'  => $defaultLang,
+        ]);
     }
 
     public function save(): void
@@ -56,8 +65,16 @@ class AdminBlogController extends Controller
     {
         $post = $this->model->getById((int) $id);
         if (!$post) $this->redirectWithError('/admin/blog', t('error.not_found'));
+
+        [$targetLangs, $defaultLang, $translations] = $this->loadTranslations((int) $id);
+
         $this->view->extend('admin');
-        $this->render('admin/edit', ['post' => $post]);
+        $this->render('admin/edit', [
+            'post'         => $post,
+            'translations' => $translations,
+            'targetLangs'  => $targetLangs,
+            'defaultLang'  => $defaultLang,
+        ]);
     }
 
     public function update(string $id): void
@@ -67,6 +84,8 @@ class AdminBlogController extends Controller
         if (!$post) $this->redirectWithError('/admin/blog', t('error.not_found'));
 
         $this->model->update((int) $id, $this->collectData($post));
+        $this->saveManualTranslations((int) $id);
+
         $fields = $this->collectTranslatableFields();
         $engine = new TranslationEngine();
         $this->redirectWithSuccessAndBackground(
@@ -101,6 +120,50 @@ class AdminBlogController extends Controller
             'author_id'        => Auth::id() ?? 1,
             'published_at'     => $existing['published_at'] ?? null,
         ];
+    }
+
+    /** @return array{0: string[], 1: string, 2: array<string, array<string,string>>} */
+    private function loadTranslations(int $postId): array
+    {
+        $activeLangs = json_decode(setting('active_languages', '["de","en"]'), true) ?: ['de', 'en'];
+        $defaultLang = setting('default_language', 'de');
+        $targetLangs = array_values(array_filter(
+            $activeLangs,
+            fn(string $l) => $l !== $defaultLang
+        ));
+
+        $transModel   = new \VeloCMS\Modules\Translation\Models\TranslationModel();
+        $translations = [];
+        foreach ($targetLangs as $lang) {
+            $translations[$lang] = $transModel->getForRow('velocms_blog_posts', $postId, $lang);
+        }
+
+        return [$targetLangs, $defaultLang, $translations];
+    }
+
+    private function saveManualTranslations(int $postId): void
+    {
+        $submitted = $_POST['trans'] ?? [];
+        if (empty($submitted) || !is_array($submitted)) {
+            return;
+        }
+
+        $transModel = new \VeloCMS\Modules\Translation\Models\TranslationModel();
+
+        foreach ($submitted as $lang => $fields) {
+            if (!is_array($fields) || !preg_match('/^[a-z]{2}$/', (string) $lang)) {
+                continue;
+            }
+            foreach (['title', 'excerpt', 'content'] as $field) {
+                $val = trim((string) ($fields[$field] ?? ''));
+                if ($val !== '') {
+                    $transModel->upsert(
+                        'velocms_blog_posts', $postId, $field, $lang,
+                        $val, 'manual', md5($val)
+                    );
+                }
+            }
+        }
     }
 
     /** @return array<string,string> */
