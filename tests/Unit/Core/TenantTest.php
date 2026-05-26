@@ -27,4 +27,9 @@ class TenantTest extends TestCase
     {
         $this->assertSame('', Tenant::dbName());
     }
+
+    public function testIsMultiSite_returnsFalse_initially(): void
+    {
+        $this->assertFalse(Tenant::isMultiSite());
+    }
 }

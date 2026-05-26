@@ -6,9 +6,17 @@ namespace VeloCMS\Core;
 /**
  * Tenant — Domain-based multi-tenancy resolver
  *
- * Architecture: velocms_master.velocms_sites is the registry.
- * On each request the domain is resolved → tenant DB is selected.
- * Admin routes always use the resolved tenant's DB.
+ * Two modes, selected automatically by the presence of MASTER_DB in .env:
+ *
+ *   Single-site mode  (MASTER_DB not set):
+ *     → Direct connect to DB_NAME, no master-DB lookup.
+ *       Tenant::current() returns a synthetic row with id=0.
+ *       Safe to use forever — no config changes required on the server.
+ *
+ *   Multi-site mode   (MASTER_DB set):
+ *     → Connects to velocms_master.velocms_sites, resolves domain → tenant DB.
+ *       If the master DB is unreachable, falls back to single-site mode.
+ *       If the domain is not registered: 503.
  *
  * tenant_id is set once per boot and never changes (immutable per request).
  */
@@ -17,38 +25,34 @@ class Tenant
     private static ?array $current = null;
 
     /**
-     * Resolve current tenant from HTTP_HOST.
-     * Connects to master DB, looks up domain, then connects to tenant DB.
-     *
-     * @throws \RuntimeException if domain is unknown or site is suspended
+     * Resolve the current tenant and establish the DB connection.
+     * Called exactly once per request from App::boot().
      */
     public static function resolve(array $config): void
     {
         $host = strtolower(trim($_SERVER['HTTP_HOST'] ?? ''));
-        // Strip port if present
-        $host = preg_replace('/:\d+$/', '', $host);
+        $host = (string) preg_replace('/:\d+$/', '', $host);
 
-        // CLI / unit tests: fall back to .env DB_NAME
+        // ── CLI / unit tests ────────────────────────────────────────────────
         if ($host === '' || php_sapi_name() === 'cli') {
-            self::$current = [
-                'id'      => 0,
-                'domain'  => 'localhost',
-                'db_name' => $config['db_name'],
-                'name'    => 'CLI',
-                'status'  => 'active',
-            ];
-            Database::connect(
-                $config['db_host'],
-                $config['db_port'],
-                $config['db_name'],
-                $config['db_user'],
-                $config['db_pass']
-            );
+            self::bootSingleSite($config, 'cli');
             return;
         }
 
-        // Connect to master DB to look up domain
-        $masterDsn = "mysql:host={$config['db_host']};port={$config['db_port']};dbname={$config['master_db']};charset=utf8mb4";
+        // ── Single-site mode (no MASTER_DB configured) ───────────────────────
+        if (empty($config['master_db'])) {
+            self::bootSingleSite($config, $host);
+            return;
+        }
+
+        // ── Multi-site mode: resolve via master DB ────────────────────────────
+        $masterDsn = sprintf(
+            'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+            $config['db_host'],
+            $config['db_port'],
+            $config['master_db']
+        );
+
         try {
             $master = new \PDO($masterDsn, $config['db_user'], $config['db_pass'], [
                 \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
@@ -56,29 +60,33 @@ class Tenant
                 \PDO::ATTR_EMULATE_PREPARES   => false,
             ]);
         } catch (\PDOException $e) {
-            // If master DB unreachable, fall through to direct DB_NAME (dev mode)
-            error_log('[VeloCMS] Master DB unreachable: ' . $e->getMessage());
-            Database::connect($config['db_host'], $config['db_port'], $config['db_name'], $config['db_user'], $config['db_pass']);
-            self::$current = ['id' => 0, 'domain' => $host, 'db_name' => $config['db_name'], 'name' => 'fallback', 'status' => 'active'];
+            // Master DB unreachable → graceful degradation to single-site
+            error_log('[VeloCMS] Master DB unreachable, falling back to single-site: ' . $e->getMessage());
+            self::bootSingleSite($config, $host);
             return;
         }
 
-        // Look up by domain OR www_alias
+        // Look up by domain OR www_alias — only active sites
         $stmt = $master->prepare(
-            "SELECT * FROM velocms_sites WHERE (domain = :h1 OR www_alias = :h2) AND status = 'active' LIMIT 1"
+            "SELECT * FROM velocms_sites
+             WHERE (domain = :h1 OR www_alias = :h2)
+               AND status = 'active'
+             LIMIT 1"
         );
         $stmt->execute([':h1' => $host, ':h2' => $host]);
         $site = $stmt->fetch();
 
         if (!$site) {
             http_response_code(503);
-            echo '<!DOCTYPE html><html><head><title>Site unavailable</title></head><body><h1>503 — Site not found</h1><p>This domain is not registered.</p></body></html>';
+            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Site unavailable</title></head>'
+               . '<body><h1>503 — Site not found</h1>'
+               . '<p>This domain is not registered in VeloCMS.</p>'
+               . '</body></html>';
             exit;
         }
 
         self::$current = $site;
 
-        // Connect to tenant's own DB
         Database::connect(
             $config['db_host'],
             $config['db_port'],
@@ -87,6 +95,8 @@ class Tenant
             $config['db_pass']
         );
     }
+
+    // ── Accessors ─────────────────────────────────────────────────────────────
 
     public static function current(): ?array
     {
@@ -106,5 +116,32 @@ class Tenant
     public static function domain(): string
     {
         return self::$current['domain'] ?? '';
+    }
+
+    /** True when running with a master-DB multi-site setup. */
+    public static function isMultiSite(): bool
+    {
+        return isset(self::$current['id']) && self::$current['id'] > 0;
+    }
+
+    // ── Internal ──────────────────────────────────────────────────────────────
+
+    private static function bootSingleSite(array $config, string $domain): void
+    {
+        self::$current = [
+            'id'      => 0,
+            'domain'  => $domain,
+            'db_name' => $config['db_name'],
+            'name'    => 'default',
+            'status'  => 'active',
+        ];
+
+        Database::connect(
+            $config['db_host'],
+            $config['db_port'],
+            $config['db_name'],
+            $config['db_user'],
+            $config['db_pass']
+        );
     }
 }

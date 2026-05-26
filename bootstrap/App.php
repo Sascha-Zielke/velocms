@@ -14,14 +14,8 @@ class App
 
         $config = require BASE_PATH . '/config/config.php';
 
-        if (!empty($config['db_host']) && !empty($config['db_name'])) {
-            Database::connect(
-                $config['db_host'],
-                $config['db_port'],
-                $config['db_name'],
-                $config['db_user'],
-                $config['db_pass']
-            );
+        if (!empty($config['db_host'])) {
+            Tenant::resolve($config);
         }
 
         ModuleLoader::boot();

@@ -57,6 +57,110 @@ match ($command) {
         $runner = new \VeloCMS\Core\MigrationRunner($db);
         $runner->status();
     })(),
+    'tenant:init' => (function () use ($argv) {
+        $config = require BASE_PATH . '/config/config.php';
+
+        if (empty($config['master_db'])) {
+            echo "Error: MASTER_DB is not set in .env. Add MASTER_DB=velocms_master to enable multi-site mode.\n";
+            exit(1);
+        }
+
+        $domain = $argv[2] ?? '';
+        $name   = $argv[3] ?? $domain;
+        $dbName = $argv[4] ?? '';
+
+        if ($domain === '') {
+            echo "Usage: php velocms tenant:init <domain> [<name>] [<db_name>]\n";
+            echo "Example: php velocms tenant:init example.com 'My Site' velocms_example\n";
+            exit(1);
+        }
+
+        if ($dbName === '') {
+            $dbName = 'velocms_' . preg_replace('/[^a-z0-9]/', '_', strtolower($domain));
+        }
+
+        // Connect to master DB (create it if it doesn't exist yet)
+        $pdo = new \PDO(
+            sprintf('mysql:host=%s;port=%d;charset=utf8mb4', $config['db_host'], $config['db_port']),
+            $config['db_user'],
+            $config['db_pass'],
+            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC]
+        );
+
+        $master = $config['master_db'];
+        $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$master}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        $pdo->exec("USE `{$master}`");
+
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS velocms_sites (
+                id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                domain     VARCHAR(255) NOT NULL UNIQUE,
+                www_alias  VARCHAR(255) NULL,
+                db_name    VARCHAR(100) NOT NULL,
+                name       VARCHAR(255) NOT NULL DEFAULT '',
+                active     TINYINT(1) NOT NULL DEFAULT 1,
+                status     ENUM('active','suspended','provisioning') NOT NULL DEFAULT 'active',
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
+                deleted_at DATETIME NULL,
+                PRIMARY KEY (id),
+                INDEX idx_domain (domain),
+                INDEX idx_status (status)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+
+        $stmt = $pdo->prepare(
+            "INSERT INTO velocms_sites (domain, name, db_name, status)
+             VALUES (:domain, :name, :db_name, 'active')
+             ON DUPLICATE KEY UPDATE name = VALUES(name), db_name = VALUES(db_name), status = 'active', deleted_at = NULL"
+        );
+        $stmt->execute([':domain' => $domain, ':name' => $name, ':db_name' => $dbName]);
+
+        echo "✅ Master DB '{$master}' ready.\n";
+        echo "✅ Site registered: {$domain} → DB: {$dbName}\n";
+        echo "\nNext steps:\n";
+        echo "  1. Set MASTER_DB={$master} in .env (if not already done)\n";
+        echo "  2. Create the tenant DB: php velocms tenant:provision {$domain}\n";
+        echo "  3. Run migrations on tenant DB\n";
+    })(),
+
+    'tenant:list' => (function () {
+        $config = require BASE_PATH . '/config/config.php';
+
+        if (empty($config['master_db'])) {
+            echo "Single-site mode (MASTER_DB not set). Running on: " . ($config['db_name'] ?: '(no DB configured)') . "\n";
+            return;
+        }
+
+        try {
+            $pdo = new \PDO(
+                sprintf('mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4', $config['db_host'], $config['db_port'], $config['master_db']),
+                $config['db_user'],
+                $config['db_pass'],
+                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC]
+            );
+            $sites = $pdo->query("SELECT id, domain, db_name, status, created_at FROM velocms_sites WHERE deleted_at IS NULL ORDER BY created_at")->fetchAll();
+        } catch (\PDOException $e) {
+            echo "Cannot connect to master DB '{$config['master_db']}': " . $e->getMessage() . "\n";
+            exit(1);
+        }
+
+        if (empty($sites)) {
+            echo "No sites registered in master DB.\n";
+            return;
+        }
+
+        echo str_pad('ID', 5) . str_pad('Domain', 35) . str_pad('DB', 30) . str_pad('Status', 14) . "Created\n";
+        echo str_repeat('-', 90) . "\n";
+        foreach ($sites as $s) {
+            echo str_pad((string) $s['id'], 5)
+               . str_pad($s['domain'], 35)
+               . str_pad($s['db_name'], 30)
+               . str_pad($s['status'], 14)
+               . $s['created_at'] . "\n";
+        }
+    })(),
+
     default => (function () use ($command) {
         if ($command !== 'help') {
             echo "Unknown command: {$command}\n\n";
@@ -64,9 +168,11 @@ match ($command) {
         echo "VeloCMS CLI\n\n";
         echo "Usage: php velocms <command>\n\n";
         echo "Commands:\n";
-        echo "  migrate           Run all pending migrations\n";
-        echo "  migrate:rollback  Roll back the last batch\n";
-        echo "  migrate:status    Show migration status\n";
-        echo "  help              Show this help\n";
+        echo "  migrate              Run all pending migrations\n";
+        echo "  migrate:rollback     Roll back the last batch\n";
+        echo "  migrate:status       Show migration status\n";
+        echo "  tenant:init <d> [n] [db]  Register a site in the master DB\n";
+        echo "  tenant:list          List all registered sites\n";
+        echo "  help                 Show this help\n";
     })(),
 };
