@@ -209,4 +209,65 @@ return [
     'blog.content'     => 'Inhalt (DE — HTML)',
     'blog.content_en'  => 'Inhalt (EN — HTML)',
 
+    // Contact module — Frontend
+    'contact.headline'              => 'Kontakt',
+    'contact.intro'                 => 'Füllen Sie das Formular aus und wir melden uns so schnell wie möglich bei Ihnen.',
+    'contact.field_name'            => 'Name',
+    'contact.field_email'           => 'E-Mail-Adresse',
+    'contact.field_subject'         => 'Betreff',
+    'contact.field_message'         => 'Nachricht',
+    'contact.submit'                => 'Nachricht senden',
+    'contact.success'               => 'Vielen Dank! Ihre Nachricht wurde erfolgreich übermittelt. Wir melden uns bei Ihnen.',
+    'contact.consent_text'          => 'Ich habe die <a href="%s">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. *',
+
+    // Contact module — Validation errors
+    'contact.error_name_required'   => 'Bitte geben Sie Ihren Namen an.',
+    'contact.error_name_too_long'   => 'Der Name darf maximal 255 Zeichen lang sein.',
+    'contact.error_email_invalid'   => 'Bitte geben Sie eine gültige E-Mail-Adresse an.',
+    'contact.error_subject_too_long'=> 'Der Betreff darf maximal 255 Zeichen lang sein.',
+    'contact.error_message_required'=> 'Bitte geben Sie eine Nachricht ein.',
+    'contact.error_message_too_long'=> 'Die Nachricht darf maximal 10.000 Zeichen lang sein.',
+    'contact.error_consent_required'=> 'Bitte stimmen Sie der Datenschutzerklärung zu.',
+    'contact.error_rate_limit'      => 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.',
+
+    // Contact module — Admin
+    'contact.admin_menu'            => 'Kontakt',
+    'contact.admin_settings'        => 'Einstellungen',
+    'contact.admin_view'            => 'Nachricht lesen',
+    'contact.admin_empty'           => 'Keine Nachrichten vorhanden.',
+    'contact.admin_reply'           => 'Antworten',
+    'contact.admin_mark_spam'       => 'Als Spam markieren',
+    'contact.admin_marked_spam'     => 'Als Spam markiert.',
+    'contact.admin_purge'           => 'Alte löschen',
+    'contact.admin_purge_confirm'   => 'Alle Nachrichten älter als die konfigurierte Aufbewahrungsdauer unwiderruflich löschen?',
+    'contact.admin_purged'          => '%d Nachricht(en) gelöscht.',
+
+    // Contact module — Status labels
+    'contact.status_new'            => 'Neu',
+    'contact.status_read'           => 'Gelesen',
+    'contact.status_replied'        => 'Beantwortet',
+    'contact.status_spam'           => 'Spam',
+
+    // Contact module — Filter tabs
+    'contact.filter_all'            => 'Alle',
+    'contact.filter_new'            => 'Neu',
+    'contact.filter_read'           => 'Gelesen',
+    'contact.filter_replied'        => 'Beantwortet',
+    'contact.filter_spam'           => 'Spam',
+
+    // Contact module — Settings
+    'contact.settings_section_email'    => 'E-Mail-Versand',
+    'contact.settings_section_spam'     => 'Spam-Schutz',
+    'contact.settings_section_dsgvo'    => 'Datenschutz (DSGVO)',
+    'contact.settings_recipient_email'  => 'Empfänger-E-Mail',
+    'contact.settings_recipient_hint'   => 'Hierhin werden eingehende Nachrichten gesendet. Leer = site_email wird verwendet.',
+    'contact.settings_from_name'        => 'Absender-Name',
+    'contact.settings_subject_prefix'   => 'Betreff-Präfix',
+    'contact.settings_rate_limit'       => 'Max. Nachrichten pro IP / Stunde',
+    'contact.settings_rate_limit_hint'  => 'Nachrichten über diesem Limit werden abgelehnt.',
+    'contact.settings_store_messages'   => 'Nachrichten in der Datenbank speichern',
+    'contact.settings_retention_days'   => 'Aufbewahrung (Tage)',
+    'contact.settings_retention_hint'   => 'Nachrichten älter als dieser Wert können über "Alte löschen" entfernt werden.',
+    'contact.settings_privacy_url'      => 'URL der Datenschutzerklärung',
+
 ];
