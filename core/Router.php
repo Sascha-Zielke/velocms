@@ -25,6 +25,8 @@ class Router
         $uri    = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri    = rtrim($uri ?: '/', '/') ?: '/';
 
+        error_log('[VCMS-DEBUG] dispatch method=' . $method . ' uri=' . $uri . ' routes=' . count(self::$routes));
+
         // Sort: wildcard [*:] routes last so specific routes always win
         $routes = self::$routes;
         usort($routes, static fn($a, $b) =>
