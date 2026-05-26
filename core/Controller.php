@@ -66,6 +66,7 @@ class Controller
             fastcgi_finish_request();
         }
 
+        set_time_limit(0);
         $callback();
         exit;
     }
@@ -116,6 +117,7 @@ class Controller
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
+        set_time_limit(0);
         $callback();
         exit;
     }
