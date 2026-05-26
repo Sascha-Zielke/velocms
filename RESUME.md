@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-26 | Letzte Session: Phase 20 (Wartungsmodus) deployed
+> Stand: 2026-05-26 | Letzte Session: Phase 21 (Tenant-Provisioning) deployed
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -25,13 +25,14 @@
 | 18 | Frontend-Theme (Design-Tokens, Responsive Nav, Dark Mode, JS) | ✅ DONE |
 | 19 | Passwort-Reset (Token, SHA-256, Single-Use, 1h TTL, PHP mail()) | ✅ DONE |
 | 20 | Wartungsmodus (App::handleMaintenanceMode, 503, Admin-Bypass) | ✅ DONE |
+| 21 | Tenant-Provisioning Superadmin-UI (Sites-CRUD, DB-Provisioning) | ✅ DONE |
 
 ## Aktueller Stand (2026-05-26)
 
-- CI/CD: GitHub Actions Run #18 — **✅ success** (Tests grün, Deploy OK)
+- CI/CD: GitHub Actions Run #20 — **✅ success** (Tests grün, Deploy OK)
 - Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
-- Letzter Deploy-Commit: `6aab896` (feat(core): Phase 20)
-- Server-Stand: Alle Phasen 12–20 live auf 95.217.185.113
+- Letzter Deploy-Commit: `5448f65` (feat(sites): Phase 21)
+- Server-Stand: Alle Phasen 12–21 live auf 95.217.185.113
 
 ### Was live ist:
 - ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users, Kontakt)
@@ -45,12 +46,13 @@
 - ✅ Frontend-Theme: CSS Design-Tokens, Sticky Header, Responsive Nav (Hamburger), Dark Mode, Print, Scroll-Reveal
 - ✅ Passwort-Reset: /admin/password/reset — Token (SHA-256, 1h TTL, Single-Use), PHP mail(), kein User-Enumeration
 - ✅ Wartungsmodus: maintenance_mode=1 → 503 für alle außer Admin+; /admin immer erreichbar
+- ✅ Sites-Verwaltung: /admin/sites (Superadmin) — CRUD, Status-Management, DB-Provisioning
 
 ## Nächste Phase
 
-**Phase 21 — Tenant-Provisioning (Superadmin-UI)**
-- Neue Sites über Admin anlegen
-- DB-Isolation per Tenant
+**Offen — nach Absprache mit dem Nutzer**
+- Tenant-Routing aktivieren (App::boot() auf Tenant::resolve() umstellen)
+- Weitere CMS-Features nach Bedarf
 
 ## Wichtige Pfade & Credentials
 - Webroot: /var/www/velocms/public/

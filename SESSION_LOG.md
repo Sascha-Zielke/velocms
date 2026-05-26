@@ -18,6 +18,33 @@
 
 ---
 
+## 2026-05-26 — Session 10
+
+**Duration:** ~1h
+**Done:**
+- Phase 21: Tenant-Provisioning Superadmin-UI vollständig implementiert und deployed
+  - `migrations/003_update_sites_table`: www_alias + status ENUM zu velocms_sites hinzugefügt; active-Flag in status migriert
+  - `modules/Sites/Models/SiteModel`: getAll/getById/domainExists/dbNameExists/create/update/softDelete/provisionDb/markActive; db_name-Whitelist-Regex
+  - `modules/Sites/Controllers/AdminSitesController`: index/create/store/edit/update/provision/delete; requireRole('superadmin')
+  - `modules/Sites/SitesModule`: 7 Routen, Sidebar-Menüeintrag position 90 min_role superadmin
+  - Views: sites/index (Tabelle, Status-Badges), sites/create (Form), sites/edit (Form + Provision-Banner + Danger-Zone)
+  - `provisionDb()`: CREATE DATABASE IF NOT EXISTS, graceful catch bei fehlenden Rechten
+  - `public/assets/css/admin.css`: vcms-card/vcms-card--danger/vcms-hint + alle fehlenden Badge-Varianten (Rollen + Site-Status)
+  - `lang/de.php` + `lang/en.php`: 30 sites.*-Keys je
+  - `tests/Unit/Modules/Sites/SiteModelTest.php`: 8 Unit-Tests
+- CI/CD: GitHub Actions Run #20 — ✅ success, Deploy + Migration 003 OK
+- Audit 1 (Code-Review): ✅ CSRF, requireRole superadmin, db_name-Whitelist, Status-Allowlist, provisionDb graceful
+- Audit 2 (Live-Verify): ✅ /admin/sites → Auth-Redirect korrekt, /admin/sites/create → Auth-Redirect, keine PHP-Fehler
+
+**Issues:**
+- keine
+
+**Next:**
+- Tenant-Routing in App::boot() auf Tenant::resolve() umstellen (Breaking Change — Absprache nötig)
+- Weitere Features nach Bedarf
+
+---
+
 ## 2026-05-26 — Session 9
 
 **Duration:** ~30min
