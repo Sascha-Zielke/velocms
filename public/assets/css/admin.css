@@ -42,6 +42,10 @@ body.vcms-admin { display: flex; min-height: 100vh; }
 .vcms-nav__section { padding: 14px 16px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .10em; color: rgba(200,211,224,.45); user-select: none; }
 .vcms-nav-footer { padding: 12px 8px; border-top: 1px solid rgba(255,255,255,.08); }
 .vcms-nav__user { display: block; color: var(--vcms-sidebar-text); font-size: 12px; padding: 0 8px 8px; }
+.vcms-lang-switcher { display: flex; gap: 4px; padding: 4px 8px 8px; }
+.vcms-lang-btn { padding: 3px 8px; font-size: 11px; font-weight: 700; letter-spacing: .05em; border: 1px solid rgba(200,211,224,.25); border-radius: 4px; background: transparent; color: var(--vcms-sidebar-text); cursor: pointer; transition: background .15s, color .15s; }
+.vcms-lang-btn:hover { background: var(--vcms-sidebar-hover); color: var(--vcms-white); }
+.vcms-lang-btn.is-active { background: var(--vcms-accent); color: var(--vcms-white); border-color: var(--vcms-accent); }
 .vcms-btn-link { color: var(--vcms-sidebar-text) !important; }
 .vcms-main { margin-left: var(--vcms-sidebar-w); flex: 1; min-height: 100vh; }
 .vcms-content { padding: 28px; max-width: 1200px; }

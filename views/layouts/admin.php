@@ -1,7 +1,11 @@
 <?php declare(strict_types=1); ?>
 <!DOCTYPE html>
-<?php $lang = ($lang_raw = ($_COOKIE['vcms_lang'] ?? 'de')) && in_array($lang_raw, ['de', 'en'], true) ? $lang_raw : 'de'; ?>
-<html lang="<?= e($lang) ?>">
+<?php
+$activeLangs = json_decode(setting('active_languages', '["de","en"]'), true) ?: ['de', 'en'];
+$activeLangs = array_values(array_filter($activeLangs, fn($l) => preg_match('/^[a-z]{2}$/', (string)$l)));
+$currentLang = ($l = $_COOKIE['vcms_lang'] ?? '') && in_array($l, $activeLangs, true) ? $l : ($activeLangs[0] ?? 'de');
+?>
+<html lang="<?= e($currentLang) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +38,20 @@
 
     <div class="vcms-nav-footer">
         <span class="vcms-nav__user"><?= e(\VeloCMS\Core\Auth::name() ?? '') ?></span>
+
+        <?php if (count($activeLangs) > 1): ?>
+        <div class="vcms-lang-switcher" role="group" aria-label="Language">
+            <?php foreach ($activeLangs as $lng): ?>
+            <button class="vcms-lang-btn<?= $lng === $currentLang ? ' is-active' : '' ?>"
+                    data-lang="<?= e($lng) ?>"
+                    type="button"
+                    aria-pressed="<?= $lng === $currentLang ? 'true' : 'false' ?>">
+                <?= strtoupper(e($lng)) ?>
+            </button>
+            <?php endforeach ?>
+        </div>
+        <?php endif ?>
+
         <form method="POST" action="/admin/logout" style="display:inline">
             <?= csrf_field() ?>
             <button type="submit" class="vcms-nav__item vcms-btn-link">
@@ -44,7 +62,7 @@
 </div>
 
 <div class="vcms-main">
-    <div class="vcms-content">
+    <div class="vcms-content" id="vcms-content">
 
         <?php if (!empty($_SESSION['flash_success'])): ?>
         <div class="vcms-alert vcms-alert--success">
@@ -64,5 +82,6 @@
 </div>
 
 <script src="/assets/js/admin.js"></script>
+<script src="/assets/js/lang-switcher.js"></script>
 </body>
 </html>

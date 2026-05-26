@@ -19,7 +19,7 @@ function t(string $key, array $params = []): string
 
     if ($strings === null) {
         $lang = $_COOKIE['vcms_lang'] ?? 'de';
-        $lang = in_array($lang, ['de', 'en']) ? $lang : 'de';
+        $lang = preg_match('/^[a-z]{2}$/', $lang) ? $lang : 'de';
 
         $dePath   = BASE_PATH . '/lang/de.php';
         $langPath = BASE_PATH . "/lang/{$lang}.php";

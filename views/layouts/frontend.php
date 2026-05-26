@@ -1,6 +1,11 @@
 <?php declare(strict_types=1); ?>
 <!DOCTYPE html>
-<?php $lang = ($lang_raw = $_COOKIE['vcms_lang'] ?? 'de') && in_array($lang_raw, ['de', 'en'], true) ? $lang_raw : 'de'; ?>
+<?php
+$activeLangs = json_decode(setting('active_languages', '["de","en"]'), true) ?: ['de', 'en'];
+$activeLangs = array_values(array_filter($activeLangs, fn($l) => preg_match('/^[a-z]{2}$/', (string)$l)));
+$currentLang = ($l = $_COOKIE['vcms_lang'] ?? '') && in_array($l, $activeLangs, true) ? $l : ($activeLangs[0] ?? 'de');
+$lang        = $currentLang; // keep $lang for backward compat in nav rendering
+?>
 <?php
 $siteName    = setting('site_name', 'VeloCMS');
 $logoPath    = setting('logo_path');
@@ -86,6 +91,19 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
             <span class="vcms-hamburger-bar"></span>
         </button>
         <?php endif ?>
+
+        <?php if (count($activeLangs) > 1): ?>
+        <div class="vcms-lang-switcher" role="group" aria-label="Language">
+            <?php foreach ($activeLangs as $lng): ?>
+            <button class="vcms-lang-btn<?= $lng === $currentLang ? ' is-active' : '' ?>"
+                    data-lang="<?= e($lng) ?>"
+                    type="button"
+                    aria-pressed="<?= $lng === $currentLang ? 'true' : 'false' ?>">
+                <?= strtoupper(e($lng)) ?>
+            </button>
+            <?php endforeach ?>
+        </div>
+        <?php endif ?>
     </div>
 </header>
 
@@ -111,7 +129,7 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
 </div>
 <?php endif ?>
 
-<main class="vcms-page">
+<main class="vcms-page" id="vcms-content">
     <?= $this->yield('content') ?>
 </main>
 
@@ -136,6 +154,7 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
 </footer>
 
 <script src="/assets/js/frontend.js"></script>
+<script src="/assets/js/lang-switcher.js"></script>
 <?= $this->yield('scripts') ?>
 </body>
 </html>
