@@ -104,11 +104,11 @@ class TranslationEngine
      * @param int               $rowId  Primary key of the row
      * @param array<string,string> $fields field => source-text map
      */
-    public function translateRow(string $table, int $rowId, array $fields): void
+    public function translateRow(string $table, int $rowId, array $fields, bool $force = false): void
     {
         foreach ($this->targetLangs as $lang) {
             try {
-                $this->translateRowIntoLang($table, $rowId, $fields, $lang);
+                $this->translateRowIntoLang($table, $rowId, $fields, $lang, $force);
             } catch (\Throwable $e) {
                 error_log('[TranslationEngine] lang=' . $lang . ' table=' . $table
                     . ' id=' . $rowId . ': ' . $e->getMessage());
@@ -117,7 +117,7 @@ class TranslationEngine
     }
 
     /** @param array<string,string> $fields */
-    private function translateRowIntoLang(string $table, int $rowId, array $fields, string $lang): void
+    private function translateRowIntoLang(string $table, int $rowId, array $fields, string $lang, bool $force = false): void
     {
         $pending     = [];
         $pendingKeys = [];
@@ -134,7 +134,7 @@ class TranslationEngine
             }
 
             $hash = md5($text);
-            if ($existing && $existing['content_hash'] === $hash) {
+            if (!$force && $existing && $existing['content_hash'] === $hash) {
                 continue;
             }
 

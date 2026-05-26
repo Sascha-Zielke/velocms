@@ -96,6 +96,25 @@ class AdminBlogController extends Controller
         );
     }
 
+    public function retranslate(string $id): void
+    {
+        Auth::verifyCsrf();
+        $post = $this->model->getById((int) $id);
+        if (!$post) $this->redirectWithError('/admin/blog', t('error.not_found'));
+
+        $fields = [
+            'title'   => $post['title'],
+            'excerpt' => $post['excerpt'] ?? '',
+            'content' => $post['content'] ?? '',
+        ];
+        $engine = new TranslationEngine();
+        $this->redirectWithSuccessAndBackground(
+            '/admin/blog/edit/' . $id,
+            t('translation.action_retranslate'),
+            fn() => $engine->translateRow('velocms_blog_posts', (int) $id, $fields, true)
+        );
+    }
+
     public function delete(string $id): void
     {
         Auth::verifyCsrf();
@@ -157,7 +176,12 @@ class AdminBlogController extends Controller
             }
             foreach (['title', 'excerpt', 'content'] as $field) {
                 $val = trim((string) ($fields[$field] ?? ''));
-                if ($val !== '') {
+                if ($val === '') {
+                    continue;
+                }
+                $existing = $transModel->get('velocms_blog_posts', $postId, $field, $lang);
+                // Only mark as manual if the user actually changed the value
+                if ($existing === null || trim($existing['value']) !== $val) {
                     $transModel->upsert(
                         'velocms_blog_posts', $postId, $field, $lang,
                         $val, 'manual', md5($val)

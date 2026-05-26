@@ -231,7 +231,8 @@ return [
     'blog.content'      => 'Content',
     'blog.cover_image'  => 'Cover image',
     'blog.translations' => 'Translations',
-    'blog.trans_notice' => 'Auto-translated — edit to override.',
+    'blog.trans_notice'  => 'Auto-translated — edit to override.',
+    'blog.trans_pending' => 'Not yet translated — being generated in the background. Reload the page or click "Re-translate".',
 
     // Maintenance mode
     'maintenance.title'    => 'Maintenance',

@@ -137,7 +137,8 @@ return [
     'blog.content'      => 'Inhalt',
     'blog.cover_image'  => 'Cover-Bild',
     'blog.translations' => 'Übersetzungen',
-    'blog.trans_notice' => 'Automatisch übersetzt — bearbeitbar.',
+    'blog.trans_notice'   => 'Automatisch übersetzt — bearbeitbar.',
+    'blog.trans_pending'  => 'Noch nicht übersetzt — wird automatisch im Hintergrund generiert. Seite neu laden oder "Neu übersetzen" klicken.',
 
     // Navigation module
     'nav.navigation'          => 'Navigation',

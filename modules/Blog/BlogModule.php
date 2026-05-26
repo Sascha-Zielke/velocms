@@ -18,7 +18,8 @@ class BlogModule extends Module
         $this->router->post('/admin/blog/save',            'Blog\Controllers\AdminBlogController@save');
         $this->router->get('/admin/blog/edit/[i:id]',      'Blog\Controllers\AdminBlogController@edit');
         $this->router->post('/admin/blog/update/[i:id]',   'Blog\Controllers\AdminBlogController@update');
-        $this->router->post('/admin/blog/delete/[i:id]',   'Blog\Controllers\AdminBlogController@delete');
+        $this->router->post('/admin/blog/delete/[i:id]',      'Blog\Controllers\AdminBlogController@delete');
+        $this->router->post('/admin/blog/retranslate/[i:id]', 'Blog\Controllers\AdminBlogController@retranslate');
 
         // Frontend routes — register BEFORE Pages catch-all
         $this->router->get('/blog',             'Blog\Controllers\BlogController@index');
