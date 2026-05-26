@@ -156,6 +156,54 @@ return [
     'sites.error_db_name_taken'  => 'This database name is already in use.',
     'sites.error_db_name_invalid'=> 'Invalid database name (letters, digits, underscores only, max 64 chars).',
 
+    // Apps section (sidebar)
+    'nav.apps'                         => 'Apps',
+    'nav.translation'                  => 'Translations',
+
+    // Translation App — general
+    'translation.headline'             => 'Translation App',
+    'translation.dashboard'            => 'Overview',
+    'translation.settings'             => 'Settings',
+    'translation.no_data'              => 'No translations yet.',
+
+    // Translation App — status labels
+    'translation.source_auto'          => 'AI-generated',
+    'translation.source_manual'        => 'Manual',
+    'translation.status_ok'            => 'Translated',
+    'translation.status_stale'         => 'Outdated',
+    'translation.status_missing'       => 'Missing',
+    'translation.status_locked'        => 'Locked (manual)',
+
+    // Translation App — actions
+    'translation.action_translate_all' => 'Translate all pending',
+    'translation.action_retranslate'   => 'Re-translate',
+    'translation.action_unlock'        => 'Remove lock',
+    'translation.action_export'        => 'Export CSV',
+    'translation.action_import'        => 'Import CSV',
+
+    // Translation App — settings form
+    'translation.settings_languages'   => 'Active languages',
+    'translation.settings_default'     => 'Default language',
+    'translation.settings_provider'    => 'Translation provider',
+    'translation.settings_deepl_hint'  => 'Add API key to .env as DEEPL_API_KEY.',
+    'translation.settings_anth_hint'   => 'Add API key to .env as ANTHROPIC_API_KEY.',
+    'translation.settings_saved'       => 'Settings saved.',
+
+    // Translation App — progress
+    'translation.progress_fields'      => 'Total fields',
+    'translation.progress_auto'        => 'AI-generated',
+    'translation.progress_manual'      => 'Manual',
+    'translation.progress_stale'       => 'Outdated',
+    'translation.progress_missing'     => 'Missing',
+
+    // Language switcher (frontend + admin)
+    'lang.de'                          => 'German',
+    'lang.en'                          => 'English',
+    'lang.fr'                          => 'French',
+    'lang.es'                          => 'Spanish',
+    'lang.it'                          => 'Italian',
+    'lang.nl'                          => 'Dutch',
+
     // Maintenance mode
     'maintenance.title'    => 'Maintenance',
     'maintenance.headline' => 'We\'ll be back soon',

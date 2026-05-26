@@ -286,6 +286,54 @@ return [
     'sites.error_db_name_taken'  => 'Dieser Datenbankname wird bereits verwendet.',
     'sites.error_db_name_invalid'=> 'Datenbankname ungültig (nur Buchstaben, Ziffern, Unterstriche, max. 64 Zeichen).',
 
+    // Apps section (sidebar)
+    'nav.apps'                         => 'Apps',
+    'nav.translation'                  => 'Übersetzungen',
+
+    // Translation App — general
+    'translation.headline'             => 'Translation-App',
+    'translation.dashboard'            => 'Übersicht',
+    'translation.settings'             => 'Einstellungen',
+    'translation.no_data'              => 'Noch keine Übersetzungen vorhanden.',
+
+    // Translation App — status labels
+    'translation.source_auto'          => 'KI-generiert',
+    'translation.source_manual'        => 'Manuell',
+    'translation.status_ok'            => 'Übersetzt',
+    'translation.status_stale'         => 'Veraltet',
+    'translation.status_missing'       => 'Fehlt',
+    'translation.status_locked'        => 'Gesperrt (manuell)',
+
+    // Translation App — actions
+    'translation.action_translate_all' => 'Alle ausstehenden übersetzen',
+    'translation.action_retranslate'   => 'Neu übersetzen',
+    'translation.action_unlock'        => 'Sperre aufheben',
+    'translation.action_export'        => 'CSV exportieren',
+    'translation.action_import'        => 'CSV importieren',
+
+    // Translation App — settings form
+    'translation.settings_languages'   => 'Aktive Sprachen',
+    'translation.settings_default'     => 'Standardsprache',
+    'translation.settings_provider'    => 'Übersetzungsanbieter',
+    'translation.settings_deepl_hint'  => 'API-Key in .env als DEEPL_API_KEY eintragen.',
+    'translation.settings_anth_hint'   => 'API-Key in .env als ANTHROPIC_API_KEY eintragen.',
+    'translation.settings_saved'       => 'Einstellungen gespeichert.',
+
+    // Translation App — progress
+    'translation.progress_fields'      => 'Felder gesamt',
+    'translation.progress_auto'        => 'KI-generiert',
+    'translation.progress_manual'      => 'Manuell',
+    'translation.progress_stale'       => 'Veraltet',
+    'translation.progress_missing'     => 'Fehlt',
+
+    // Language switcher (frontend + admin)
+    'lang.de'                          => 'Deutsch',
+    'lang.en'                          => 'Englisch',
+    'lang.fr'                          => 'Französisch',
+    'lang.es'                          => 'Spanisch',
+    'lang.it'                          => 'Italienisch',
+    'lang.nl'                          => 'Niederländisch',
+
     // Maintenance mode
     'maintenance.title'    => 'Wartungsarbeiten',
     'maintenance.headline' => 'Wartungsarbeiten',

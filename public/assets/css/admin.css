@@ -39,6 +39,7 @@ body.vcms-admin { display: flex; min-height: 100vh; }
 .vcms-nav { flex: 1; padding: 8px 0; }
 .vcms-nav__item { display: block; padding: 10px 16px; color: var(--vcms-sidebar-text); text-decoration: none; border-radius: 0; transition: background .15s; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-size: 14px; }
 .vcms-nav__item:hover { background: var(--vcms-sidebar-hover); color: var(--vcms-white); }
+.vcms-nav__section { padding: 14px 16px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .10em; color: rgba(200,211,224,.45); user-select: none; }
 .vcms-nav-footer { padding: 12px 8px; border-top: 1px solid rgba(255,255,255,.08); }
 .vcms-nav__user { display: block; color: var(--vcms-sidebar-text); font-size: 12px; padding: 0 8px 8px; }
 .vcms-btn-link { color: var(--vcms-sidebar-text) !important; }

@@ -22,9 +22,13 @@
         </a>
 
         <?php foreach (\VeloCMS\Core\AdminMenu::getItems() as $item): ?>
+        <?php if (($item['type'] ?? '') === 'section'): ?>
+        <div class="vcms-nav__section"><?= e($item['label']) ?></div>
+        <?php else: ?>
         <a href="<?= e($item['url']) ?>" class="vcms-nav__item">
             <?= e($item['label']) ?>
         </a>
+        <?php endif ?>
         <?php endforeach ?>
     </nav>
 

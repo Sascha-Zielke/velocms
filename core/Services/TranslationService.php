@@ -4,62 +4,158 @@ declare(strict_types=1);
 
 namespace VeloCMS\Core\Services;
 
+/**
+ * Thrown when all configured translation providers fail.
+ */
+class TranslationException extends \RuntimeException {}
+
+/**
+ * Low-level translation service.
+ * Tries DeepL first, falls back to Anthropic Claude.
+ *
+ * Configuration (in .env):
+ *   DEEPL_API_KEY   — DeepL free or pro API key
+ *   ANTHROPIC_API_KEY — Anthropic API key (fallback)
+ *
+ * For pro DeepL accounts, change the endpoint in translateWithDeepL()
+ * from api-free.deepl.com to api.deepl.com.
+ */
 class TranslationService
 {
-    public function translate(string $text, string $from = 'DE', string $to = 'EN'): string
-    {
-        try {
-            return $this->translateWithDeepL($text, $from, $to);
-        } catch (\Exception $e) {
-            error_log('DeepL translation failed: ' . $e->getMessage());
+    /**
+     * Translate text or HTML from source language to target language.
+     *
+     * @param string $text       Plain text or HTML to translate
+     * @param string $targetLang Target language code: 'EN', 'FR', 'ES', 'IT', 'NL', 'PL', 'PT', …
+     * @param string $sourceLang Source language code (default: 'DE')
+     * @param array  $options    Options:
+     *                             'html'         => bool   — preserve HTML tags (default: false)
+     *                             'glossary_id'  => string — DeepL glossary ID (default: '')
+     * @throws TranslationException When all providers fail
+     */
+    public function translate(
+        string $text,
+        string $targetLang,
+        string $sourceLang = 'DE',
+        array $options = []
+    ): string {
+        if (trim($text) === '') {
+            return $text;
         }
 
-        return $this->translateWithAnthropic($text, $from, $to);
+        $deeplError = null;
+
+        try {
+            return $this->translateWithDeepL($text, $targetLang, $sourceLang, $options);
+        } catch (TranslationException $e) {
+            $deeplError = $e->getMessage();
+            error_log('[TranslationService] DeepL failed, trying Anthropic. Reason: ' . $deeplError);
+        }
+
+        try {
+            return $this->translateWithAnthropic($text, $targetLang, $sourceLang, $options);
+        } catch (TranslationException $e) {
+            throw new TranslationException(
+                'All translation providers failed. DeepL: ' . $deeplError
+                . ' | Anthropic: ' . $e->getMessage()
+            );
+        }
     }
 
-    private function translateWithDeepL(string $text, string $from, string $to): string
-    {
-        $key = $_ENV['DEEPL_KEY'] ?? '';
+    // ── DeepL ────────────────────────────────────────────────────────────────
+
+    private function translateWithDeepL(
+        string $text,
+        string $targetLang,
+        string $sourceLang,
+        array $options
+    ): string {
+        $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? '';
 
         if (empty($key)) {
-            throw new \RuntimeException('No DeepL API key configured');
+            throw new TranslationException(
+                'No DeepL API key configured. Add DEEPL_API_KEY to .env'
+            );
+        }
+
+        // DeepL requires EN-GB or EN-US for target (not plain EN).
+        // Source accepts plain EN.
+        $target = strtoupper($targetLang);
+        if ($target === 'EN') {
+            $target = 'EN-GB';
+        }
+
+        $params = [
+            'text'        => [$text],   // DeepL v2 JSON API expects array
+            'source_lang' => strtoupper($sourceLang),
+            'target_lang' => $target,
+        ];
+
+        if (!empty($options['html'])) {
+            $params['tag_handling'] = 'html';
+        }
+
+        if (!empty($options['glossary_id'])) {
+            $params['glossary_id'] = (string) $options['glossary_id'];
         }
 
         $response = $this->httpPost(
             'https://api-free.deepl.com/v2/translate',
-            http_build_query([
-                'auth_key'    => $key,
-                'text'        => $text,
-                'source_lang' => $from,
-                'target_lang' => $to,
-            ]),
-            ['Content-Type: application/x-www-form-urlencoded']
+            (string) json_encode($params),
+            [
+                'Authorization: DeepL-Auth-Key ' . $key,
+                'Content-Type: application/json',
+            ]
         );
 
         $data = json_decode($response, true);
 
         if (!isset($data['translations'][0]['text'])) {
-            throw new \RuntimeException('Invalid DeepL response: ' . $response);
+            throw new TranslationException('Unexpected DeepL response: ' . $response);
         }
 
-        return $data['translations'][0]['text'];
+        return (string) $data['translations'][0]['text'];
     }
 
-    private function translateWithAnthropic(string $text, string $from, string $to): string
-    {
-        $key = $_ENV['ANTHROPIC_KEY'] ?? '';
+    // ── Anthropic ─────────────────────────────────────────────────────────────
+
+    private function translateWithAnthropic(
+        string $text,
+        string $targetLang,
+        string $sourceLang,
+        array $options
+    ): string {
+        $key = $_ENV['ANTHROPIC_API_KEY'] ?? $_ENV['ANTHROPIC_KEY'] ?? '';
 
         if (empty($key)) {
-            throw new \RuntimeException('No Anthropic API key configured');
+            throw new TranslationException(
+                'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env'
+            );
         }
 
-        $payload = json_encode([
-            'model'      => 'claude-haiku-4-5-20251001',
-            'max_tokens' => 1024,
+        $langNames = [
+            'DE' => 'German',     'EN' => 'English',    'FR' => 'French',
+            'ES' => 'Spanish',    'IT' => 'Italian',    'NL' => 'Dutch',
+            'PL' => 'Polish',     'PT' => 'Portuguese', 'RU' => 'Russian',
+            'JA' => 'Japanese',   'ZH' => 'Chinese',    'TR' => 'Turkish',
+        ];
+
+        $from = $langNames[strtoupper($sourceLang)] ?? strtoupper($sourceLang);
+        $to   = $langNames[strtoupper($targetLang)] ?? strtoupper($targetLang);
+
+        $htmlInstruction = !empty($options['html'])
+            ? ' Preserve all HTML tags exactly as-is. Only translate visible text content between tags.'
+            : '';
+
+        $prompt = "Translate the following text from {$from} to {$to}.{$htmlInstruction}"
+                . " Return only the translation — no explanations, no quotes, nothing else:\n\n{$text}";
+
+        $payload = (string) json_encode([
+            'model'      => 'claude-3-5-haiku-20241022',
+            'max_tokens' => 4096,
             'messages'   => [[
                 'role'    => 'user',
-                'content' => "Translate the following text from {$from} to {$to}. "
-                           . "Return only the translation, nothing else:\n\n{$text}",
+                'content' => $prompt,
             ]],
         ]);
 
@@ -76,14 +172,20 @@ class TranslationService
         $data = json_decode($response, true);
 
         if (!isset($data['content'][0]['text'])) {
-            throw new \RuntimeException('Invalid Anthropic response: ' . $response);
+            throw new TranslationException('Unexpected Anthropic response: ' . $response);
         }
 
-        return $data['content'][0]['text'];
+        return (string) $data['content'][0]['text'];
     }
+
+    // ── HTTP helper ───────────────────────────────────────────────────────────
 
     private function httpPost(string $url, string $body, array $headers = []): string
     {
+        if (!function_exists('curl_init')) {
+            throw new TranslationException('cURL extension is not available');
+        }
+
         $ch = curl_init($url);
 
         curl_setopt_array($ch, [
@@ -91,16 +193,24 @@ class TranslationService
             CURLOPT_POSTFIELDS     => $body,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER     => $headers,
-            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_TIMEOUT        => 20,
+            CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
         ]);
 
         $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error    = curl_error($ch);
         curl_close($ch);
 
         if ($response === false) {
-            throw new \RuntimeException("HTTP request failed: {$error}");
+            throw new TranslationException("cURL request failed: {$error}");
+        }
+
+        if ($httpCode >= 400) {
+            throw new TranslationException(
+                "HTTP {$httpCode} from " . parse_url($url, PHP_URL_HOST) . ": {$response}"
+            );
         }
 
         return (string) $response;
