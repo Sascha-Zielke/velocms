@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-26 | Letzte Session: Phase 22 (Tenant-Routing) deployed + auditiert
+> Stand: 2026-05-26 | Letzte Session: Bugfix — Navigation + Sites 500-Fehler behoben
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -30,10 +30,10 @@
 
 ## Aktueller Stand (2026-05-26)
 
-- CI/CD: GitHub Actions Run #21 — **✅ success** (Tests grün, Deploy OK)
+- CI/CD: Letzter Bugfix-Push `9392edd` manuell deployed (git pull + migrate auf Server)
 - Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
-- Letzter Deploy-Commit: `73d10ef` (feat(core): Phase 22 — Tenant-Routing aktiviert)
-- Server-Stand: Alle Phasen 12–22 live auf 95.217.185.113
+- Letzter Deploy-Commit: `9392edd` (fix(nav): deleted_at in velocms_nav_items)
+- Server-Stand: Alle Phasen 12–22 + Bugfixes live auf 95.217.185.113
 
 ### Was live ist:
 - ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users, Kontakt)
@@ -53,7 +53,13 @@
 ## Nächste Phase
 
 **Offen — nach Absprache mit dem Nutzer**
+- Sites/create: Dropdown für Web-Technologie (aktuell nur PHP, später erweiterbar)
 - Weitere CMS-Features nach Bedarf
+
+## Wichtige Server-Hinweise (neu)
+- PHP-Error-Log: `/var/log/fpm-php.www.log` — jetzt dauerhaft aktiv
+- `git pull` als root schlägt fehl (kein SSH-Key) → immer `sudo -u velocms git pull`
+- Lokale Änderungen auf dem Server blockieren CI-Deploy → nach manuellem Server-Edit immer `git checkout -- <datei>` vorher
 
 ## Wichtige Pfade & Credentials
 - Webroot: /var/www/velocms/public/

@@ -18,6 +18,33 @@
 
 ---
 
+## 2026-05-26 — Session 12
+
+**Duration:** ~1h
+**Done:**
+- Bugfix: Navigation + Sites gaben 500-Fehler (beide seit Phase 14/21 unbemerkt kaputt)
+  - Root-Cause: `velocms_nav_items` und `velocms_sites` hatten keine `deleted_at`-Spalte
+  - Ursache: Tabellen existierten vor Migration — `CREATE TABLE IF NOT EXISTS` hat das Erstellen übersprungen, Spalte wurde nie angelegt
+  - Fix 1: `migrations/004_add_deleted_at_to_sites.php` — deleted_at zu velocms_sites
+  - Fix 2: `modules/Nav/migrations/002_add_deleted_at_to_nav_items.php` — deleted_at zu velocms_nav_items
+- Weiterer Fix: `bootstrap/App.php` war Totcode (nie via PSR-4 geladen) — Phase 20 + 22 wirkungslos in Produktion
+  - `core/App.php` ist die echte App-Klasse: Phase 20 (handleMaintenanceMode) + Phase 22 (Tenant::resolve) dort integriert
+  - `bootstrap/App.php` gelöscht
+- PHP-Error-Log dauerhaft aktiviert: `/var/log/fpm-php.www.log`
+- CI-Deploy-Problem behoben: Server steckte bei Phase 21 weil lokale Änderung an `velocms` den git pull blockiert hatte
+  - Fix: `git checkout -- velocms` dann `sudo -u velocms git pull`
+- Audit: ✅ Navigation zeigt Einträge im Frontend, Sites CRUD funktioniert, Error-Log clean
+
+**Issues:**
+- CI-Deploy schlägt still fehl wenn lokale Dateiänderungen auf dem Server vorhanden sind
+- `error_log` hatte "no value" → PHP-Fehler gingen ins Nichts (catch_workers_output disabled)
+
+**Next:**
+- Sites/create: Dropdown für Web-Technologie (PHP → später erweiterbar)
+- Weitere Features nach Bedarf
+
+---
+
 ## 2026-05-26 — Session 11
 
 **Duration:** ~30min
