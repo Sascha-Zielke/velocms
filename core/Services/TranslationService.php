@@ -34,8 +34,7 @@ class TranslationService
     public function translateBatch(
         array $texts,
         string $targetLang,
-        string $sourceLang = 'DE',
-        array $options = []
+        string $sourceLang = 'DE'
     ): array {
         if (empty($texts)) {
             return [];
@@ -44,7 +43,7 @@ class TranslationService
         $deeplError = null;
 
         try {
-            return $this->translateBatchWithDeepL($texts, $targetLang, $sourceLang, $options);
+            return $this->translateBatchWithDeepL($texts, $targetLang, $sourceLang);
         } catch (TranslationException $e) {
             $deeplError = $e->getMessage();
             error_log('[TranslationService] DeepL batch failed, trying Anthropic. Reason: ' . $deeplError);
@@ -65,8 +64,7 @@ class TranslationService
     private function translateBatchWithDeepL(
         array $texts,
         string $targetLang,
-        string $sourceLang,
-        array $options
+        string $sourceLang
     ): array {
         $envKey = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? '';
         $key    = $envKey !== '' ? $envKey : setting('deepl_api_key', '');
@@ -85,10 +83,6 @@ class TranslationService
             'source_lang' => strtoupper($sourceLang),
             'target_lang' => $target,
         ];
-
-        if (!empty($options['glossary_id'])) {
-            $params['glossary_id'] = (string) $options['glossary_id'];
-        }
 
         $response = $this->httpPost(
             'https://api-free.deepl.com/v2/translate',

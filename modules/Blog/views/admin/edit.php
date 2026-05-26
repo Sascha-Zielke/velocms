@@ -185,7 +185,12 @@
         editor.innerHTML = ta.value;
         editor.addEventListener('input', function () { ta.value = editor.innerHTML; });
         editor.addEventListener('paste', function () {
-            setTimeout(function () { ta.value = editor.innerHTML; }, 0);
+            setTimeout(function () {
+                editor.innerHTML = editor.innerHTML
+                    .replace(/<!--(Start|End)Fragment-->/g, '')
+                    .replace(/\s+data-[\w-]+="[^"]*"/g, '');
+                ta.value = editor.innerHTML;
+            }, 0);
         });
 
         ta.style.display = 'none';
