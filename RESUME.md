@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-26 | Letzte Session: Phase 17 (Kontaktformular) deployed
+> Stand: 2026-05-26 | Letzte Session: Phase 18 (Frontend-Theme) deployed
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -22,6 +22,7 @@
 | 15 | Custom 404/403/500 Error-Pages + Homepage-Route | ✅ DONE |
 | 16 | SEO-Basics (Sitemap, robots.txt, Canonical, OG-Tags) | ✅ DONE |
 | 17 | Kontaktformular (DSGVO, Honeypot, Rate-Limit, Admin-Inbox) | ✅ DONE |
+| 18 | Frontend-Theme (Design-Tokens, Responsive Nav, Dark Mode, JS) | ✅ DONE |
 
 ## Aktueller Stand (2026-05-26)
 
@@ -39,10 +40,18 @@
 - ✅ Error-Pages: 404/403/500 mit eigenem Design
 - ✅ User-Management: CRUD, editor/admin/superadmin, Passwort-Reset
 - ✅ Kontaktformular: /kontakt — DSGVO, Honeypot, Rate-Limit, PHP mail(), Admin-Inbox
+- ✅ Frontend-Theme: CSS Design-Tokens, Sticky Header, Responsive Nav (Hamburger), Dark Mode, Print, Scroll-Reveal
 
 ## Nächste Phase
 
-**Phase 18 — Tenant-Provisioning (Superadmin-UI)**
+**Phase 19 — Passwort vergessen / Reset-Mail**
+- Self-Service für Nutzer ohne Admin-Zugang
+- Token-basiert, zeitlich begrenzt, E-Mail-Versand
+
+**Phase 20 — Wartungsmodus**
+- Setting `maintenance_mode` existiert, Middleware-Handler fehlt
+
+**Phase 21 — Tenant-Provisioning (Superadmin-UI)**
 - Neue Sites über Admin anlegen
 - DB-Isolation per Tenant
 
@@ -61,4 +70,6 @@
 - PHPUnit: `colors="true"` ist korrekt (xs:boolean, NICHT enum)
 - Kein `--no-interaction` bei PHPUnit (nur bei Composer)
 - Deploy-User: velocms — `.git` muss ihm gehören
-- Nach manuellem root-git-Befehl: `chown -R velocms:velocms /var/www/velocms/.git`
+- Nach manuellem root-git-Befehl: `chown -R velocms:velocms /var/www/velocms/` (ganzes Verzeichnis, nicht nur .git!)
+- `git reset --hard` als root erzeugt 600-Dateien (root umask) → danach immer `find /var/www/velocms -not -path '*/.git/*' -type f -exec chmod 644 {} \;` und `-type d -exec chmod 755 {} \;`
+- Nginx realpath() braucht 755 auf `/var/www/velocms/` und `/var/www/velocms/public/`

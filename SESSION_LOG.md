@@ -18,6 +18,35 @@
 
 ---
 
+## 2026-05-26 — Session 7
+
+**Duration:** ~2h
+**Done:**
+- Phase 18: Frontend-Theme vollständig implementiert und deployed
+  - `frontend.css` (~500 Zeilen): Design-Token-System (CSS Custom Properties), Typografie-Skala, Sticky Header, Desktop-Nav, Hamburger/Overlay Mobile-Nav, Visual-Editor-Boxes, Buttons, Forms, Cards, Blog, Footer, Error-Pages, Dark Mode, Print, Responsive (768px/480px)
+  - `frontend.js`: Sticky-Header-Shadow, Hamburger-Toggle (Escape/Outside-Click/Body-Scroll-Lock), Video-Consent-Bug-Fix (Selektor + YouTube-nocookie + Vimeo), Scroll-Reveal (IntersectionObserver)
+  - `frontend.php`: Hamburger-Button + Mobile-Nav-Overlay ergänzt
+  - `404.php`: vcms-error-code, Header/Nav/Footer via PHP-Guards, JS geladen
+  - `500.php`: Inline-Styles entfernt, vcms-error-code
+  - `contact.php`: Inline-Styles durch Theme-Klassen ersetzt
+- Audit 1: ✅ Code-Review bestanden
+- Audit 2: ✅ Live-Verify — CSS/JS/Layout/404/kontakt/admin alle korrekt
+- Server-Permission-Problem (root-umask) behoben:
+  - Root-Ursache: `git reset --hard` als root → Dateien 600-owned
+  - Fix: `find /var/www/velocms -not -path '*/.git/*' -type f -exec chmod 644 {} \;` + `-type d -exec chmod 755 {} \;`
+  - Lektion: Nach jedem root-git-Befehl IMMER `chown -R velocms:velocms /var/www/velocms/` + find chmod
+
+**Issues:**
+- `git reset --hard` als root erzeugt Dateien mit 600 (root umask 077) — breaking für www-data
+- Nur `.git` zu chownen reicht NICHT — immer das gesamte Verzeichnis
+- Nginx `realpath()` braucht 755 auf den obersten Verzeichnissen
+
+**Next:**
+- Phase 19: Passwort vergessen / Reset-Mail
+- Phase 20: Wartungsmodus-Handler
+
+---
+
 ## 2026-05-26 — Session 6
 
 **Duration:** ~1h
