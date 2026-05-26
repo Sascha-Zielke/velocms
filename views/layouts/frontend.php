@@ -78,9 +78,38 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
                 <?php endforeach ?>
             </ul>
         </nav>
+
+        <!-- Hamburger (visible on mobile only via CSS) -->
+        <button class="vcms-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="vcms-mobile-nav">
+            <span class="vcms-hamburger-bar"></span>
+            <span class="vcms-hamburger-bar"></span>
+            <span class="vcms-hamburger-bar"></span>
+        </button>
         <?php endif ?>
     </div>
 </header>
+
+<?php if (!empty($navItems)): ?>
+<div class="vcms-mobile-nav" id="vcms-mobile-nav" role="dialog" aria-label="Navigation">
+    <ul class="vcms-mobile-nav__list">
+        <?php foreach ($navItems as $item): ?>
+        <?php
+        $itemUrl  = $item['url'] ?? '/';
+        $isActive = rtrim($currentUri, '/') === rtrim($itemUrl, '/');
+        $target   = ($item['target'] ?? '_self') === '_blank' ? '_blank' : '_self';
+        $rel      = $target === '_blank' ? ' rel="noopener noreferrer"' : '';
+        ?>
+        <li>
+            <a href="<?= e($itemUrl) ?>"
+               target="<?= e($target) ?>"<?= $rel ?>
+               class="vcms-mobile-nav__link<?= $isActive ? ' vcms-mobile-nav__link--active' : '' ?>">
+                <?= e($lang === 'en' && !empty($item['label_en']) ? $item['label_en'] : $item['label']) ?>
+            </a>
+        </li>
+        <?php endforeach ?>
+    </ul>
+</div>
+<?php endif ?>
 
 <main class="vcms-page">
     <?= $this->yield('content') ?>

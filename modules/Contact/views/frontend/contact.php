@@ -6,10 +6,10 @@
 
 <main class="vcms-page">
     <section class="vcms-section vcms-section--pad-md" style="background-color:#ffffff;">
-        <div class="vcms-container" style="max-width:680px;margin:0 auto;">
+        <div class="vcms-container vcms-contact-wrap">
 
-            <h1 style="margin-bottom:8px;"><?= t('contact.headline') ?></h1>
-            <p style="color:#555;margin-bottom:32px;"><?= t('contact.intro') ?></p>
+            <h1><?= t('contact.headline') ?></h1>
+            <p class="contact-intro"><?= t('contact.intro') ?></p>
 
             <?php if ($success): ?>
                 <div class="vcms-alert vcms-alert--success" role="alert">
@@ -132,19 +132,9 @@
 </main>
 
 <style>
-.vcms-form-group { margin-bottom: 20px; }
-.vcms-form-group--error .vcms-input { border-color: #d9534f; }
-.vcms-label { display: block; font-weight: 600; margin-bottom: 6px; font-size: .9rem; }
-.vcms-input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; font-family: inherit; }
-.vcms-input:focus { outline: 2px solid #0066cc; border-color: #0066cc; }
-textarea.vcms-input { resize: vertical; min-height: 140px; }
-.vcms-field-error { color: #d9534f; font-size: .85rem; margin-top: 4px; }
-.vcms-form-group--checkbox { display: flex; flex-direction: column; gap: 4px; }
-.vcms-checkbox-label { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; cursor: pointer; }
-.vcms-checkbox-label input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
-.vcms-alert { padding: 14px 18px; border-radius: 4px; margin-bottom: 24px; }
-.vcms-alert--success { background: #dff0d8; border: 1px solid #3c763d; color: #3c763d; }
-.vcms-alert--error { background: #f2dede; border: 1px solid #a94442; color: #a94442; }
+/* Contact page — supplement to frontend.css theme */
+.contact-intro { color: var(--c-text-muted); font-size: var(--font-size-lg); margin: 8px 0 32px; }
+.vcms-contact-wrap h1 { margin-bottom: 0; }
 </style>
 
 <?php $this->endSection() ?>
