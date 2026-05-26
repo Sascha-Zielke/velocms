@@ -257,7 +257,7 @@ return [
     'contact.filter_spam'           => 'Spam',
 
     // Sites module (Superadmin)
-    'nav.sites'                  => 'Sites',
+    'nav.sites'                  => 'Webseiten',
     'sites.headline'             => 'Site-Verwaltung',
     'sites.new'                  => 'Neue Site',
     'sites.empty'                => 'Noch keine Sites registriert.',
