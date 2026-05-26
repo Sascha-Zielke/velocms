@@ -6,6 +6,7 @@ namespace VeloCMS\Modules\Blog\Controllers;
 use VeloCMS\Core\Auth;
 use VeloCMS\Core\Controller;
 use VeloCMS\Modules\Blog\Models\BlogModel;
+use VeloCMS\Modules\Translation\Models\TranslationModel;
 use VeloCMS\Modules\Translation\Services\TranslationEngine;
 
 class AdminBlogController extends Controller
@@ -132,7 +133,7 @@ class AdminBlogController extends Controller
             fn(string $l) => $l !== $defaultLang
         ));
 
-        $transModel   = new \VeloCMS\Modules\Translation\Models\TranslationModel();
+        $transModel   = new TranslationModel();
         $translations = [];
         foreach ($targetLangs as $lang) {
             $translations[$lang] = $transModel->getForRow('velocms_blog_posts', $postId, $lang);
@@ -148,7 +149,7 @@ class AdminBlogController extends Controller
             return;
         }
 
-        $transModel = new \VeloCMS\Modules\Translation\Models\TranslationModel();
+        $transModel = new TranslationModel();
 
         foreach ($submitted as $lang => $fields) {
             if (!is_array($fields) || !preg_match('/^[a-z]{2}$/', (string) $lang)) {

@@ -25,9 +25,9 @@
 | Phase | Titel | Status |
 |-------|-------|--------|
 | 1 | Foundation: DB, TranslationService, Apps-Menü | ✅ Abgeschlossen |
-| 2 | Sprachumschalter Frontend + Admin (kein Reload) | 🔲 Offen |
-| 3 | Auto-Translation Engine + Trigger | 🔲 Offen |
-| 4 | Admin-Dashboard + manueller Editor | 🔲 Offen |
+| 2 | Sprachumschalter Frontend + Admin (kein Reload) | ✅ Abgeschlossen |
+| 3 | Auto-Translation Engine + Trigger | ✅ Abgeschlossen |
+| 4 | Admin-Dashboard + manueller Editor | ✅ Abgeschlossen |
 | 5 | Content-Abdeckung: Blog, Pages, Nav, SEO | 🔲 Offen |
 | 6 | Erweiterte Features: Glossar, Export/Import | 🔲 Offen |
 | 7 | Tests + Final-Audit | 🔲 Offen |
@@ -59,7 +59,7 @@ RESUME_APP_TRANS.md                         (diese Datei — bereits erstellt)
 ---
 
 ## Phase 2 — Sprachumschalter
-**Status:** 🔲 Offen
+**Status:** ✅ Abgeschlossen
 
 ### Geplante Dateien
 ```
@@ -71,9 +71,9 @@ public/assets/css/admin.css                (Switcher-Styles Admin)
 core/functions.php                          (localized() → translations-Tabelle)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
-**Audit 2 (Live-Verify):** 🔲  
-**Commit:** —
+**Audit 1 (Code-Review):** ✅ Sicher, Event-Delegation, Cookie sanitiert  
+**Audit 2 (Live-Verify):** ✅ Cookie-Switch DE↔EN serverseitig bestätigt  
+**Commit:** 15c92a1
 
 ---
 
@@ -89,9 +89,10 @@ modules/Blog/Controllers/AdminBlogController.php   (auto-trigger Hook)
 modules/Nav/Controllers/AdminNavController.php     (auto-trigger Hook)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
-**Audit 2 (Live-Verify):** 🔲  
-**Commit:** —
+**Audit 1 (Code-Review):** ✅ session_write_close() vor fastcgi_finish_request(), manual-source-Guard, Hash-Dedup  
+**Audit 2 (Live-Verify):** ✅ Engine feuert im Hintergrund, Fehler korrekt geloggt, kein 500 für User  
+**Commit:** 71283c6 (+ fix BlogModel author_id)  
+**Hinweis:** DEEPL_API_KEY + ANTHROPIC_API_KEY müssen in .env eingetragen werden
 
 ---
 
@@ -110,7 +111,7 @@ modules/Blog/views/admin/index.php         (Inline-Badges)
 modules/Nav/views/admin/nav/index.php      (Inline-Badges)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
+**Audit 1 (Code-Review):** ✅ Dead Code entfernt, FQN-Imports bereinigt, hardcodierte Strings ersetzt  
 **Audit 2 (Live-Verify):** 🔲  
 **Commit:** —
 

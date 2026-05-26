@@ -209,11 +209,6 @@ return [
     'error.cannot_delete_self'   => 'Du kannst deinen eigenen Account nicht löschen.',
     'success.user_created'       => 'Benutzer erfolgreich angelegt.',
     'success.password_changed'   => 'Passwort erfolgreich geändert.',
-    'blog.cover_image' => 'Titelbild (Pfad)',
-    'blog.excerpt'     => 'Teaser (DE)',
-    'blog.excerpt_en'  => 'Teaser (EN)',
-    'blog.content'     => 'Inhalt (DE — HTML)',
-    'blog.content_en'  => 'Inhalt (EN — HTML)',
 
     // Contact module — Frontend
     'contact.headline'              => 'Kontakt',
@@ -342,6 +337,11 @@ return [
     'translation.col_updated'          => 'Aktualisiert',
     'translation.save_manual'          => 'Manuell speichern',
     'translation.confirm_unlock'       => 'Sperre aufheben und für Auto-Übersetzung freigeben?',
+    'translation.hint_empty_db'        => 'Noch keine Übersetzungen in der Datenbank. Beim nächsten Speichern eines Beitrags werden Übersetzungen automatisch erzeugt.',
+    'translation.entries'              => 'Einträge',
+    'translation.settings_default_hint'=> 'Die Standardsprache kann nicht entfernt werden.',
+    'translation.provider_deepl'       => 'DeepL (primär)',
+    'translation.provider_anthropic'   => 'Anthropic Claude (Fallback)',
 
     // Language switcher (frontend + admin)
     'lang.de'                          => 'Deutsch',

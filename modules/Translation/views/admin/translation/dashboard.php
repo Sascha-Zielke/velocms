@@ -60,9 +60,7 @@
 
 <?php if ($stats && array_sum(array_column($stats, 'total')) === 0): ?>
 <div class="vcms-card" style="padding:24px;margin-top:24px;color:var(--vcms-muted)">
-    <strong>Hinweis:</strong> Noch keine Übersetzungen in der Datenbank.
-    Beim nächsten Speichern eines Blog-Beitrags oder Nav-Eintrags werden automatisch Übersetzungen erzeugt
-    (sofern DEEPL_API_KEY oder ANTHROPIC_API_KEY in .env konfiguriert ist).
+    <?= t('translation.hint_empty_db') ?>
 </div>
 <?php endif ?>
 

@@ -36,7 +36,7 @@ $qs = fn(array $extra = []) => http_build_query(array_merge(
         <option value="stale" <?= $source === 'stale'  ? 'selected' : '' ?>><?= t('translation.filter_stale') ?></option>
     </select>
 
-    <button type="submit" class="vcms-btn vcms-btn--primary">Filter</button>
+    <button type="submit" class="vcms-btn vcms-btn--primary"><?= t('action.search') ?></button>
 </form>
 
 <!-- Table -->
@@ -128,7 +128,7 @@ $qs = fn(array $extra = []) => http_build_query(array_merge(
         <?= $p ?>
     </a>
     <?php endfor ?>
-    <span style="font-size:12px;color:var(--vcms-muted);margin-left:8px"><?= $total ?> Einträge</span>
+    <span style="font-size:12px;color:var(--vcms-muted);margin-left:8px"><?= $total ?> <?= t('translation.entries') ?></span>
 </div>
 <?php endif ?>
 

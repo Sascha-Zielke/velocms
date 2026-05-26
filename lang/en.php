@@ -207,6 +207,11 @@ return [
     'translation.col_updated'          => 'Updated',
     'translation.save_manual'          => 'Save manually',
     'translation.confirm_unlock'       => 'Remove lock and release for auto-translation?',
+    'translation.hint_empty_db'        => 'No translations in the database yet. The next time a post is saved, translations will be generated automatically.',
+    'translation.entries'              => 'entries',
+    'translation.settings_default_hint'=> 'The default language cannot be removed.',
+    'translation.provider_deepl'       => 'DeepL (primary)',
+    'translation.provider_anthropic'   => 'Anthropic Claude (fallback)',
 
     // Language switcher (frontend + admin)
     'lang.de'                          => 'German',

@@ -68,16 +68,6 @@ class TranslationModel
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR) ?: [];
     }
 
-    /** Count rows that are missing or stale for a given language. */
-    public function countMissing(string $lang): int
-    {
-        $stmt = $this->db->prepare(
-            'SELECT COUNT(*) FROM velocms_translations WHERE language = :l AND stale = 1'
-        );
-        $stmt->execute([':l' => $lang]);
-        return (int) $stmt->fetchColumn();
-    }
-
     /** Stats for the dashboard: total, auto_ok, manual_ok, stale. */
     public function getStats(string $lang): array
     {

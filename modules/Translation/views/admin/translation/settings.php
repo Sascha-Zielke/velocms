@@ -28,7 +28,7 @@
             </div>
         </div>
         <p style="font-size:12px;color:var(--vcms-muted);margin-top:6px">
-            Die Standardsprache kann nicht entfernt werden.
+            <?= t('translation.settings_default_hint') ?>
         </p>
     </div>
 
@@ -48,8 +48,8 @@
     <div class="vcms-form-group" style="margin-top:20px">
         <label class="vcms-label" for="translation_provider"><?= t('translation.settings_provider') ?></label>
         <select name="translation_provider" id="translation_provider" class="vcms-input">
-            <option value="deepl"     <?= $provider === 'deepl'     ? 'selected' : '' ?>>DeepL (primär)</option>
-            <option value="anthropic" <?= $provider === 'anthropic' ? 'selected' : '' ?>>Anthropic Claude (Fallback)</option>
+            <option value="deepl"     <?= $provider === 'deepl'     ? 'selected' : '' ?>><?= t('translation.provider_deepl') ?></option>
+            <option value="anthropic" <?= $provider === 'anthropic' ? 'selected' : '' ?>><?= t('translation.provider_anthropic') ?></option>
         </select>
     </div>
 
