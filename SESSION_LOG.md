@@ -18,6 +18,28 @@
 
 ---
 
+## 2026-05-26 — Session 9
+
+**Duration:** ~30min
+**Done:**
+- Phase 20: Wartungsmodus vollständig implementiert und deployed
+  - `bootstrap/App.php`: `handleMaintenanceMode()` zwischen ModuleLoader::boot() und Router::dispatch()
+  - Logik: setting('maintenance_mode')='1' → 503 + Retry-After:3600, außer /admin/* und eingeloggter Admin/Superadmin
+  - `views/errors/maintenance.php`: 503-Seite mit vcms-error-page Layout, robots noindex, function_exists()-Guards
+  - `lang/de.php` + `lang/en.php`: maintenance.title/headline/text
+  - Kein DB-Risiko: setting() hat try/catch → maintenance_mode bleibt inaktiv wenn DB weg
+- CI/CD: GitHub Actions Run #18 — ✅ success, Deploy OK
+- Audit 1 (Code-Review): ✅ XSS-safe, 503+Retry-After korrekt, Exit nach include, /admin-Bypass, Auth::hasRole('admin') korrekt
+- Audit 2 (Live-Verify): ✅ / → 200 normal (maintenance_mode=0 Early-Return), /admin → Login OK, keine PHP-Fehler
+
+**Issues:**
+- keine
+
+**Next:**
+- Phase 21: Tenant-Provisioning Superadmin-UI
+
+---
+
 ## 2026-05-26 — Session 8
 
 **Duration:** ~1h

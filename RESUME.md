@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-26 | Letzte Session: Phase 19 (Passwort-Reset) deployed
+> Stand: 2026-05-26 | Letzte Session: Phase 20 (Wartungsmodus) deployed
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -24,13 +24,14 @@
 | 17 | Kontaktformular (DSGVO, Honeypot, Rate-Limit, Admin-Inbox) | ✅ DONE |
 | 18 | Frontend-Theme (Design-Tokens, Responsive Nav, Dark Mode, JS) | ✅ DONE |
 | 19 | Passwort-Reset (Token, SHA-256, Single-Use, 1h TTL, PHP mail()) | ✅ DONE |
+| 20 | Wartungsmodus (App::handleMaintenanceMode, 503, Admin-Bypass) | ✅ DONE |
 
 ## Aktueller Stand (2026-05-26)
 
-- CI/CD: GitHub Actions Run #16 — **✅ success** (Tests grün, Deploy OK)
+- CI/CD: GitHub Actions Run #18 — **✅ success** (Tests grün, Deploy OK)
 - Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
-- Letzter Deploy-Commit: `12b0118` (feat(auth): Phase 19)
-- Server-Stand: Alle Phasen 12–19 live auf 95.217.185.113
+- Letzter Deploy-Commit: `6aab896` (feat(core): Phase 20)
+- Server-Stand: Alle Phasen 12–20 live auf 95.217.185.113
 
 ### Was live ist:
 - ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users, Kontakt)
@@ -43,11 +44,9 @@
 - ✅ Kontaktformular: /kontakt — DSGVO, Honeypot, Rate-Limit, PHP mail(), Admin-Inbox
 - ✅ Frontend-Theme: CSS Design-Tokens, Sticky Header, Responsive Nav (Hamburger), Dark Mode, Print, Scroll-Reveal
 - ✅ Passwort-Reset: /admin/password/reset — Token (SHA-256, 1h TTL, Single-Use), PHP mail(), kein User-Enumeration
+- ✅ Wartungsmodus: maintenance_mode=1 → 503 für alle außer Admin+; /admin immer erreichbar
 
 ## Nächste Phase
-
-**Phase 20 — Wartungsmodus**
-- Setting `maintenance_mode` existiert, Middleware-Handler fehlt
 
 **Phase 21 — Tenant-Provisioning (Superadmin-UI)**
 - Neue Sites über Admin anlegen
