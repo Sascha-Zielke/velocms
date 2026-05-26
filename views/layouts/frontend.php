@@ -94,6 +94,15 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
 
         <?php if (count($activeLangs) > 1): ?>
         <div class="vcms-lang-switcher" role="group" aria-label="Language">
+            <?php if (count($activeLangs) > 2): ?>
+            <select class="vcms-lang-select" aria-label="Language">
+                <?php foreach ($activeLangs as $lng): ?>
+                <option value="<?= e($lng) ?>"<?= $lng === $currentLang ? ' selected' : '' ?>>
+                    <?= strtoupper(e($lng)) ?>
+                </option>
+                <?php endforeach ?>
+            </select>
+            <?php else: ?>
             <?php foreach ($activeLangs as $lng): ?>
             <button class="vcms-lang-btn<?= $lng === $currentLang ? ' is-active' : '' ?>"
                     data-lang="<?= e($lng) ?>"
@@ -102,6 +111,7 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
                 <?= strtoupper(e($lng)) ?>
             </button>
             <?php endforeach ?>
+            <?php endif ?>
         </div>
         <?php endif ?>
     </div>
