@@ -81,7 +81,7 @@ class BlogModel extends Model
                 content=:content, content_en=:content_en,
                 cover_image=:cover_image, status=:status,
                 meta_title=:meta_title, meta_description=:meta_description,
-                published_at=:published_at
+                author_id=:author_id, published_at=:published_at
             WHERE id=:id
         ");
         $stmt->execute(array_merge($this->prepareData($data), [':id' => $id]));
