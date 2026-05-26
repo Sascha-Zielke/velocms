@@ -106,4 +106,17 @@ class Controller
         echo json_encode($data);
         exit;
     }
+
+    protected function jsonWithBackground(array $data, callable $callback, int $status = 200): never
+    {
+        http_response_code($status);
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        session_write_close();
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+        $callback();
+        exit;
+    }
 }

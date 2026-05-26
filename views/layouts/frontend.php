@@ -31,8 +31,16 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
     <meta name="keywords" content="<?= e(setting('meta_keywords_default')) ?>">
     <?php endif ?>
 
-    <!-- Canonical -->
+    <!-- Canonical + hreflang -->
     <link rel="canonical" href="<?= e($canonicalUrl) ?>">
+    <?php if (count($activeLangs) > 1):
+        $defaultLang = setting('default_language', $activeLangs[0]);
+    ?>
+    <?php foreach ($activeLangs as $hLang): ?>
+    <link rel="alternate" hreflang="<?= e($hLang) ?>" href="<?= e($appUrl . $currentUri) ?>">
+    <?php endforeach ?>
+    <link rel="alternate" hreflang="x-default" href="<?= e($appUrl . $currentUri) ?>">
+    <?php endif ?>
 
     <!-- Open Graph -->
     <meta property="og:type"        content="website">

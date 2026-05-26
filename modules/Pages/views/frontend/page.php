@@ -1,10 +1,8 @@
 <?php declare(strict_types=1); ?>
 <?php $this->extend('frontend') ?>
-<?php $this->section('title') ?><?= e(localized($page, 'meta_title') ?: localized($page, 'title')) ?><?php $this->endSection() ?>
+<?php $this->section('title') ?><?= e(localized($page, 'meta_title', 'velocms_pages') ?: localized($page, 'title', 'velocms_pages')) ?><?php $this->endSection() ?>
 <?php $this->section('meta_description') ?><?= e($page['meta_description'] ?? '') ?><?php $this->endSection() ?>
 <?php $this->section('content') ?>
-
-<?php $lang = $_COOKIE['vcms_lang'] ?? 'de'; ?>
 
 <main class="vcms-page">
 <?php foreach ($sections as $section): ?>
@@ -26,12 +24,14 @@
             <?php foreach ($row['boxes'] as $box): ?>
                 <?php
                 $cols    = 12; // full width by default
-                $boxData = $box['data']; // flat array: {text, text_en, src, alt, ...}
+                $boxData = $box['data']; // flat array: {text, src, alt, ...}
+                // Merge id into boxData so localized() can look up velocms_boxes translations
+                $boxRow  = array_merge($boxData, ['id' => $box['id'], 'text' => $boxData['text'] ?? '']);
                 ?>
                 <div class="vcms-col vcms-col-<?= $cols ?>">
                     <?php if ($box['type'] === 'text'): ?>
                         <div class="vcms-text-box">
-                            <?= safe_html(localized($boxData, 'text')) ?>
+                            <?= safe_html(localized($boxRow, 'text', 'velocms_boxes')) ?>
                         </div>
 
                     <?php elseif ($box['type'] === 'image'): ?>

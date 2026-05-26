@@ -28,7 +28,7 @@
 | 2 | Sprachumschalter Frontend + Admin (kein Reload) | ✅ Abgeschlossen |
 | 3 | Auto-Translation Engine + Trigger | ✅ Abgeschlossen |
 | 4 | Admin-Dashboard + manueller Editor | ✅ Abgeschlossen |
-| 5 | Content-Abdeckung: Blog, Pages, Nav, SEO | 🔲 Offen |
+| 5 | Content-Abdeckung: Blog, Pages, Nav, SEO | ✅ Abgeschlossen |
 | 6 | Erweiterte Features: Glossar, Export/Import | 🔲 Offen |
 | 7 | Tests + Final-Audit | 🔲 Offen |
 
@@ -118,17 +118,20 @@ modules/Nav/views/admin/nav/index.php      (Inline-Badges)
 ---
 
 ## Phase 5 — Content-Abdeckung
-**Status:** 🔲 Offen
+**Status:** ✅ Abgeschlossen
 
-### Geplante Dateien
+### Umgesetzte Dateien
 ```
-modules/Translation/Services/TranslationEngine.php  (JSON-Traversal Pages)
-modules/Pages/Controllers/AdminPagesController.php   (auto-trigger Hook)
-modules/Settings/Controllers/AdminSettingsController.php (Hook)
-views/layouts/frontend.php                           (hreflang-Tags)
+core/Controller.php                                  (jsonWithBackground() hinzugefügt)
+modules/Pages/Controllers/AdminPagesController.php   (auto-trigger: title + saveBox text)
+modules/Pages/views/frontend/page.php                (localized() mit Tabellenkontext)
+views/layouts/frontend.php                           (hreflang-Tags im <head>)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
+**Ansatz Textboxen:** box.data['text'] → velocms_translations(table='velocms_boxes', row_id=box.id, field='text')
+**hreflang:** Cookie-basiertes System → alle Sprachen zeigen auf dieselbe URL
+
+**Audit 1 (Code-Review):** ✅  
 **Audit 2 (Live-Verify):** 🔲  
 **Commit:** —
 

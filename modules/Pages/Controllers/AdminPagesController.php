@@ -6,6 +6,7 @@ namespace VeloCMS\Modules\Pages\Controllers;
 use VeloCMS\Core\Auth;
 use VeloCMS\Core\Controller;
 use VeloCMS\Modules\Pages\Models\PagesModel;
+use VeloCMS\Modules\Translation\Services\TranslationEngine;
 
 class AdminPagesController extends Controller
 {
@@ -59,12 +60,23 @@ class AdminPagesController extends Controller
             'meta_description' => trim((string) $this->input('meta_description', '')) ?: null,
         ];
 
+        $engine = new TranslationEngine();
+        $fields = array_filter(['title' => $title, 'meta_title' => $data['meta_title'] ?? '']);
+
         if ($id > 0) {
             $this->model->update($id, $data);
-            $this->redirectWithSuccess('/admin/pages/edit/' . $id, t('success.saved'));
+            $this->redirectWithSuccessAndBackground(
+                '/admin/pages/edit/' . $id,
+                t('success.saved'),
+                fn() => $engine->translateRow('velocms_pages', $id, $fields)
+            );
         } else {
             $newId = $this->model->create($data);
-            $this->redirectWithSuccess('/admin/pages/edit/' . $newId, t('success.saved'));
+            $this->redirectWithSuccessAndBackground(
+                '/admin/pages/edit/' . $newId,
+                t('success.saved'),
+                fn() => $engine->translateRow('velocms_pages', $newId, $fields)
+            );
         }
     }
 
@@ -104,14 +116,22 @@ class AdminPagesController extends Controller
     public function saveBox(string $id): void
     {
         Auth::verifyCsrf();
-        // Requests come as JSON (Content-Type: application/json)
         $payload = json_decode(file_get_contents('php://input'), true) ?? [];
-        // Preserve box type from DB if not overridden
         $box     = $this->model->getBox((int) $id);
         $type    = $box['type'] ?? 'text';
-        // Remove meta keys, rest is box data
         unset($payload['_csrf']);
         $this->model->saveBox((int) $id, $type, $payload);
+
+        $text = trim((string) ($payload['text'] ?? ''));
+        if ($type === 'text' && $text !== '') {
+            $engine = new TranslationEngine();
+            $boxId  = (int) $id;
+            $this->jsonWithBackground(
+                ['ok' => true],
+                fn() => $engine->translateRow('velocms_boxes', $boxId, ['text' => $text])
+            );
+        }
+
         $this->json(['ok' => true]);
     }
 
