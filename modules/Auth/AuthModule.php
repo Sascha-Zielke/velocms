@@ -19,6 +19,12 @@ class AuthModule extends Module
         $this->router->post('/admin/logout', 'Auth\Controllers\AuthController@logout');
         $this->router->get('/admin',         'Auth\Controllers\DashboardController@index');
 
+        // ── Password reset (self-service, no auth required) ───────────────
+        $this->router->get('/admin/password/reset',          'Auth\Controllers\PasswordResetController@showRequest');
+        $this->router->post('/admin/password/reset',         'Auth\Controllers\PasswordResetController@sendReset');
+        $this->router->get('/admin/password/reset/[a:token]', 'Auth\Controllers\PasswordResetController@showForm');
+        $this->router->post('/admin/password/reset/[a:token]', 'Auth\Controllers\PasswordResetController@reset');
+
         // ── User management (admin + superadmin) ─────────────────────────
         $this->router->get('/admin/users',                  'Auth\Controllers\UserManagementController@index');
         $this->router->get('/admin/users/create',           'Auth\Controllers\UserManagementController@create');

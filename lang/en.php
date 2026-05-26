@@ -125,6 +125,25 @@ return [
     'contact.filter_replied'        => 'Replied',
     'contact.filter_spam'           => 'Spam',
 
+    // Password reset
+    'password_reset.page_title_request' => 'Forgot password',
+    'password_reset.page_title_form'    => 'Set new password',
+    'password_reset.headline_request'   => 'Forgot your password?',
+    'password_reset.headline_form'      => 'Set a new password',
+    'password_reset.intro_request'      => 'Enter your email address. If an account exists, you will receive a reset link.',
+    'password_reset.forgot_link'        => 'Forgot password?',
+    'password_reset.back_to_login'      => 'Back to login',
+    'password_reset.submit_request'     => 'Send reset link',
+    'password_reset.submit_form'        => 'Save password',
+    'password_reset.email_sent'         => 'If an account with this email address exists, a reset link has been sent.',
+    'password_reset.token_invalid'      => 'The reset link is invalid or has expired. Please request a new one.',
+    'password_reset.success'            => 'Your password has been changed successfully. You can now log in.',
+    'password_reset.mail_subject'       => 'Password reset',
+    'password_reset.mail_greeting'      => 'Hello',
+    'password_reset.mail_body'          => 'You requested a password reset for your VeloCMS account. Click the link below to reset your password:',
+    'password_reset.mail_expiry'        => 'The link is valid for 60 minutes.',
+    'password_reset.mail_ignore'        => 'If you did not request a reset, you can safely ignore this email.',
+
     // Contact module — Settings
     'contact.settings_section_email'    => 'Email delivery',
     'contact.settings_section_spam'     => 'Spam protection',

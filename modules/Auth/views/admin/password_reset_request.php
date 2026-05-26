@@ -5,13 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeloCMS &mdash; <?= t('auth.login') ?></title>
+    <title>VeloCMS &mdash; <?= t('password_reset.page_title_request') ?></title>
     <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body class="vcms-login-page">
 
 <div class="vcms-login-box">
-    <h1><?= t('auth.login_headline') ?></h1>
+    <h1><?= t('password_reset.headline_request') ?></h1>
+    <p class="vcms-login-hint"><?= t('password_reset.intro_request') ?></p>
 
     <?php if (!empty($_SESSION['flash_error'])): ?>
     <div class="vcms-alert vcms-alert--error">
@@ -25,13 +26,8 @@
     </div>
     <?php unset($_SESSION['flash_success']); endif ?>
 
-    <form method="POST" action="/admin/login">
+    <form method="POST" action="/admin/password/reset">
         <?= csrf_field() ?>
-        <!-- Honeypot: real users never see or fill this -->
-        <div class="vcms-hp-field" aria-hidden="true" tabindex="-1">
-            <label for="vcms_name">Name</label>
-            <input type="text" id="vcms_name" name="vcms_name" autocomplete="off" tabindex="-1">
-        </div>
 
         <div class="vcms-field">
             <label for="email"><?= t('auth.email') ?></label>
@@ -39,18 +35,13 @@
                    value="<?= e($_POST['email'] ?? '') ?>">
         </div>
 
-        <div class="vcms-field">
-            <label for="password"><?= t('auth.password') ?></label>
-            <input type="password" id="password" name="password" required>
-        </div>
-
         <button type="submit" class="btn-primary">
-            <?= t('action.login') ?>
+            <?= t('password_reset.submit_request') ?>
         </button>
     </form>
 
     <p class="vcms-login-back">
-        <a href="/admin/password/reset"><?= t('password_reset.forgot_link') ?></a>
+        <a href="/admin/login">&larr; <?= t('password_reset.back_to_login') ?></a>
     </p>
 </div>
 
