@@ -18,6 +18,33 @@
 
 ---
 
+## 2026-05-26 — Session 8
+
+**Duration:** ~1h
+**Done:**
+- Phase 19: Passwort-Reset vollständig implementiert und deployed
+  - `modules/Auth/migrations/001_create_password_resets_table.php`: velocms_password_resets (token_hash VARCHAR(128) SHA-256, expires_at, used_at, user_id)
+  - `modules/Auth/Models/PasswordResetModel.php`: createToken(), findValidToken(), markUsed(), purgeExpired() — Raw-Token nie gespeichert
+  - `modules/Auth/Controllers/PasswordResetController.php`: showRequest/sendReset/showForm/reset — kein User-Enumeration (gleiches Response bei gültiger/ungültiger E-Mail)
+  - `modules/Auth/views/admin/password_reset_request.php` + `password_reset_form.php`: Standalone HTML wie login.php
+  - `modules/Auth/AuthModule.php`: 4 neue Routen (GET/POST /admin/password/reset, GET/POST /admin/password/reset/[a:token])
+  - `modules/Auth/views/admin/login.php`: "Passwort vergessen?" Link ergänzt
+  - `lang/de.php` + `lang/en.php`: 18 password_reset.*-Keys je
+  - `tests/Unit/Modules/Auth/PasswordResetModelTest.php`: 8 Unit-Tests
+  - `public/assets/css/admin.css`: vcms-login-hint + vcms-login-back Klassen
+- CI/CD: GitHub Actions Run #16 — ✅ success, Deploy OK
+- Audit 1 (Code-Review): ✅ CSRF, No-Enumeration, SHA-256-Hash, Single-Use, TTL, Password-Validation alle korrekt
+- Audit 2 (Live-Verify): ✅ /admin/password/reset 200 OK, "Passwort vergessen?" auf Login-Seite, Invalid-Token-Redirect korrekt
+
+**Issues:**
+- keine
+
+**Next:**
+- Phase 20: Wartungsmodus (Middleware-Handler für maintenance_mode Setting)
+- Phase 21: Tenant-Provisioning Superadmin-UI
+
+---
+
 ## 2026-05-26 — Session 7
 
 **Duration:** ~2h
