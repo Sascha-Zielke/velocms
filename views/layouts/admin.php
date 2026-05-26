@@ -3,7 +3,7 @@
 <?php
 $activeLangs = json_decode(setting('active_languages', '["de","en"]'), true) ?: ['de', 'en'];
 $activeLangs = array_values(array_filter($activeLangs, fn($l) => preg_match('/^[a-z]{2}$/', (string)$l)));
-$currentLang = ($l = $_COOKIE['vcms_lang'] ?? '') && in_array($l, $activeLangs, true) ? $l : ($activeLangs[0] ?? 'de');
+$currentLang = ($l = $_COOKIE['vcms_admin_lang'] ?? '') && in_array($l, $activeLangs, true) ? $l : ($activeLangs[0] ?? 'de');
 ?>
 <html lang="<?= e($currentLang) ?>">
 <head>

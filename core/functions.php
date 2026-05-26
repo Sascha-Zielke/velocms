@@ -18,7 +18,10 @@ function t(string $key, array $params = []): string
     static $strings = null;
 
     if ($strings === null) {
-        $lang = $_COOKIE['vcms_lang'] ?? 'de';
+        $isAdmin = str_starts_with($_SERVER['REQUEST_URI'] ?? '/', '/admin');
+        $lang    = $isAdmin
+            ? ($_COOKIE['vcms_admin_lang'] ?? $_COOKIE['vcms_lang'] ?? 'de')
+            : ($_COOKIE['vcms_lang'] ?? 'de');
         $lang = preg_match('/^[a-z]{2}$/', $lang) ? $lang : 'de';
 
         $dePath   = BASE_PATH . '/lang/de.php';
@@ -46,7 +49,10 @@ function localized(array $row, string $field, string $table = ''): string
 {
     static $cache = [];
 
-    $lang        = $_COOKIE['vcms_lang'] ?? 'de';
+    $isAdmin     = str_starts_with($_SERVER['REQUEST_URI'] ?? '/', '/admin');
+    $lang        = $isAdmin
+        ? ($_COOKIE['vcms_admin_lang'] ?? $_COOKIE['vcms_lang'] ?? 'de')
+        : ($_COOKIE['vcms_lang'] ?? 'de');
     $defaultLang = setting('default_language', 'de');
 
     if ($lang === $defaultLang) {

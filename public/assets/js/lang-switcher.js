@@ -1,7 +1,9 @@
 (function () {
     'use strict';
 
-    // Elements to refresh from the fetched page on language switch
+    const IS_ADMIN   = location.pathname.startsWith('/admin');
+    const COOKIE_KEY = IS_ADMIN ? 'vcms_admin_lang' : 'vcms_lang';
+
     const SWAP = [
         '#vcms-content',
         '.vcms-nav',
@@ -11,7 +13,7 @@
 
     async function switchLang(lang) {
         const secure = location.protocol === 'https:' ? ';Secure' : '';
-        document.cookie = 'vcms_lang=' + encodeURIComponent(lang) + ';path=/;SameSite=Lax' + secure;
+        document.cookie = COOKIE_KEY + '=' + encodeURIComponent(lang) + ';path=/;SameSite=Lax' + secure;
 
         document.querySelectorAll('.vcms-lang-switcher').forEach(function (el) {
             el.setAttribute('aria-busy', 'true');
@@ -31,11 +33,14 @@
 
             document.documentElement.lang = lang;
 
-            // Update switcher button state (event delegation survives the swap)
             document.querySelectorAll('.vcms-lang-btn').forEach(function (btn) {
                 var active = btn.dataset.lang === lang;
                 btn.classList.toggle('is-active', active);
                 btn.setAttribute('aria-pressed', String(active));
+            });
+
+            document.querySelectorAll('.vcms-lang-select').forEach(function (sel) {
+                sel.value = lang;
             });
 
         } catch (_) {
@@ -47,12 +52,20 @@
         }
     }
 
-    // Event delegation — survives DOM swaps
+    // Button click (2-lang toggle)
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('.vcms-lang-btn');
         if (btn && btn.dataset.lang) {
             e.preventDefault();
             switchLang(btn.dataset.lang);
+        }
+    });
+
+    // Select change (3+ langs dropdown)
+    document.addEventListener('change', function (e) {
+        var sel = e.target.closest('.vcms-lang-select');
+        if (sel) {
+            switchLang(sel.value);
         }
     });
 })();
