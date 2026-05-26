@@ -18,6 +18,31 @@
 
 ---
 
+## 2026-05-26 — Session 6
+
+**Duration:** ~1h
+**Done:**
+- Memory-Konsolidierung abgeschlossen: project-infrastructure.md (GREENFIELD → PRODUCTION), feedback-rules.md (Audit-Gate verschärft), SSH-Port 2222 → 22 korrigiert, CI/CD-Quirks dokumentiert
+- Phase 17: Kontaktformular vollständig implementiert und deployed
+  - ContactModule, ContactController (Frontend), AdminContactController, ContactModel
+  - 2 Migrations (velocms_contact_messages + Contact-Settings-Keys)
+  - Frontend /kontakt: Honeypot, CSRF, DSGVO-Consent-Checkbox, Rate-Limit (3/h), Validation
+  - Admin /admin/contact: Inbox, Filter, Spam-Markierung, DSGVO-Purge, Einstellungen
+  - PHP mail() mit Reply-To, MIME-Header, konfigurierbarer Empfänger
+  - 8 Unit-Tests (ContactModelTest) — alle grün
+  - DE + EN Übersetzungen (je 45 Keys)
+- Audit 1 (Code-Review): ✅ Alle Checks bestanden
+- Audit 2 (Live-Verify): ✅ /kontakt 200, Honeypot/CSRF/Consent im HTML, POST ohne CSRF → 403, /admin/contact → 302 Login
+
+**Issues:**
+- PHP nicht lokal installiert → Tests laufen nur via CI/CD (kein Problem, CI ist grün)
+
+**Next:**
+- Phase 18: Tenant-Provisioning Superadmin-UI
+- Phase 19: Frontend-Theme
+
+---
+
 ## 2026-05-26 — Session 5 (Fortsetzung von Session 4)
 
 **Duration:** ~3h (inkl. CI-Debugging)

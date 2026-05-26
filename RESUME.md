@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-26 | Letzte Session: Phasen 12–16 deployed + CI/CD repariert
+> Stand: 2026-05-26 | Letzte Session: Phase 17 (Kontaktformular) deployed
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -21,35 +21,26 @@
 | 14 | Navigation Builder (CRUD, Up/Down, nav()-Helper, Frontend) | ✅ DONE |
 | 15 | Custom 404/403/500 Error-Pages + Homepage-Route | ✅ DONE |
 | 16 | SEO-Basics (Sitemap, robots.txt, Canonical, OG-Tags) | ✅ DONE |
+| 17 | Kontaktformular (DSGVO, Honeypot, Rate-Limit, Admin-Inbox) | ✅ DONE |
 
 ## Aktueller Stand (2026-05-26)
 
-- CI/CD: GitHub Actions Run #9 — **✅ success** (30 Tests grün, Deploy OK)
+- CI/CD: GitHub Actions Run #10 — **✅ success** (38 Tests grün, Deploy OK)
 - Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
-- Letzter Deploy-Commit: `2ab1cab` (chore: .git permission fix trigger)
-- Server-Stand: Alle Phasen 12–16 live auf 95.217.185.113
+- Letzter Deploy-Commit: `2cab99d` (feat(contact): Phase 17)
+- Server-Stand: Alle Phasen 12–17 live auf 95.217.185.113
 
 ### Was live ist:
-- ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users)
+- ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users, Kontakt)
 - ✅ Frontend: Pages mit Visual Editor, Blog-Liste + Einzelpost
 - ✅ Navigation: DB-basiert via nav()-Helper, Admin-verwaltbar
-- ✅ Settings: 17 Keys (Site, Branding, SEO, Social, Footer)
+- ✅ Settings: Keys inkl. Contact-Settings
 - ✅ SEO: /sitemap.xml, /robots.txt, Canonical-URLs, OG-Tags
 - ✅ Error-Pages: 404/403/500 mit eigenem Design
 - ✅ User-Management: CRUD, editor/admin/superadmin, Passwort-Reset
-
-### CI/CD-Fixes dieser Session:
-- `--no-interaction` aus PHPUnit-Befehl entfernt (via GitHub UI)
-- `colors="true"` bleibt korrekt (xs:boolean laut PHPUnit-XSD)
-- Server-Git-Permissions: `chown -R velocms:velocms /var/www/velocms/.git`
-- Remote auf SSH zurückgesetzt nach HTTPS-Fetch
+- ✅ Kontaktformular: /kontakt — DSGVO, Honeypot, Rate-Limit, PHP mail(), Admin-Inbox
 
 ## Nächste Phase
-
-**Phase 17 — Kontaktformular (empfohlen)**
-- DSGVO-konform, Honeypot-Spam-Schutz, Rate-Limit
-- SMTP-Versand via PHP mail() oder externer Dienst
-- Admin-Benachrichtigung per E-Mail
 
 **Phase 18 — Tenant-Provisioning (Superadmin-UI)**
 - Neue Sites über Admin anlegen
