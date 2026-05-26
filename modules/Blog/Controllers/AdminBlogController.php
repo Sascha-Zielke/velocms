@@ -6,6 +6,7 @@ namespace VeloCMS\Modules\Blog\Controllers;
 use VeloCMS\Core\Auth;
 use VeloCMS\Core\Controller;
 use VeloCMS\Modules\Blog\Models\BlogModel;
+use VeloCMS\Modules\Translation\Services\TranslationEngine;
 
 class AdminBlogController extends Controller
 {
@@ -41,8 +42,14 @@ class AdminBlogController extends Controller
             $this->redirectWithError('/admin/blog/new', t('error.title_required'));
         }
 
-        $id = $this->model->insert($this->collectData());
-        $this->redirectWithSuccess('/admin/blog/edit/' . $id, t('success.saved'));
+        $id     = $this->model->insert($this->collectData());
+        $fields = $this->collectTranslatableFields();
+        $engine = new TranslationEngine();
+        $this->redirectWithSuccessAndBackground(
+            '/admin/blog/edit/' . $id,
+            t('success.saved'),
+            fn() => $engine->translateRow('velocms_blog_posts', $id, $fields)
+        );
     }
 
     public function edit(string $id): void
@@ -60,7 +67,13 @@ class AdminBlogController extends Controller
         if (!$post) $this->redirectWithError('/admin/blog', t('error.not_found'));
 
         $this->model->update((int) $id, $this->collectData($post));
-        $this->redirectWithSuccess('/admin/blog/edit/' . $id, t('success.saved'));
+        $fields = $this->collectTranslatableFields();
+        $engine = new TranslationEngine();
+        $this->redirectWithSuccessAndBackground(
+            '/admin/blog/edit/' . $id,
+            t('success.saved'),
+            fn() => $engine->translateRow('velocms_blog_posts', (int) $id, $fields)
+        );
     }
 
     public function delete(string $id): void
@@ -87,6 +100,16 @@ class AdminBlogController extends Controller
             'meta_description' => $this->input('meta_description', ''),
             'author_id'        => Auth::id() ?? 1,
             'published_at'     => $existing['published_at'] ?? null,
+        ];
+    }
+
+    /** @return array<string,string> */
+    private function collectTranslatableFields(): array
+    {
+        return [
+            'title'   => (string) $this->input('title', ''),
+            'excerpt' => (string) $this->input('excerpt', ''),
+            'content' => (string) $this->input('content', ''),
         ];
     }
 

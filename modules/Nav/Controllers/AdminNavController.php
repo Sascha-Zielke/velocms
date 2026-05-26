@@ -7,6 +7,7 @@ namespace VeloCMS\Modules\Nav\Controllers;
 use VeloCMS\Core\Auth;
 use VeloCMS\Core\Controller;
 use VeloCMS\Modules\Nav\Models\NavModel;
+use VeloCMS\Modules\Translation\Services\TranslationEngine;
 
 class AdminNavController extends Controller
 {
@@ -47,15 +48,19 @@ class AdminNavController extends Controller
             $this->redirectWithError('/admin/nav/create', t('error.required'));
         }
 
-        $this->model->create([
+        $newId  = $this->model->create([
             'label'    => $label,
             'label_en' => trim($this->input('label_en', '')),
             'url'      => $url,
             'target'   => $this->input('target', '_self'),
             'active'   => $this->input('active', '1'),
         ]);
-
-        $this->redirectWithSuccess('/admin/nav', t('success.saved'));
+        $engine = new TranslationEngine();
+        $this->redirectWithSuccessAndBackground(
+            '/admin/nav',
+            t('success.saved'),
+            fn() => $engine->translateRow('velocms_nav_items', $newId, ['label' => $label])
+        );
     }
 
     public function edit(string $id): void
@@ -88,8 +93,12 @@ class AdminNavController extends Controller
             'target'   => $this->input('target', '_self'),
             'active'   => $this->input('active', '0'),
         ]);
-
-        $this->redirectWithSuccess('/admin/nav', t('success.saved'));
+        $engine = new TranslationEngine();
+        $this->redirectWithSuccessAndBackground(
+            '/admin/nav',
+            t('success.saved'),
+            fn() => $engine->translateRow('velocms_nav_items', (int) $id, ['label' => $label])
+        );
     }
 
     public function delete(string $id): void

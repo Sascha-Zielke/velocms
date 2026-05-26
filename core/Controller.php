@@ -49,6 +49,27 @@ class Controller
         $this->redirect($url);
     }
 
+    /**
+     * Redirect immediately, then run $callback in the background after the response is flushed.
+     * Requires fastcgi_finish_request() (PHP-FPM) — falls back to running callback before exit.
+     */
+    protected function redirectWithSuccessAndBackground(
+        string $url,
+        string $message,
+        callable $callback
+    ): never {
+        $_SESSION['flash_success'] = $message;
+        session_write_close();
+        header('Location: ' . $url);
+
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+
+        $callback();
+        exit;
+    }
+
     protected function requireAuth(): void
     {
         if (!Auth::check()) {
