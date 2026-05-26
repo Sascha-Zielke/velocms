@@ -14,16 +14,16 @@
             <?php if (!empty($p['cover_image'])): ?>
             <div class="vcms-blog-card__cover">
                 <a href="/blog/<?= e($p['slug']) ?>">
-                    <img src="<?= e($p['cover_image']) ?>" alt="<?= e(localized($p, 'title')) ?>" loading="lazy">
+                    <img src="<?= e($p['cover_image']) ?>" alt="<?= e(localized($p, 'title', 'velocms_blog_posts')) ?>" loading="lazy">
                 </a>
             </div>
             <?php endif ?>
             <div class="vcms-blog-card__body">
                 <h2 class="vcms-blog-card__title">
-                    <a href="/blog/<?= e($p['slug']) ?>"><?= e(localized($p, 'title')) ?></a>
+                    <a href="/blog/<?= e($p['slug']) ?>"><?= e(localized($p, 'title', 'velocms_blog_posts')) ?></a>
                 </h2>
                 <?php if (!empty($p['excerpt']) || !empty($p['excerpt_en'])): ?>
-                <p class="vcms-blog-card__excerpt"><?= e(localized($p, 'excerpt')) ?></p>
+                <p class="vcms-blog-card__excerpt"><?= e(localized($p, 'excerpt', 'velocms_blog_posts')) ?></p>
                 <?php endif ?>
                 <span class="vcms-blog-card__date"><?= e(substr($p['published_at'] ?? $p['created_at'], 0, 10)) ?></span>
             </div>

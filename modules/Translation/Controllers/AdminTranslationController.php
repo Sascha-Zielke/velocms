@@ -110,7 +110,8 @@ class AdminTranslationController extends Controller
             'activeLangs'  => $this->activeLangs,
             'defaultLang'  => $this->defaultLang,
             'provider'     => setting('translation_provider', 'deepl'),
-            'knownLangs'   => ['de', 'en', 'fr', 'es', 'it', 'nl'],
+            'deeplKey'     => setting('deepl_api_key', ''),
+            'anthropicKey' => setting('anthropic_api_key', ''),
         ]);
     }
 
@@ -141,6 +142,16 @@ class AdminTranslationController extends Controller
         $this->saveSetting('active_languages', json_encode($selected));
         $this->saveSetting('default_language', $default);
         $this->saveSetting('translation_provider', $provider);
+
+        $deeplKey = trim((string) $this->input('deepl_api_key', ''));
+        if ($deeplKey !== '') {
+            $this->saveSetting('deepl_api_key', $deeplKey);
+        }
+
+        $anthropicKey = trim((string) $this->input('anthropic_api_key', ''));
+        if ($anthropicKey !== '') {
+            $this->saveSetting('anthropic_api_key', $anthropicKey);
+        }
 
         $this->redirectWithSuccess('/admin/apps/translation/settings', t('translation.settings_saved'));
     }

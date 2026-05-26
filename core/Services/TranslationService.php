@@ -108,10 +108,10 @@ class TranslationService
         string $sourceLang,
         array $options
     ): array {
-        $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? '';
+        $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? setting('deepl_api_key', '');
 
         if (empty($key)) {
-            throw new TranslationException('No DeepL API key configured. Add DEEPL_API_KEY to .env');
+            throw new TranslationException('No DeepL API key configured. Add DEEPL_API_KEY to .env or enter it in Translation Settings.');
         }
 
         $target = strtoupper($targetLang);
@@ -213,16 +213,14 @@ class TranslationService
         string $sourceLang,
         array $options
     ): string {
-        $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? '';
+        $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? setting('deepl_api_key', '');
 
         if (empty($key)) {
             throw new TranslationException(
-                'No DeepL API key configured. Add DEEPL_API_KEY to .env'
+                'No DeepL API key configured. Add DEEPL_API_KEY to .env or enter it in Translation Settings.'
             );
         }
 
-        // DeepL requires EN-GB or EN-US for target (not plain EN).
-        // Source accepts plain EN.
         $target = strtoupper($targetLang);
         if ($target === 'EN') {
             $target = 'EN-GB';
@@ -268,11 +266,11 @@ class TranslationService
         string $sourceLang,
         array $options
     ): string {
-        $key = $_ENV['ANTHROPIC_API_KEY'] ?? $_ENV['ANTHROPIC_KEY'] ?? '';
+        $key = $_ENV['ANTHROPIC_API_KEY'] ?? $_ENV['ANTHROPIC_KEY'] ?? setting('anthropic_api_key', '');
 
         if (empty($key)) {
             throw new TranslationException(
-                'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env'
+                'No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env or enter it in Translation Settings.'
             );
         }
 

@@ -77,7 +77,7 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
                        target="<?= e($target) ?>"<?= $rel ?>
                        class="vcms-nav-link<?= $isActive ? ' vcms-nav-link--active' : '' ?>"
                        <?= $isActive ? 'aria-current="page"' : '' ?>>
-                        <?= e($lang === 'en' && !empty($item['label_en']) ? $item['label_en'] : $item['label']) ?>
+                        <?= e(localized($item, 'label', 'velocms_nav_items')) ?>
                     </a>
                 </li>
                 <?php endforeach ?>
@@ -121,7 +121,7 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
             <a href="<?= e($itemUrl) ?>"
                target="<?= e($target) ?>"<?= $rel ?>
                class="vcms-mobile-nav__link<?= $isActive ? ' vcms-mobile-nav__link--active' : '' ?>">
-                <?= e($lang === 'en' && !empty($item['label_en']) ? $item['label_en'] : $item['label']) ?>
+                <?= e(localized($item, 'label', 'velocms_nav_items')) ?>
             </a>
         </li>
         <?php endforeach ?>

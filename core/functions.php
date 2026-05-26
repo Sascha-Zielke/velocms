@@ -38,13 +38,49 @@ function t(string $key, array $params = []): string
 }
 
 /**
- * Get localized content field — Layer 2 DB content
+ * Get localized content field — Layer 2 DB content.
+ * Pass $table to look up velocms_translations first (Phase 3+).
+ * Falls back to legacy _en columns for backward compatibility.
  */
-function localized(array $row, string $field): string
+function localized(array $row, string $field, string $table = ''): string
 {
-    $lang    = $_COOKIE['vcms_lang'] ?? 'de';
+    static $cache = [];
+
+    $lang        = $_COOKIE['vcms_lang'] ?? 'de';
+    $defaultLang = setting('default_language', 'de');
+
+    if ($lang === $defaultLang) {
+        return (string) ($row[$field] ?? '');
+    }
+
+    if ($table !== '' && !empty($row['id'])) {
+        $key = $table . ':' . $row['id'] . ':' . $field . ':' . $lang;
+        if (!array_key_exists($key, $cache)) {
+            try {
+                $db   = \VeloCMS\Core\Database::getInstance()->getPdo();
+                $stmt = $db->prepare(
+                    'SELECT value FROM velocms_translations
+                     WHERE table_name = :t AND row_id = :r AND field = :f AND language = :l AND stale = 0
+                     LIMIT 1'
+                );
+                $stmt->execute([':t' => $table, ':r' => (int) $row['id'], ':f' => $field, ':l' => $lang]);
+                $val          = $stmt->fetchColumn();
+                $cache[$key]  = ($val !== false && $val !== '') ? (string) $val : null;
+            } catch (\Throwable) {
+                $cache[$key] = null;
+            }
+        }
+        if ($cache[$key] !== null) {
+            return $cache[$key];
+        }
+    }
+
     $enField = $field . '_en';
-    return ($lang === 'en' && !empty($row[$enField])) ? $row[$enField] : ($row[$field] ?? '');
+    if (!empty($row[$enField])) {
+        return (string) $row[$enField];
+    }
+
+    return (string) ($row[$field] ?? '');
 }
 
 /**
