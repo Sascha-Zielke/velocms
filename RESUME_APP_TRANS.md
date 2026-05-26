@@ -24,7 +24,7 @@
 
 | Phase | Titel | Status |
 |-------|-------|--------|
-| 1 | Foundation: DB, TranslationService, Apps-Menü | 🔲 Offen |
+| 1 | Foundation: DB, TranslationService, Apps-Menü | ✅ Abgeschlossen |
 | 2 | Sprachumschalter Frontend + Admin (kein Reload) | 🔲 Offen |
 | 3 | Auto-Translation Engine + Trigger | 🔲 Offen |
 | 4 | Admin-Dashboard + manueller Editor | 🔲 Offen |
@@ -35,7 +35,7 @@
 ---
 
 ## Phase 1 — Foundation
-**Status:** 🔲 Offen
+**Status:** ✅ Abgeschlossen
 
 ### Geplante Dateien
 ```
@@ -52,9 +52,9 @@ lang/en.php                                 (apps.* + nav.* Keys)
 RESUME_APP_TRANS.md                         (diese Datei — bereits erstellt)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
-**Audit 2 (Live-Verify):** 🔲  
-**Commit:** —
+**Audit 1 (Code-Review):** ✅  
+**Audit 2 (Live-Verify):** ✅ Route matcht, Controller antwortet (OPcache-Bug via `systemctl restart` behoben)  
+**Commit:** 584c841 + 19a407e
 
 ---
 
