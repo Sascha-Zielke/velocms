@@ -85,9 +85,9 @@ class AdminBlogController extends Controller
         if (!$post) $this->redirectWithError('/admin/blog', t('error.not_found'));
 
         $this->model->update((int) $id, $this->collectData($post));
-        $this->saveManualTranslations((int) $id);
-
         $fields = $this->collectTranslatableFields();
+        $this->saveManualTranslations((int) $id, $fields);
+
         $engine = new TranslationEngine();
         $this->redirectWithSuccessAndBackground(
             '/admin/blog/edit/' . $id,
@@ -161,7 +161,8 @@ class AdminBlogController extends Controller
         return [$targetLangs, $defaultLang, $translations];
     }
 
-    private function saveManualTranslations(int $postId): void
+    /** @param array<string,string> $sourceFields The current DE source fields (title/excerpt/content) */
+    private function saveManualTranslations(int $postId, array $sourceFields): void
     {
         $submitted = $_POST['trans'] ?? [];
         if (empty($submitted) || !is_array($submitted)) {
@@ -180,11 +181,11 @@ class AdminBlogController extends Controller
                     continue;
                 }
                 $existing = $transModel->get('velocms_blog_posts', $postId, $field, $lang);
-                // Only mark as manual if the user actually changed the value
                 if ($existing === null || trim($existing['value']) !== $val) {
+                    $sourceText = trim((string) ($sourceFields[$field] ?? ''));
                     $transModel->upsert(
                         'velocms_blog_posts', $postId, $field, $lang,
-                        $val, 'manual', md5($val)
+                        $val, 'manual', $sourceText !== '' ? md5($sourceText) : ''
                     );
                 }
             }

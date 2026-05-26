@@ -128,12 +128,8 @@ class TranslationEngine
             }
 
             $existing = $this->model->get($table, $rowId, $field, $lang);
+            $hash     = md5($text);
 
-            if ($existing && $existing['source'] === 'manual') {
-                continue;
-            }
-
-            $hash = md5($text);
             if (!$force && $existing && $existing['content_hash'] === $hash) {
                 continue;
             }
