@@ -18,6 +18,32 @@
 
 ---
 
+## 2026-05-26 — Session 5 (Fortsetzung von Session 4)
+
+**Duration:** ~3h (inkl. CI-Debugging)
+**Done:**
+- Phasen 12–16 auf GitHub gepusht (waren lokal, nie pushed)
+- CI-Pipeline repariert:
+  - Root-Ursache 1: `--no-interaction` ist kein PHPUnit-Flag → via GitHub UI entfernt
+  - Root-Ursache 2: `colors="auto"` ungültig (XSD erwartet xs:boolean) → auf `colors="true"` zurückgesetzt
+- Server-Git-History divergiert (manuelle Deploys) → `git reset --hard origin/main` als root
+- `.git/objects` und `.git/config` root-owned nach manuellen git-Befehlen → `chown -R velocms:velocms /var/www/velocms/.git` (2x)
+- GitHub Actions Run #9: ✅ 30 Tests grün, Deploy erfolgreich
+- Alle Phasen 12–16 live auf Server (User-Mgmt, Settings, Nav, Error-Pages, SEO)
+- RESUME.md vollständig aktualisiert
+
+**Issues:**
+- Manuelle root-SSH-Befehle auf Server ändern .git-Permissions → immer danach chown velocms
+- PAT ohne `workflow` scope → ci.yml-Änderungen nur via GitHub UI möglich
+- Remote-URL muss SSH bleiben (git@github.com) für den Deploy-User velocms
+
+**Next:**
+- Phase 17: Kontaktformular (DSGVO, Honeypot, Rate-Limit)
+- Phase 18: Tenant-Provisioning Superadmin-UI
+- Phase 19: Frontend-Theme
+
+---
+
 ## 2026-05-22 — Session 3
 
 **Duration:** ~15min
