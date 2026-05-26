@@ -255,6 +255,11 @@ return [
     'contact.filter_replied'        => 'Beantwortet',
     'contact.filter_spam'           => 'Spam',
 
+    // Maintenance mode
+    'maintenance.title'    => 'Wartungsarbeiten',
+    'maintenance.headline' => 'Wartungsarbeiten',
+    'maintenance.text'     => 'Die Website wird gerade gewartet. Wir sind bald wieder für dich da.',
+
     // Password reset
     'password_reset.page_title_request' => 'Passwort vergessen',
     'password_reset.page_title_form'    => 'Neues Passwort setzen',

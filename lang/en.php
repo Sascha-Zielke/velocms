@@ -125,6 +125,11 @@ return [
     'contact.filter_replied'        => 'Replied',
     'contact.filter_spam'           => 'Spam',
 
+    // Maintenance mode
+    'maintenance.title'    => 'Maintenance',
+    'maintenance.headline' => 'We\'ll be back soon',
+    'maintenance.text'     => 'This website is currently undergoing maintenance. We\'ll be back up shortly.',
+
     // Password reset
     'password_reset.page_title_request' => 'Forgot password',
     'password_reset.page_title_form'    => 'Set new password',

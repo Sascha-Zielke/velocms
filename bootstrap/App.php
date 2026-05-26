@@ -25,6 +25,7 @@ class App
         }
 
         ModuleLoader::boot();
+        self::handleMaintenanceMode();
         Router::dispatch();
     }
 
@@ -66,6 +67,47 @@ class App
             ini_set('display_errors', '0');
             ini_set('log_errors', '1');
         }
+    }
+
+    /**
+     * If maintenance_mode is active: block all non-admin frontend requests with 503.
+     *
+     * Rules:
+     *  - /admin/* routes always pass (needed to reach the setting that turns this off)
+     *  - Logged-in users with role admin or superadmin bypass the maintenance screen
+     *  - Everyone else (guests + editors) gets the 503 maintenance page
+     */
+    private static function handleMaintenanceMode(): void
+    {
+        if (setting('maintenance_mode') !== '1') {
+            return;
+        }
+
+        $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+
+        // Admin panel always stays accessible
+        if (str_starts_with($uri, '/admin')) {
+            return;
+        }
+
+        // Admins and superadmins may still browse the frontend
+        if (Auth::check() && Auth::hasRole('admin')) {
+            return;
+        }
+
+        http_response_code(503);
+        header('Retry-After: 3600');
+
+        $page = BASE_PATH . '/views/errors/maintenance.php';
+        if (file_exists($page)) {
+            include $page;
+        } else {
+            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Wartung</title></head>'
+               . '<body><h1>Wartungsarbeiten</h1>'
+               . '<p>Die Website wird gerade gewartet. Bitte versuche es später erneut.</p>'
+               . '</body></html>';
+        }
+        exit;
     }
 
     private static function startSession(): void
