@@ -184,13 +184,8 @@
         editor.contentEditable = 'true';
         editor.innerHTML = ta.value;
         editor.addEventListener('input', function () { ta.value = editor.innerHTML; });
-        editor.addEventListener('paste', function (e) {
-            // Strip unwanted tags on paste
-            e.preventDefault();
-            var text = (e.clipboardData || window.clipboardData).getData('text/html')
-                     || (e.clipboardData || window.clipboardData).getData('text/plain');
-            document.execCommand('insertHTML', false, text);
-            ta.value = editor.innerHTML;
+        editor.addEventListener('paste', function () {
+            setTimeout(function () { ta.value = editor.innerHTML; }, 0);
         });
 
         ta.style.display = 'none';
