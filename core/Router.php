@@ -39,12 +39,14 @@ class Router
             }
             $pattern = self::buildPattern($route['path']);
             if (preg_match($pattern, $uri, $matches)) {
+                error_log('[VCMS-DEBUG] matched path=' . $route['path'] . ' handler=' . $route['handler']);
                 array_shift($matches);
                 self::callHandler($route['handler'], $matches);
                 return;
             }
         }
 
+        error_log('[VCMS-DEBUG] NO MATCH for ' . $method . ' ' . $uri);
         http_response_code(404);
         $errorPage = BASE_PATH . '/views/errors/404.php';
         if (file_exists($errorPage)) {
