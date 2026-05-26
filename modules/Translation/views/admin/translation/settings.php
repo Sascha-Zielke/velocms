@@ -20,7 +20,7 @@
         <!-- Search input -->
         <div style="position:relative;margin-top:12px">
             <input type="text" id="lang-search" placeholder="Sprache suchen (z. B. FR, Französisch)…"
-                   autocomplete="off" class="vcms-input">
+                   autocomplete="nope" class="vcms-input">
             <div id="lang-dropdown"
                  style="display:none;position:absolute;top:100%;left:0;right:0;z-index:200;
                         background:var(--vcms-card-bg,#fff);border:1px solid var(--vcms-border,#dde3ee);

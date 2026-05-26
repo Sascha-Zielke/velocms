@@ -119,7 +119,11 @@ class AdminTranslationController extends Controller
     {
         Auth::verifyCsrf();
 
-        $knownLangs = ['de', 'en', 'fr', 'es', 'it', 'nl'];
+        $knownLangs = [
+            'bg','cs','da','de','el','en','es','et','fi','fr',
+            'hu','id','it','ja','ko','lt','lv','nb','nl','pl',
+            'pt','ro','ru','sk','sl','sv','tr','uk','zh',
+        ];
         $selected   = array_filter(
             (array) ($_POST['active_languages'] ?? []),
             fn(string $l) => in_array($l, $knownLangs, true)
