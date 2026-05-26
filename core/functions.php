@@ -25,10 +25,21 @@ function t(string $key, array $params = []): string
         $lang = preg_match('/^[a-z]{2}$/', $lang) ? $lang : 'de';
 
         $dePath   = BASE_PATH . '/lang/de.php';
+        $enPath   = BASE_PATH . '/lang/en.php';
         $langPath = BASE_PATH . "/lang/{$lang}.php";
 
-        $de      = file_exists($dePath) ? require $dePath : [];
-        $strings = $lang === 'de' ? $de : array_merge($de, file_exists($langPath) ? require $langPath : []);
+        $de = file_exists($dePath) ? require $dePath : [];
+        $en = file_exists($enPath) ? require $enPath : [];
+
+        if ($lang === 'de') {
+            $strings = $de;
+        } elseif ($lang === 'en') {
+            $strings = array_merge($de, $en);
+        } elseif (file_exists($langPath)) {
+            $strings = array_merge($de, require $langPath);
+        } else {
+            $strings = array_merge($de, $en);
+        }
     }
 
     $text = $strings[$key] ?? $key;
