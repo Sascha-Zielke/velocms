@@ -18,6 +18,27 @@
 
 ---
 
+## 2026-05-26 — Session 11
+
+**Duration:** ~30min
+**Done:**
+- Phase 22: Tenant-Routing vollständig implementiert und deployed
+  - `core/Tenant.php`: Kompletter Rewrite — explizite Modi (CLI-Guard → Single-Site → Multi-Site), `bootSingleSite()` mit synthetischem id=0-Row, `isMultiSite()` prüft id>0, graceful Fallback wenn Master-DB nicht erreichbar
+  - `bootstrap/App.php`: DB-Init von `Database::connect()` direkt auf `Tenant::resolve($config)` umgestellt; Bedingung auf `!empty($config['db_host'])`
+  - `velocms` CLI: `tenant:init <domain> [name] [db]` (Master-DB + velocms_sites anlegen, ON DUPLICATE KEY UPDATE), `tenant:list` (Tabelle aller Sites oder Single-Site-Meldung)
+  - `tests/Unit/Core/TenantTest.php`: `testIsMultiSite_returnsFalse_initially()` ergänzt
+- CI/CD: GitHub Actions Run #21 — ✅ success, Deploy OK
+- Audit 1 (Code-Review): ✅ Single-Site (kein MASTER_DB) → kein Master-DB-Traffic, kein 503-Risiko; CLI-Guard korrekt; prepared statements im Multi-Site-Lookup; isMultiSite() korrekt
+- Audit 2 (Live-Verify): ✅ webzite-newmedia.com → HTML geladen ("Willkommen bei VeloCMS!"), /admin → Login-Form sichtbar, kein PHP-Fehler
+
+**Issues:**
+- keine
+
+**Next:**
+- Offen — nach Absprache mit dem Nutzer
+
+---
+
 ## 2026-05-26 — Session 10
 
 **Duration:** ~1h
