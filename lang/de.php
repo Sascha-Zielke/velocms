@@ -38,6 +38,7 @@ return [
     'field.name'         => 'Name',
     'field.role'         => 'Rolle',
     'field.actions'      => 'Aktionen',
+    'field.language'     => 'Sprache',
     'field.created_at'   => 'Erstellt am',
     'field.updated_at'   => 'Aktualisiert am',
     'field.author'       => 'Autor',
@@ -325,6 +326,17 @@ return [
     'translation.progress_manual'      => 'Manuell',
     'translation.progress_stale'       => 'Veraltet',
     'translation.progress_missing'     => 'Fehlt',
+
+    // Translation App — editor
+    'translation.editor'               => 'Editor',
+    'translation.filter_all'           => 'Alle',
+    'translation.filter_stale'         => 'Veraltet',
+    'translation.col_table'            => 'Tabelle',
+    'translation.col_field'            => 'Feld',
+    'translation.col_value'            => 'Übersetzung',
+    'translation.col_updated'          => 'Aktualisiert',
+    'translation.save_manual'          => 'Manuell speichern',
+    'translation.confirm_unlock'       => 'Sperre aufheben und für Auto-Übersetzung freigeben?',
 
     // Language switcher (frontend + admin)
     'lang.de'                          => 'Deutsch',

@@ -16,6 +16,9 @@ class TranslationModule extends Module
         // ── Admin routes (dashboard + settings — controllers built in Phase 4) ──
         // Placeholder route so the menu link doesn't 404 before Phase 4
         $this->router->get('/admin/apps/translation', 'Translation\Controllers\AdminTranslationController@dashboard');
+        $this->router->get('/admin/apps/translation/editor', 'Translation\Controllers\AdminTranslationController@editor');
+        $this->router->post('/admin/apps/translation/editor/[i:id]/save', 'Translation\Controllers\AdminTranslationController@saveTranslation');
+        $this->router->post('/admin/apps/translation/editor/[i:id]/unlock', 'Translation\Controllers\AdminTranslationController@unlockTranslation');
         $this->router->get('/admin/apps/translation/settings', 'Translation\Controllers\AdminTranslationController@settings');
         $this->router->post('/admin/apps/translation/settings', 'Translation\Controllers\AdminTranslationController@saveSettings');
 

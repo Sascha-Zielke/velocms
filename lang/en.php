@@ -36,6 +36,7 @@ return [
     'field.name'         => 'Name',
     'field.role'         => 'Role',
     'field.actions'      => 'Actions',
+    'field.language'     => 'Language',
     'field.created_at'   => 'Created at',
     'field.updated_at'   => 'Updated at',
     'field.author'       => 'Author',
@@ -195,6 +196,17 @@ return [
     'translation.progress_manual'      => 'Manual',
     'translation.progress_stale'       => 'Outdated',
     'translation.progress_missing'     => 'Missing',
+
+    // Translation App — editor
+    'translation.editor'               => 'Editor',
+    'translation.filter_all'           => 'All',
+    'translation.filter_stale'         => 'Outdated',
+    'translation.col_table'            => 'Table',
+    'translation.col_field'            => 'Field',
+    'translation.col_value'            => 'Translation',
+    'translation.col_updated'          => 'Updated',
+    'translation.save_manual'          => 'Save manually',
+    'translation.confirm_unlock'       => 'Remove lock and release for auto-translation?',
 
     // Language switcher (frontend + admin)
     'lang.de'                          => 'German',
