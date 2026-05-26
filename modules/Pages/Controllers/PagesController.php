@@ -37,7 +37,8 @@ class PagesController extends Controller
 
         // Nothing published at all
         http_response_code(404);
-        $this->render('frontend/404', []);
+        include BASE_PATH . '/views/errors/404.php';
+        exit;
     }
 
     public function show(string $slug): void
@@ -46,8 +47,8 @@ class PagesController extends Controller
 
         if ($page === null || $page['status'] !== 'published') {
             http_response_code(404);
-            $this->render('frontend/404', []);
-            return;
+            include BASE_PATH . '/views/errors/404.php';
+            exit;
         }
 
         $sections = $this->model->getFullPage((int) $page['id']);
