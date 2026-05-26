@@ -108,11 +108,8 @@ class TranslationService
         string $sourceLang,
         array $options
     ): array {
-        $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? setting('deepl_api_key', '');
-
-        error_log('[DEBUG-TRANS] ENV DEEPL_API_KEY=' . (isset($_ENV['DEEPL_API_KEY']) ? 'SET' : 'NOT_SET')
-            . ' setting(deepl_api_key)=' . (setting('deepl_api_key', '') !== '' ? 'HAS_VALUE' : 'EMPTY')
-            . ' final_key=' . ($key !== '' ? 'HAS_VALUE' : 'EMPTY'));
+        $envKey = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? '';
+        $key    = $envKey !== '' ? $envKey : setting('deepl_api_key', '');
 
         if (empty($key)) {
             throw new TranslationException('No DeepL API key configured. Add DEEPL_API_KEY to .env or enter it in Translation Settings.');
@@ -156,10 +153,11 @@ class TranslationService
         string $targetLang,
         string $sourceLang
     ): array {
-        $key = $_ENV['ANTHROPIC_API_KEY'] ?? $_ENV['ANTHROPIC_KEY'] ?? '';
+        $envKey = $_ENV['ANTHROPIC_API_KEY'] ?? $_ENV['ANTHROPIC_KEY'] ?? '';
+        $key    = $envKey !== '' ? $envKey : setting('anthropic_api_key', '');
 
         if (empty($key)) {
-            throw new TranslationException('No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env');
+            throw new TranslationException('No Anthropic API key configured. Add ANTHROPIC_API_KEY to .env or enter it in Translation Settings.');
         }
 
         $langNames = [
@@ -217,7 +215,8 @@ class TranslationService
         string $sourceLang,
         array $options
     ): string {
-        $key = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? setting('deepl_api_key', '');
+        $envKey = $_ENV['DEEPL_API_KEY'] ?? $_ENV['DEEPL_KEY'] ?? '';
+        $key    = $envKey !== '' ? $envKey : setting('deepl_api_key', '');
 
         if (empty($key)) {
             throw new TranslationException(
@@ -270,7 +269,8 @@ class TranslationService
         string $sourceLang,
         array $options
     ): string {
-        $key = $_ENV['ANTHROPIC_API_KEY'] ?? $_ENV['ANTHROPIC_KEY'] ?? setting('anthropic_api_key', '');
+        $envKey = $_ENV['ANTHROPIC_API_KEY'] ?? $_ENV['ANTHROPIC_KEY'] ?? '';
+        $key    = $envKey !== '' ? $envKey : setting('anthropic_api_key', '');
 
         if (empty($key)) {
             throw new TranslationException(
