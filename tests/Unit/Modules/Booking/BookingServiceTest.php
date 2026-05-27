@@ -6,7 +6,6 @@ namespace VeloCMS\Tests\Unit\Modules\Booking;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use VeloCMS\Modules\Booking\Core\Entities\Booking;
 use VeloCMS\Modules\Booking\Core\Services\AvailabilityEngine;
 use VeloCMS\Modules\Booking\Core\Services\BookingConflictException;
 use VeloCMS\Modules\Booking\Core\Services\BookingOutsideSlotsException;
@@ -58,7 +57,7 @@ class BookingServiceTest extends TestCase
         $this->expectException(BookingConflictException::class);
 
         $range   = $this->makeRange();
-        $booking = $this->createMock(Booking::class);
+        $booking = $this->buildBooking(BookingStatus::Confirmed);
 
         $this->availability->method('isWithinSlot')->willReturn(true);
         $this->bookingModel->method('overlapping')->willReturn([$booking]);
