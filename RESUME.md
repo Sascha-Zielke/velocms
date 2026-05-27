@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-26 | Letzte Session: Codebase-Audit + Cleanup (totes Code entfernt, Blog-404-Bug behoben)
+> Stand: 2026-05-27 | Letzte Session: Translation-App vollständig abgeschlossen (Phase 23)
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -27,13 +27,13 @@
 | 20 | Wartungsmodus (App::handleMaintenanceMode, 503, Admin-Bypass) | ✅ DONE |
 | 21 | Tenant-Provisioning Superadmin-UI (Sites-CRUD, DB-Provisioning) | ✅ DONE |
 | 22 | Tenant-Routing (App::boot → Tenant::resolve, Single+Multi-Site, CLI-Guard) | ✅ DONE |
+| 23 | Translation-App (7 Phasen: DB, Engine, Switcher, Dashboard, Glossar, CSV, Tests) | ✅ DONE |
 
-## Aktueller Stand (2026-05-26)
+## Aktueller Stand (2026-05-27)
 
-- CI/CD: Letzter Bugfix-Push `9392edd` manuell deployed (git pull + migrate auf Server)
+- CI/CD: Letzter Deploy `d258263` (Translation-App Final-Cleanup)
 - Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
-- Letzter Deploy-Commit: `9392edd` (fix(nav): deleted_at in velocms_nav_items)
-- Server-Stand: Alle Phasen 12–22 + Bugfixes live auf 95.217.185.113
+- Server-Stand: Alle Phasen 12–23 live auf 95.217.185.113
 
 ### Was live ist:
 - ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users, Kontakt)
@@ -49,12 +49,11 @@
 - ✅ Wartungsmodus: maintenance_mode=1 → 503 für alle außer Admin+; /admin immer erreichbar
 - ✅ Sites-Verwaltung: /admin/sites (Superadmin) — CRUD, Status-Management, DB-Provisioning
 - ✅ Tenant-Routing: App::boot() → Tenant::resolve(); Single-Site (kein MASTER_DB) und Multi-Site (MASTER_DB), CLI-Guard, graceful Fallback
+- ✅ Translation-App: velocms_translations, DeepL+Anthropic, Glossar, CSV, Admin-Dashboard, 73 Tests
 
 ## Nächste Phase
 
-**Translation-App für VeloCMS** (nächstes Sub-Produkt von veloSolution)
-- Translation-Modul: Übersetzungsverwaltung im Admin, Layer-2-i18n-Unterstützung
-- Ggf. DeepL-API-Integration via `core/Services/TranslationService.php`
+Offen — wird in der nächsten Session definiert.
 
 ## Wichtige Server-Hinweise (neu)
 - PHP-Error-Log: `/var/log/fpm-php.www.log` — jetzt dauerhaft aktiv
