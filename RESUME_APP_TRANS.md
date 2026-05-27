@@ -1,6 +1,6 @@
 # VeloCMS — Translation-App RESUME
 > Produkt: veloSolution → veloCMS-PHP → App: Translation
-> Gestartet: 2026-05-26 | Status: 🔲 Phase 1 ausstehend
+> Gestartet: 2026-05-26 | Status: ✅ Abgeschlossen (2026-05-27)
 
 ---
 
@@ -182,7 +182,8 @@ RESUME_APP_TRANS.md                                  (Final-Update)
 
 **Audit 1 (Code-Review):** ✅ 18/18 Translation-Tests grün, 73/73 gesamt — keine Regression  
 **Audit 2 (Live-Verify):** ✅ Ausgeführt auf Server (PHP 8.2.31, PHPUnit 11.5.55)  
-**Commit:** 17bbd38 + 899e08c (Reflection-Fix)
+**Final-Cleanup:** ✅ Toter Code entfernt — stale Kommentare, _en-Felder aus BlogModel::update(), 7 tote Lang-Keys  
+**Commit:** 17bbd38 + 899e08c + 93a13da
 
 ---
 
