@@ -202,6 +202,16 @@ class AdminTranslationController extends Controller
             $this->redirectWithError('/admin/apps/translation/settings', t('translation.import_error'));
         }
 
+        if ($file['size'] > 5 * 1024 * 1024) {
+            $this->redirectWithError('/admin/apps/translation/settings', t('translation.import_error'));
+        }
+
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mime  = $finfo->file($file['tmp_name']);
+        if (!in_array($mime, ['text/plain', 'text/csv', 'application/csv', 'application/octet-stream'], true)) {
+            $this->redirectWithError('/admin/apps/translation/settings', t('translation.import_error'));
+        }
+
         $handle = fopen($file['tmp_name'], 'r');
         if ($handle === false) {
             $this->redirectWithError('/admin/apps/translation/settings', t('translation.import_error'));
@@ -224,6 +234,9 @@ class AdminTranslationController extends Controller
             $source = $cols[5] ?? 'manual';
 
             if (!preg_match('/^[a-z][a-z0-9_]*$/', $table)) {
+                continue;
+            }
+            if (!preg_match('/^[a-z][a-z0-9_]*$/', $field)) {
                 continue;
             }
             if (!preg_match('/^[a-z]{2}$/', $lang)) {

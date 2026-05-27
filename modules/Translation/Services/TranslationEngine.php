@@ -164,7 +164,8 @@ class TranslationEngine
     }
 
     /**
-     * Replace glossary source terms with numeric placeholders.
+     * Replace glossary source terms with stable ID-based placeholders.
+     * Only replaces inside text nodes — HTML tag attributes are never touched.
      *
      * @return array{0: string, 1: array<string,string>}
      */
@@ -175,17 +176,31 @@ class TranslationEngine
             return [$text, []];
         }
 
+        // Split into alternating text-nodes (even) and HTML tags (odd)
+        $segments = preg_split('/(<[^>]+>)/u', $text, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [$text];
+
         $map = [];
-        foreach ($terms as $i => $term) {
-            $placeholder = '[[VCMS_' . $i . ']]';
+        foreach ($terms as $term) {
+            $placeholder = '[[VCMS_TERM_' . $term['id'] . ']]';
             $pattern     = '/(?<![a-zA-Z0-9])' . preg_quote($term['source_term'], '/') . '(?![a-zA-Z0-9])/u';
-            if (preg_match($pattern, $text)) {
-                $text    = preg_replace($pattern, $placeholder, $text) ?? $text;
+            $found       = false;
+
+            foreach ($segments as $idx => $segment) {
+                if ($idx % 2 === 1) { // skip HTML tags
+                    continue;
+                }
+                if (preg_match($pattern, $segment)) {
+                    $segments[$idx] = preg_replace($pattern, $placeholder, $segment) ?? $segment;
+                    $found          = true;
+                }
+            }
+
+            if ($found) {
                 $map[$placeholder] = $term['target_term'];
             }
         }
 
-        return [$text, $map];
+        return [implode('', $segments), $map];
     }
 
     /** Restore glossary target terms from placeholders. */
