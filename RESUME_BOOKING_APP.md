@@ -1,6 +1,6 @@
 # VeloCMS — Booking-App RESUME
 > Produkt: veloSolution → veloCMS-PHP → App: Booking
-> Gestartet: 2026-05-27 | Status: ✅ Phase 1 abgeschlossen — Phase 2 offen
+> Gestartet: 2026-05-27 | Status: ✅ Phase 2 abgeschlossen — Phase 3 offen
 
 ---
 
@@ -144,7 +144,7 @@ velocms_booking_templates   (id, template_key VARCHAR(50), config JSON, created_
 | Phase | Titel | Status |
 |-------|-------|--------|
 | 1 | Foundation: Modulstruktur, Migrations, Core-Entities | ✅ Abgeschlossen |
-| 2 | AvailabilityEngine + BookingService (SELECT FOR UPDATE) | 🔲 Offen |
+| 2 | AvailabilityEngine + BookingService (SELECT FOR UPDATE) | ✅ Abgeschlossen |
 | 3 | Admin-UI: Dashboard, Ressourcen, Buchungsübersicht | 🔲 Offen |
 | 4 | Extension-System: BookingTemplateInterface + 3 Branchen-Templates | 🔲 Offen |
 | 5 | REST-API + Frontend-Buchungswidget | 🔲 Offen |
@@ -182,20 +182,22 @@ lang/en.php                                                  (booking.* Keys)
 ---
 
 ## Phase 2 — AvailabilityEngine + BookingService
-**Status:** 🔲 Offen
+**Status:** ✅ Abgeschlossen
 
-### Geplante Dateien
+### Erstellte Dateien
 ```
 modules/Booking/Core/Services/AvailabilityEngine.php
 modules/Booking/Core/Services/BookingService.php
+modules/Booking/Core/Services/BookingConflictException.php
+modules/Booking/Core/Services/BookingOutsideSlotsException.php
 modules/Booking/Models/ResourceModel.php
 modules/Booking/Models/BookingModel.php
 modules/Booking/Models/SlotModel.php
 ```
 
-**Audit 1 (Code-Review):** 🔲  
-**Audit 2 (Live-Verify):** 🔲  
-**Commit:** —
+**Audit 1 (Code-Review):** ✅ Fix: DateTimeImmutable::modify() false-Guard in isWithinSlot()  
+**Audit 2 (Live-Verify):** ✅ PHP-Syntax ok, 73/73 Tests grün  
+**Commit:** 945a9a9
 
 ---
 
