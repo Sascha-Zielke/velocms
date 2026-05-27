@@ -128,9 +128,20 @@
             handle.setAttribute('aria-hidden', 'true');
             handle.title = 'Verschieben';
 
-            // Click anywhere on box content → open popover on that box
+            // Visible edit button — positioned inside content, always within bounds
+            const editBtn = document.createElement('button');
+            editBtn.className = 've-edit-btn';
+            editBtn.type      = 'button';
+            editBtn.title     = 'Bearbeiten (Box ' + boxId + ')';
+            editBtn.innerHTML = '✎';
+            editBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                openPopover(boxId, wrap);
+            });
+
+            // Also: click anywhere on the inner content → open popover
             inner.addEventListener('click', e => {
-                if (e.target.closest('.ve-drag-handle')) return;
+                if (e.target.closest('.ve-drag-handle') || e.target.closest('.ve-edit-btn')) return;
                 e.stopPropagation();
                 openPopover(boxId, wrap);
             });
@@ -139,6 +150,7 @@
             wrap.appendChild(inner);
             inner.appendChild(handle);
             inner.appendChild(el);
+            inner.appendChild(editBtn);
         });
     }
 
@@ -238,21 +250,21 @@
     }
 
     function positionPopover(anchorEl) {
-        const rect   = anchorEl.getBoundingClientRect();
+        const rect   = anchorEl.getBoundingClientRect(); // viewport-relative (good for position:fixed)
         const vw     = window.innerWidth;
         const vh     = window.innerHeight;
         const pw     = 340;
         const offset = 12;
 
-        // Prefer right side of box; fall back to left
+        // Prefer right of box; fall back to left; last resort: pin to right edge
         let left = rect.right + offset;
         if (left + pw > vw - 8) left = rect.left - pw - offset;
         if (left < 8)           left = vw - pw - 8;
 
         // Align to top of box, clamped to viewport
-        let top = rect.top + window.scrollY;
-        if (top < window.scrollY + 8)          top = window.scrollY + 8;
-        if (top > window.scrollY + vh - 60)    top = window.scrollY + vh - 60;
+        let top = rect.top;
+        if (top < 8)        top = 8;
+        if (top > vh - 60)  top = vh - 60;
 
         popover.style.left = left + 'px';
         popover.style.top  = top  + 'px';

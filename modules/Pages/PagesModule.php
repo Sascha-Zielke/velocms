@@ -48,6 +48,13 @@ class PagesModule extends Module
             'icon'     => 'file',
             'position' => 10,
         ]);
+
+        $this->admin->addMenuItem([
+            'label'    => 'Visual Editor',
+            'url'      => '/admin/visual-editor',
+            'icon'     => 'edit',
+            'position' => 11,
+        ]);
     }
 
     public function install(): void

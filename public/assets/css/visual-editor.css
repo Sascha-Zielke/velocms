@@ -147,32 +147,37 @@ body.ve-active {
     right: 2px; bottom: 2px;
 }
 
-/* ── Edit hint (shows on hover) ──────────────────────────────────────────── */
-.ve-box-wrap:hover > .ve-box-inner::after {
-    content: '✎ Bearbeiten';
+/* ── Edit button (inside box, always within bounds) ──────────────────────── */
+.ve-edit-btn {
     position: absolute;
-    top: 22px;
+    top: 20px;
     right: 8px;
+    z-index: 40;
+    width: 30px;
+    height: 30px;
     background: #C9A227;
     color: #111;
-    font-size: 0.68rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 3px;
-    pointer-events: none;
-    z-index: 40;
-    white-space: nowrap;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    transition: background 0.15s, transform 0.1s;
+    line-height: 1;
 }
-.ve-box-wrap.is-active > .ve-box-inner::after {
-    content: none;
+.ve-box-wrap:hover .ve-edit-btn,
+.ve-box-wrap.is-active .ve-edit-btn {
+    display: flex;
 }
+.ve-edit-btn:hover  { background: #B8921F; transform: scale(1.08); }
+.ve-edit-btn:active { transform: scale(0.95); }
 
 /* ── Floating Popover ────────────────────────────────────────────────────── */
 .ve-popover {
-    position: absolute;
+    position: fixed;
     top: 100px;
     left: 100px;
     width: 340px;
