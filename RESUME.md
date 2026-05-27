@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-27 | Letzte Session: Booking-App vollständig abgeschlossen (Phase 24)
+> Stand: 2026-05-27 | Letzte Session: Maxiworx Website — Phase 25 abgeschlossen
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -29,10 +29,11 @@
 | 22 | Tenant-Routing (App::boot → Tenant::resolve, Single+Multi-Site, CLI-Guard) | ✅ DONE |
 | 23 | Translation-App (7 Phasen: DB, Engine, Switcher, Dashboard, Glossar, CSV, Tests) | ✅ DONE |
 | 24 | Booking-App (7 Phasen: Foundation, AvailabilityEngine, Admin-UI, Templates, API, Mail, Tests) | ✅ DONE |
+| 25 | Maxiworx Website (CSS-Theme, Layout, 9 Views, Module+Controller, Booking-Overlay) | ✅ DONE |
 
 ## Aktueller Stand (2026-05-27)
 
-- CI/CD: Letzter Deploy `6baf30c` (Booking-App Phase 7 Final-Audit)
+- CI/CD: Letzter Deploy `6c28a78` (Maxiworx Website Phase 25)
 - Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
 - Server-Stand: Alle Phasen 12–24 live auf 95.217.185.113
 
@@ -52,10 +53,15 @@
 - ✅ Tenant-Routing: App::boot() → Tenant::resolve(); Single-Site (kein MASTER_DB) und Multi-Site (MASTER_DB), CLI-Guard, graceful Fallback
 - ✅ Translation-App: velocms_translations, DeepL+Anthropic, Glossar, CSV, Admin-Dashboard, 73 Tests
 - ✅ Booking-App: URS (generic Resource), SELECT FOR UPDATE, Admin-CRUD, 4 Branchen-Templates, REST-API, Widget, E-Mail, 92 Tests
+- ✅ Maxiworx Website: modules/Maxiworx/ — eigenes CSS-Theme (#C9A227, Barlow), Layout mit Overlay-Modal, Home (5 Sektionen), 8 Unterseiten, Book-Session + Kontakt-POST
 
 ## Nächste Phase
 
-Offen — wird in der nächsten Session definiert.
+- Logo platzieren: `public/assets/images/maxiworx-logo.png` (vom User bereitgestellt)
+- Echte Bilder (Hero, Hardware, Portfolio) einfügen
+- Impressum / Datenschutz / AGB mit echten Rechtstexten befüllen
+- E-Mail-Adressen in MaxiworxController anpassen (booking@maxiworx.de / kontakt@maxiworx.de)
+- Backoffice-Website-Workflow.md Section 7 nach erstem Live-Test ausfüllen
 
 ## Wichtige Server-Hinweise (neu)
 - PHP-Error-Log: `/var/log/fpm-php.www.log` — jetzt dauerhaft aktiv
