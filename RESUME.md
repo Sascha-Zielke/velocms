@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-27 | Letzte Session: Translation-App vollständig abgeschlossen (Phase 23)
+> Stand: 2026-05-27 | Letzte Session: Booking-App vollständig abgeschlossen (Phase 24)
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -28,12 +28,13 @@
 | 21 | Tenant-Provisioning Superadmin-UI (Sites-CRUD, DB-Provisioning) | ✅ DONE |
 | 22 | Tenant-Routing (App::boot → Tenant::resolve, Single+Multi-Site, CLI-Guard) | ✅ DONE |
 | 23 | Translation-App (7 Phasen: DB, Engine, Switcher, Dashboard, Glossar, CSV, Tests) | ✅ DONE |
+| 24 | Booking-App (7 Phasen: Foundation, AvailabilityEngine, Admin-UI, Templates, API, Mail, Tests) | ✅ DONE |
 
 ## Aktueller Stand (2026-05-27)
 
-- CI/CD: Letzter Deploy `d258263` (Translation-App Final-Cleanup)
+- CI/CD: Letzter Deploy `6baf30c` (Booking-App Phase 7 Final-Audit)
 - Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
-- Server-Stand: Alle Phasen 12–23 live auf 95.217.185.113
+- Server-Stand: Alle Phasen 12–24 live auf 95.217.185.113
 
 ### Was live ist:
 - ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users, Kontakt)
@@ -50,6 +51,7 @@
 - ✅ Sites-Verwaltung: /admin/sites (Superadmin) — CRUD, Status-Management, DB-Provisioning
 - ✅ Tenant-Routing: App::boot() → Tenant::resolve(); Single-Site (kein MASTER_DB) und Multi-Site (MASTER_DB), CLI-Guard, graceful Fallback
 - ✅ Translation-App: velocms_translations, DeepL+Anthropic, Glossar, CSV, Admin-Dashboard, 73 Tests
+- ✅ Booking-App: URS (generic Resource), SELECT FOR UPDATE, Admin-CRUD, 4 Branchen-Templates, REST-API, Widget, E-Mail, 92 Tests
 
 ## Nächste Phase
 
