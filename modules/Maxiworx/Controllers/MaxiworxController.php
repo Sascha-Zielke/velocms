@@ -12,6 +12,24 @@ class MaxiworxController extends Controller
 {
     // ─── Page data helpers ───────────────────────────────────────────────────
 
+    /** True when a logged-in admin opens the page with ?ve_edit=1 */
+    private function isVeMode(): bool
+    {
+        return Auth::check() && isset($_GET['ve_edit']);
+    }
+
+    /** Return the DB id of a section by index, or 0 if not found. */
+    private function sectionId(array $sections, int $secIdx): int
+    {
+        return (int) ($sections[$secIdx]['id'] ?? 0);
+    }
+
+    /** Return the DB id of a box at [secIdx][row=0][boxIdx], or 0 if not found. */
+    private function boxId(array $sections, int $secIdx, int $boxIdx = 0): int
+    {
+        return (int) ($sections[$secIdx]['rows'][0]['boxes'][$boxIdx]['id'] ?? 0);
+    }
+
     /**
      * Load all sections (with rows + boxes) for a given page slug.
      * Returns [] if the page doesn't exist in the DB yet (graceful degradation).
@@ -57,66 +75,72 @@ class MaxiworxController extends Controller
 
     public function home(): void
     {
-        $sections  = $this->loadPage('home');
+        $rawSections = $this->loadPage('home');
+        $veMode      = $this->isVeMode();
 
         // Section 0 → hero text
-        $hero      = $this->boxContent($sections, 0);
+        $hero      = $this->boxContent($rawSections, 0);
         // Section 1 → portfolio / reference cards
-        $portfolio = $this->sectionBoxes($sections, 1);
+        $portfolio = $this->sectionBoxes($rawSections, 1);
         // Section 2 → gear / hardware items
-        $gear      = $this->sectionBoxes($sections, 2);
+        $gear      = $this->sectionBoxes($rawSections, 2);
         // Section 3 → service cards
-        $services  = $this->sectionBoxes($sections, 3);
+        $services  = $this->sectionBoxes($rawSections, 3);
         // Section 4 → CTA block
-        $cta       = $this->boxContent($sections, 4);
+        $cta       = $this->boxContent($rawSections, 4);
 
-        $this->render('home', compact('hero', 'portfolio', 'gear', 'services', 'cta'));
+        $this->render('home', compact('hero', 'portfolio', 'gear', 'services', 'cta', 'veMode', 'rawSections'));
     }
 
     public function equipment(): void
     {
-        $sections    = $this->loadPage('equipment');
-        $innerHero   = $this->boxContent($sections, 0);   // label, title, subtitle
-        $pageContent = $this->boxContent($sections, 1);   // html
+        $rawSections = $this->loadPage('equipment');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);   // label, title, subtitle
+        $pageContent = $this->boxContent($rawSections, 1);   // html
 
-        $this->render('equipment', compact('innerHero', 'pageContent'));
+        $this->render('equipment', compact('innerHero', 'pageContent', 'veMode', 'rawSections'));
     }
 
     public function servicePreise(): void
     {
-        $sections    = $this->loadPage('service-preise');
-        $innerHero   = $this->boxContent($sections, 0);
-        $services    = $this->sectionBoxes($sections, 1); // icon, title, items[], price
-        $pageContent = $this->boxContent($sections, 2);   // html (Pakete & Bundles prose)
+        $rawSections = $this->loadPage('service-preise');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);
+        $services    = $this->sectionBoxes($rawSections, 1); // icon, title, items[], price
+        $pageContent = $this->boxContent($rawSections, 2);   // html (Pakete & Bundles prose)
 
-        $this->render('service-preise', compact('innerHero', 'services', 'pageContent'));
+        $this->render('service-preise', compact('innerHero', 'services', 'pageContent', 'veMode', 'rawSections'));
     }
 
     public function specials(): void
     {
-        $sections    = $this->loadPage('specials');
-        $innerHero   = $this->boxContent($sections, 0);
-        $pageContent = $this->boxContent($sections, 1);
+        $rawSections = $this->loadPage('specials');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);
+        $pageContent = $this->boxContent($rawSections, 1);
 
-        $this->render('specials', compact('innerHero', 'pageContent'));
+        $this->render('specials', compact('innerHero', 'pageContent', 'veMode', 'rawSections'));
     }
 
     public function referenzen(): void
     {
-        $sections    = $this->loadPage('referenzen');
-        $innerHero   = $this->boxContent($sections, 0);
-        $projects    = $this->sectionBoxes($sections, 1); // title, genre, description
+        $rawSections = $this->loadPage('referenzen');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);
+        $projects    = $this->sectionBoxes($rawSections, 1); // title, genre, description
 
-        $this->render('referenzen', compact('innerHero', 'projects'));
+        $this->render('referenzen', compact('innerHero', 'projects', 'veMode', 'rawSections'));
     }
 
     public function kontakt(): void
     {
-        $sections  = $this->loadPage('kontakt');
-        $innerHero = $this->boxContent($sections, 0);
-        $info      = $this->boxContent($sections, 1); // address, email, hours
+        $rawSections = $this->loadPage('kontakt');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);
+        $info        = $this->boxContent($rawSections, 1); // address, email, hours
 
-        $this->render('kontakt', compact('innerHero', 'info'));
+        $this->render('kontakt', compact('innerHero', 'info', 'veMode', 'rawSections'));
     }
 
     public function kontaktSend(): void
@@ -146,29 +170,32 @@ class MaxiworxController extends Controller
 
     public function impressum(): void
     {
-        $sections    = $this->loadPage('impressum');
-        $innerHero   = $this->boxContent($sections, 0);
-        $pageContent = $this->boxContent($sections, 1);
+        $rawSections = $this->loadPage('impressum');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);
+        $pageContent = $this->boxContent($rawSections, 1);
 
-        $this->render('impressum', compact('innerHero', 'pageContent'));
+        $this->render('impressum', compact('innerHero', 'pageContent', 'veMode', 'rawSections'));
     }
 
     public function datenschutz(): void
     {
-        $sections    = $this->loadPage('datenschutz');
-        $innerHero   = $this->boxContent($sections, 0);
-        $pageContent = $this->boxContent($sections, 1);
+        $rawSections = $this->loadPage('datenschutz');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);
+        $pageContent = $this->boxContent($rawSections, 1);
 
-        $this->render('datenschutz', compact('innerHero', 'pageContent'));
+        $this->render('datenschutz', compact('innerHero', 'pageContent', 'veMode', 'rawSections'));
     }
 
     public function agb(): void
     {
-        $sections    = $this->loadPage('agb');
-        $innerHero   = $this->boxContent($sections, 0);
-        $pageContent = $this->boxContent($sections, 1);
+        $rawSections = $this->loadPage('agb');
+        $veMode      = $this->isVeMode();
+        $innerHero   = $this->boxContent($rawSections, 0);
+        $pageContent = $this->boxContent($rawSections, 1);
 
-        $this->render('agb', compact('innerHero', 'pageContent'));
+        $this->render('agb', compact('innerHero', 'pageContent', 'veMode', 'rawSections'));
     }
 
     public function bookSession(): void

@@ -10,17 +10,21 @@ $heroLabel = e($innerHero['label'] ?? 'Legal');
 $heroTitle = e($innerHero['title'] ?? 'Datenschutzerklärung');
 ?>
 
-<div class="mw-inner-hero">
+<?php $veSec0 = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
+<?php $veBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<div class="mw-inner-hero" <?= $veSec0 ? "data-ve-section=\"{$veSec0}\" data-ve-label=\"Intro\"" : '' ?>>
     <div class="mw-container">
-        <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
+        <span class="mw-label mw-inner-hero__label" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>><?= $heroLabel ?></span>
         <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
     </div>
 </div>
 
-<section class="mw-section">
+<?php $veSec1 = ($veMode ?? false) ? ($rawSections[1]['id'] ?? 0) : 0; ?>
+<?php $veBox1 = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<section class="mw-section" <?= $veSec1 ? "data-ve-section=\"{$veSec1}\" data-ve-label=\"Inhalt\"" : '' ?>>
     <div class="mw-container">
         <?php if (!empty($pageContent['html'])): ?>
-        <div class="mw-prose"><?= safe_html($pageContent['html']) ?></div>
+        <div class="mw-prose" <?= $veBox1 ? "data-ve-box=\"{$veBox1}\"" : '' ?>><?= safe_html($pageContent['html']) ?></div>
         <?php else: ?>
         <div class="mw-placeholder-content">
             <div class="mw-placeholder-banner">

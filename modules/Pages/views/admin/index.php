@@ -33,6 +33,9 @@
                 <a href="/admin/pages/edit/<?= (int)$page['id'] ?>" class="vcms-btn vcms-btn--sm">
                     <?= t('action.edit') ?>
                 </a>
+                <a href="/<?= e($page['slug']) ?>?ve_edit=1" class="vcms-btn vcms-btn--sm vcms-btn--ghost" title="Visual Editor">
+                    ⚙ VE
+                </a>
                 <a href="/<?= e($page['slug']) ?>" target="_blank" class="vcms-btn vcms-btn--sm vcms-btn--ghost">
                     <?= t('action.preview') ?>
                 </a>

@@ -26,7 +26,12 @@ $nav = [
     <meta property="og:title"       content="<?= e($fullTitle) ?>">
     <meta property="og:description" content="<?= e($metaDesc) ?>">
     <meta property="og:site_name"   content="Maxiworx">
+    <link rel="stylesheet" href="/assets/css/sites/maxiworx.webzite-newmedia.com/theme.css">
     <link rel="stylesheet" href="/assets/css/maxiworx.css">
+    <?php if (\VeloCMS\Core\Auth::check() && isset($_GET['ve_edit'])): ?>
+    <meta name="csrf-token" content="<?= e($_SESSION['csrf_token'] ?? '') ?>">
+    <link rel="stylesheet" href="/assets/css/visual-editor.css">
+    <?php endif ?>
     <?= $this->yield('head') ?>
 </head>
 <body class="mw-body">
@@ -199,6 +204,11 @@ $nav = [
         </div>
     </div>
 </footer>
+
+<!-- ─── Visual Editor ────────────────────────────────────────────────────────── -->
+<?php if (\VeloCMS\Core\Auth::check() && isset($_GET['ve_edit'])): ?>
+<script src="/assets/js/visual-editor.js"></script>
+<?php endif ?>
 
 <!-- ─── Scripts ──────────────────────────────────────────────────────────────── -->
 <script>

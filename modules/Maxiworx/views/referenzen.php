@@ -24,15 +24,18 @@ $refsDefault = [
 $refs = !empty($projects) ? $projects : $refsDefault;
 ?>
 
-<div class="mw-inner-hero">
+<?php $veSec0 = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
+<?php $veBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<div class="mw-inner-hero" <?= $veSec0 ? "data-ve-section=\"{$veSec0}\" data-ve-label=\"Intro\"" : '' ?>>
     <div class="mw-container">
-        <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
+        <span class="mw-label mw-inner-hero__label" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>><?= $heroLabel ?></span>
         <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
         <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
     </div>
 </div>
 
-<section class="mw-section">
+<?php $veSec1 = ($veMode ?? false) ? ($rawSections[1]['id'] ?? 0) : 0; ?>
+<section class="mw-section" <?= $veSec1 ? "data-ve-section=\"{$veSec1}\" data-ve-label=\"Referenzen\"" : '' ?>>
     <div class="mw-container">
         <?php if (empty($projects)): ?>
         <div class="mw-placeholder-banner" style="margin-bottom:3rem">
@@ -40,8 +43,9 @@ $refs = !empty($projects) ? $projects : $refsDefault;
         </div>
         <?php endif ?>
         <div class="mw-portfolio__grid">
-            <?php foreach ($refs as $r): ?>
-            <div class="mw-portfolio__item">
+            <?php foreach ($refs as $rIdx => $r): ?>
+            <?php $veBoxR = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][$rIdx]['id'] ?? 0) : 0; ?>
+            <div class="mw-portfolio__item" <?= $veBoxR ? "data-ve-box=\"{$veBoxR}\"" : '' ?>>
                 <div class="mw-portfolio__placeholder">
                     <div style="text-align:center;padding:1rem">
                         <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:rgba(201,162,39,.6);margin-bottom:.3rem">

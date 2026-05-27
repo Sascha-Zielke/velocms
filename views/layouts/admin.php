@@ -12,18 +12,17 @@ $currentLang = ($l = $_COOKIE['vcms_admin_lang'] ?? '') && in_array($l, $activeL
     <meta name="csrf-token" content="<?= e($_SESSION['csrf_token'] ?? '') ?>">
     <title>VeloCMS Admin</title>
     <link rel="stylesheet" href="/assets/css/admin.css">
-    <?php if (str_contains(\VeloCMS\Core\Tenant::domain(), 'maxiworx')): ?>
-    <link rel="stylesheet" href="/assets/css/maxiworx-admin.css">
+    <?php
+    $_veDomain    = \VeloCMS\Core\Tenant::domain();
+    $_veThemePath = $_SERVER['DOCUMENT_ROOT'] . '/assets/css/sites/' . $_veDomain . '/theme.css';
+    if (file_exists($_veThemePath)):
+    ?>
+    <link rel="stylesheet" href="/assets/css/sites/<?= e($_veDomain) ?>/theme.css">
     <?php endif ?>
 </head>
 <body class="vcms-admin">
 
-<?php
-$adminLogoName = match(true) {
-    str_contains(\VeloCMS\Core\Tenant::domain(), 'maxiworx') => 'Maxiworx',
-    default => setting('site_name', 'VeloCMS'),
-};
-?>
+<?php $adminLogoName = setting('site_name', 'VeloCMS'); ?>
 <div class="vcms-sidebar">
     <div class="vcms-logo">
         <a href="/admin"><?= e($adminLogoName) ?></a>

@@ -23,6 +23,7 @@ class PagesModule extends Module
         $this->router->post('/admin/pages/[i:id]/section/add',  'Pages\Controllers\AdminPagesController@addSection');
         $this->router->post('/admin/pages/section/[i:id]/row/add', 'Pages\Controllers\AdminPagesController@addRow');
         $this->router->post('/admin/pages/row/[i:id]/box/add',  'Pages\Controllers\AdminPagesController@addBox');
+        $this->router->get('/admin/pages/box/[i:id]/data',      'Pages\Controllers\AdminPagesController@boxData');
         $this->router->post('/admin/pages/box/[i:id]/save',     'Pages\Controllers\AdminPagesController@saveBox');
         $this->router->post('/admin/pages/box/[i:id]/delete',   'Pages\Controllers\AdminPagesController@deleteBox');
         $this->router->post('/admin/pages/section/[i:id]/delete', 'Pages\Controllers\AdminPagesController@deleteSection');

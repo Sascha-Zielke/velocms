@@ -1,0 +1,75 @@
+/*
+ * Maxiworx — Site Theme
+ * /public/assets/css/sites/maxiworx.webzite-newmedia.com/theme.css
+ *
+ * Loaded in BOTH frontend (views/layouts/maxiworx.php) and
+ * admin (views/layouts/admin.php) for any tenant whose domain has this file.
+ *
+ * Contains:
+ *  1. Site-specific CSS design tokens (--color-primary, etc.)
+ *  2. VeloCMS admin variable overrides so the admin adopts this brand
+ */
+
+/* ── Google Fonts (shared between frontend and admin) ─────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+
+/* ── Site Design Tokens ───────────────────────────────────────────────────── */
+:root {
+    /* Brand colours */
+    --color-primary:      #C9A227;
+    --color-primary-dark: #B8921F;
+    --color-secondary:    #0D0D0D;
+    --color-surface:      #161616;
+    --color-text:         #E8E8E8;
+    --color-muted:        rgba(255, 255, 255, 0.55);
+
+    /* Typography */
+    --font-family:        'Barlow', sans-serif;
+    --font-display:       'Barlow Condensed', sans-serif;
+
+    /* Shape */
+    --radius-base:        4px;
+
+    /* ── VeloCMS admin variable overrides ────────────────────────────────── */
+    /* These apply when admin.php loads this file for the Maxiworx tenant.   */
+    --vcms-accent:        #C9A227;
+    --vcms-accent-dark:   #B8921F;
+    --vcms-sidebar-bg:    #111111;
+    --vcms-sidebar-text:  rgba(255, 255, 255, 0.62);
+    --vcms-sidebar-hover: #1C1C1C;
+    --vcms-warning:       #C9A227;
+}
+
+/* ── Admin-specific overrides (only take effect inside .vcms-admin) ─────── */
+.vcms-admin .vcms-logo a {
+    color: var(--color-primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+}
+
+.vcms-admin .vcms-nav__item:hover,
+.vcms-admin .vcms-nav__item.is-active {
+    background: rgba(201, 162, 39, 0.10);
+    color: var(--color-primary);
+}
+
+.vcms-admin .vcms-nav__section {
+    color: rgba(201, 162, 39, 0.40);
+}
+
+.vcms-admin .vcms-btn--primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #111;
+}
+.vcms-admin .vcms-btn--primary:hover {
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+.vcms-admin a:focus-visible {
+    outline-color: var(--color-primary);
+}

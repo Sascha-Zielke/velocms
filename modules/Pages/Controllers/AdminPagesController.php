@@ -89,6 +89,22 @@ class AdminPagesController extends Controller
 
     // --- Visual Editor API endpoints (return JSON) ---
 
+    public function boxData(string $id): void
+    {
+        $box = $this->model->getBox((int) $id);
+        if (!$box) {
+            $this->json(['ok' => false]);
+            return;
+        }
+        $data = is_array($box['data'] ?? null) ? $box['data'] : [];
+        $this->json([
+            'ok'      => true,
+            'type'    => $box['type'] ?? 'text',
+            'content' => $data['content'] ?? [],
+            'data'    => $data,
+        ]);
+    }
+
     public function addSection(string $id): void
     {
         Auth::verifyCsrf();
