@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-27 | Letzte Session: Maxiworx Website — Phase 25 abgeschlossen
+> Stand: 2026-05-27 | Letzte Session: Maxiworx Refactor (Phase 25b) abgeschlossen
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -30,55 +30,61 @@
 | 23 | Translation-App (7 Phasen: DB, Engine, Switcher, Dashboard, Glossar, CSV, Tests) | ✅ DONE |
 | 24 | Booking-App (7 Phasen: Foundation, AvailabilityEngine, Admin-UI, Templates, API, Mail, Tests) | ✅ DONE |
 | 25 | Maxiworx Website (CSS-Theme, Layout, 9 Views, Module+Controller, Booking-Overlay) | ✅ DONE |
+| 25b | Maxiworx Refactor: DB-Content, Gold-Admin-Theme, Visual Editor Nav | ✅ DONE |
 
-## Aktueller Stand (2026-05-27)
+## Maxiworx Tenant — Vollständiger Stand (2026-05-27)
 
-- CI/CD: Letzter Deploy `6c28a78` (Maxiworx Website Phase 25)
-- Deploy-Pipeline: Push → Test → SSH-Deploy → migrate → php-fpm reload
-- Server-Stand: Alle Phasen 12–24 live auf 95.217.185.113
+### Technisch
+- Domain: maxiworx.webzite-newmedia.com (Ionos DNS → 95.217.185.113)
+- DB: velocms_maxiworx (Schema-Kopie von velocms_site_a)
+- Nginx: /etc/nginx/sites-available/maxiworx (SSL via Let's Encrypt, gültig bis 2026-08-25)
+- Basic Auth: /etc/nginx/.htpasswd_maxiworx (Preview-Schutz)
+- Admin-User: s.zielke84@gmail.com
 
-### Was live ist:
-- ✅ Admin: /admin (Login, Dashboard, Blog, Pages, Media, Nav, Settings, Users, Kontakt)
-- ✅ Frontend: Pages mit Visual Editor, Blog-Liste + Einzelpost
-- ✅ Navigation: DB-basiert via nav()-Helper, Admin-verwaltbar
-- ✅ Settings: Keys inkl. Contact-Settings
-- ✅ SEO: /sitemap.xml, /robots.txt, Canonical-URLs, OG-Tags
-- ✅ Error-Pages: 404/403/500 mit eigenem Design
-- ✅ User-Management: CRUD, editor/admin/superadmin, Passwort-Reset
-- ✅ Kontaktformular: /kontakt — DSGVO, Honeypot, Rate-Limit, PHP mail(), Admin-Inbox
-- ✅ Frontend-Theme: CSS Design-Tokens, Sticky Header, Responsive Nav (Hamburger), Dark Mode, Print, Scroll-Reveal
-- ✅ Passwort-Reset: /admin/password/reset — Token (SHA-256, 1h TTL, Single-Use), PHP mail(), kein User-Enumeration
-- ✅ Wartungsmodus: maintenance_mode=1 → 503 für alle außer Admin+; /admin immer erreichbar
-- ✅ Sites-Verwaltung: /admin/sites (Superadmin) — CRUD, Status-Management, DB-Provisioning
-- ✅ Tenant-Routing: App::boot() → Tenant::resolve(); Single-Site (kein MASTER_DB) und Multi-Site (MASTER_DB), CLI-Guard, graceful Fallback
-- ✅ Translation-App: velocms_translations, DeepL+Anthropic, Glossar, CSV, Admin-Dashboard, 73 Tests
-- ✅ Booking-App: URS (generic Resource), SELECT FOR UPDATE, Admin-CRUD, 4 Branchen-Templates, REST-API, Widget, E-Mail, 92 Tests
-- ✅ Maxiworx Website: modules/Maxiworx/ — eigenes CSS-Theme (#C9A227, Barlow), Layout mit Overlay-Modal, Home (5 Sektionen), 8 Unterseiten, Book-Session + Kontakt-POST
+### Code-Architektur (nach Phase 25b)
+- modules/Maxiworx/MaxiworxModule.php — Tenant-Guard via Tenant::domain(), routes, Visual Editor Nav-Item
+- modules/Maxiworx/Controllers/MaxiworxController.php — lädt jede Page aus DB via PagesModel; graceful [] fallback
+- modules/Maxiworx/views/ — 9 Views (home + 8 Unterseiten); DB-Content mit hardcoded Fallbacks
+- public/assets/css/maxiworx.css — Frontend-Theme (Gold #C9A227, Dark #0D0D0D, Barlow-Fonts)
+- public/assets/css/maxiworx-admin.css — Admin-Theme (CSS-Variablen-Override: Gold/Dark)
+- views/layouts/admin.php — lädt maxiworx-admin.css per Tenant::domain()-Check; zeigt "Maxiworx" als Logo
+- views/layouts/maxiworx.php — Custom Frontend-Layout (Header, Footer, Booking-Overlay)
+- scripts/mw_seed_pages.php — Einmalig ausgeführt 2026-05-27; erstellt alle 9 Pages in DB
 
-## Nächste Phase
+### DB-Content (velocms_maxiworx nach Seed)
+- 9 Pages in velocms_pages (slug: home, equipment, service-preise, specials, referenzen, kontakt, impressum, datenschutz, agb)
+- Alle mit Sections + Rows + Boxes befüllt
+- home: 5 Sektionen (hero, portfolio, hardware, services, cta), 13 Boxes
+- settings: homepage_slug=home, site_name=Maxiworx
 
-- Logo platzieren: `public/assets/images/maxiworx-logo.png` (vom User bereitgestellt)
-- Echte Bilder (Hero, Hardware, Portfolio) einfügen
-- Impressum / Datenschutz / AGB mit echten Rechtstexten befüllen
-- E-Mail-Adressen in MaxiworxController anpassen (booking@maxiworx.de / kontakt@maxiworx.de)
-- Backoffice-Website-Workflow.md Section 7 nach erstem Live-Test ausfüllen
+### Admin-UI
+- Visual Editor (→ /admin/pages) zwischen Dashboard und Seiten im Sidebar
+- Sidebar-Logo zeigt Maxiworx (gold)
+- Sidebar-Hintergrund: #111111, Accent: #C9A227
 
-## Wichtige Server-Hinweise (neu)
-- PHP-Error-Log: `/var/log/fpm-php.www.log` — jetzt dauerhaft aktiv
-- `git pull` als root schlägt fehl (kein SSH-Key) → immer `sudo -u velocms git pull`
-- Lokale Änderungen auf dem Server blockieren CI-Deploy → nach manuellem Server-Edit immer `git checkout -- <datei>` vorher
+## Nächste Schritte (Prio-Reihenfolge)
+
+1. **Logo** — public/assets/images/maxiworx/logo.png platzieren (User hat das Logo)
+2. **Bilder** — Hero-Foto (hero-studio.jpg), Hardware-Grid-Bilder, Portfolio-Artwork
+3. **Rechtstexte** — Impressum, Datenschutz, AGB via Visual Editor befüllen (/admin/pages)
+4. **Backoffice-Website-Workflow.md** — Section 7 mit Learnings aus Phase 25+25b befüllen
+5. **Domain-Wechsel** — maxiworx.de wenn Kunde ready; DNS → Nginx vhost anpassen
+
+## Wichtige Server-Hinweise
+- PHP-Error-Log: /var/log/fpm-php.www.log — jetzt dauerhaft aktiv
+- git pull als root schlägt fehl → immer sudo -u velocms git pull
+- Seed-Script: /var/www/velocms/scripts/mw_seed_pages.php — sicher wiederholt ausführbar (SKIP wenn vorhanden)
+- Nach manuellem root-git-Befehl: chown -R velocms:velocms /var/www/velocms/
 
 ## Wichtige Pfade & Credentials
 - Webroot: /var/www/velocms/public/
 - DB User: velocms / VeloCMS_DB_Secure_2026!
-- DB Name: velocms_site_a | Master: velocms_master
+- DB Namen: velocms_site_a | velocms_master | velocms_maxiworx
 - Superadmin: s.zielke84@gmail.com
 - GitHub: https://github.com/Sascha-Zielke/velocms
 
 ## CI-Pipeline — Wichtige Hinweise
-- PHPUnit: `colors="true"` ist korrekt (xs:boolean, NICHT enum)
-- Kein `--no-interaction` bei PHPUnit (nur bei Composer)
-- Deploy-User: velocms — `.git` muss ihm gehören
-- Nach manuellem root-git-Befehl: `chown -R velocms:velocms /var/www/velocms/` (ganzes Verzeichnis, nicht nur .git!)
-- `git reset --hard` als root erzeugt 600-Dateien (root umask) → danach immer `find /var/www/velocms -not -path '*/.git/*' -type f -exec chmod 644 {} \;` und `-type d -exec chmod 755 {} \;`
-- Nginx realpath() braucht 755 auf `/var/www/velocms/` und `/var/www/velocms/public/`
+- PHPUnit: colors=true ist korrekt (xs:boolean, NICHT enum)
+- Kein --no-interaction bei PHPUnit (nur bei Composer)
+- Deploy-User: velocms — .git muss ihm gehören
+- Nach manuellem root-git-Befehl: chown -R velocms:velocms /var/www/velocms/
