@@ -61,15 +61,24 @@
     </select>
 </div>
 
+<?php
+$homepageSlug = setting('homepage_slug', 'home');
+function veUrl(string $slug, string $homepageSlug): string {
+    return ($slug === $homepageSlug ? '/' : '/' . $slug) . '?ve_edit=1&ve_embedded=1';
+}
+?>
 <iframe
     id="ve-iframe"
     class="ve-admin-iframe"
-    src="/<?= e($currentSlug) ?>?ve_edit=1&ve_embedded=1"
+    src="<?= e(veUrl($currentSlug, $homepageSlug)) ?>"
 ></iframe>
 
 <script>
+var homepageSlug = '<?= e($homepageSlug) ?>';
 document.getElementById('ve-page-select').addEventListener('change', function () {
-    document.getElementById('ve-iframe').src = '/' + this.value + '?ve_edit=1&ve_embedded=1';
+    var slug = this.value;
+    var url = (slug === homepageSlug ? '/' : '/' + slug) + '?ve_edit=1&ve_embedded=1';
+    document.getElementById('ve-iframe').src = url;
 });
 </script>
 
