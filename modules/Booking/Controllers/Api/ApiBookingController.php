@@ -94,6 +94,19 @@ class ApiBookingController extends Controller
         $template = TemplateRegistry::get($resource->templateKey);
         $metadata = [];
         if ($template !== null) {
+            // Validate max advance days
+            $maxDays      = $template->maxAdvanceDays();
+            $daysAhead    = (int) round(($range->start->getTimestamp() - time()) / 86400);
+            if ($daysAhead > $maxDays) {
+                $this->json(['errors' => [str_replace(':days', (string) $maxDays, t('booking.error_too_far_ahead'))]], 422);
+            }
+
+            // Validate minimum duration
+            $minMinutes = $template->minDurationMinutes();
+            if ($range->durationMinutes() < $minMinutes) {
+                $this->json(['errors' => [str_replace(':min', (string) $minMinutes, t('booking.error_duration_too_short'))]], 422);
+            }
+
             $templateErrors = $template->validate($_POST + $_GET);
             if (!empty($templateErrors)) {
                 $this->json(['errors' => $templateErrors], 422);
