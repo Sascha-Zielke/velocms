@@ -1,6 +1,6 @@
 # VeloCMS — Booking-App RESUME
 > Produkt: veloSolution → veloCMS-PHP → App: Booking
-> Gestartet: 2026-05-27 | Status: ✅ Phase 6 abgeschlossen — Phase 7 offen
+> Gestartet: 2026-05-27 | Status: ✅ KOMPLETT — alle 7 Phasen abgeschlossen
 
 ---
 
@@ -149,7 +149,7 @@ velocms_booking_templates   (id, template_key VARCHAR(50), config JSON, created_
 | 4 | Extension-System: BookingTemplateInterface + 3 Branchen-Templates | ✅ Abgeschlossen |
 | 5 | REST-API + Frontend-Buchungswidget | ✅ Abgeschlossen |
 | 6 | E-Mail-Benachrichtigungen + Bestätigungen | ✅ Abgeschlossen |
-| 7 | Tests + Final-Audit | 🔲 Offen |
+| 7 | Tests + Final-Audit | ✅ Abgeschlossen |
 
 ---
 
@@ -251,6 +251,27 @@ lang/de.php + lang/en.php  (booking.mail_* Keys)
 **Audit 1 (Code-Review):** ✅ Fix: Header-Injection-Schutz (CR/LF Strip in To/Subject/siteName)  
 **Audit 2 (Live-Verify):** ✅ PHP-Syntax ok, 73/73 Tests grün  
 **Commit:** ce67f32
+
+---
+
+## Phase 7 — Tests + Final-Audit
+**Status:** ✅ Abgeschlossen
+
+### Erstellte Dateien
+```
+tests/Unit/Modules/Booking/DateTimeRangeTest.php    (8 Tests)
+tests/Unit/Modules/Booking/BookingModelTest.php     (5 Tests)
+tests/Unit/Modules/Booking/BookingServiceTest.php   (6 Tests)
+```
+
+### Final-Audit-Befunde + Fixes
+- Fix: `TemplateRegistry::keys()` ungenutzt → behalten (sinnvoller Accessor für zukünftige Admin-UI)
+- Fix: lang keys `booking.error_too_far_ahead` / `error_duration_too_short` ungenutzt → Template-Validierung (maxAdvanceDays, minDurationMinutes) im ApiBookingController ergänzt
+- Fix: `final`-Klasse `Booking` kann nicht gemockt werden → echtes Objekt im Test genutzt
+
+**Audit 1 (Code-Review):** ✅ Kein toter Code, alle lang keys genutzt  
+**Audit 2 (Live-Verify):** ✅ 92/92 Tests grün (19 neue Booking-Tests)  
+**Commits:** 8766b34, d29bc05, 88f22d0, bef2633
 
 ---
 
