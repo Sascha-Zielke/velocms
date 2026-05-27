@@ -13,6 +13,11 @@ class MaxiworxModule extends Module
 
     public function boot(): void
     {
+        $host = strtolower($_SERVER['HTTP_HOST'] ?? '');
+        if (!str_contains($host, 'maxiworx')) {
+            return;
+        }
+
         $this->router->get('/',                'Maxiworx\Controllers\MaxiworxController@home');
         $this->router->get('/equipment',       'Maxiworx\Controllers\MaxiworxController@equipment');
         $this->router->get('/service-preise',  'Maxiworx\Controllers\MaxiworxController@servicePreise');
