@@ -27,31 +27,19 @@ class TranslationEngineTest extends TestCase
         $this->glossaryMock = $this->createMock(GlossaryModel::class);
         $modelMock          = $this->createMock(TranslationModel::class);
 
-        // Build the engine, then inject mocked dependencies via reflection
-        // (constructor calls Database::getInstance(), so we patch after instantiation)
+        // Build the engine bypassing the constructor (which calls Database::getInstance())
         $this->engine = $this->getMockBuilder(TranslationEngine::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
             ->getMock();
 
-        $ref = new \ReflectionClass($this->engine);
+        // Reflect on the declaring class (not the mock subclass) so private properties are found
+        $ref = new \ReflectionClass(TranslationEngine::class);
 
-        $glossaryProp = $ref->getProperty('glossary');
-        $glossaryProp->setAccessible(true);
-        $glossaryProp->setValue($this->engine, $this->glossaryMock);
-
-        $modelProp = $ref->getProperty('model');
-        $modelProp->setAccessible(true);
-        $modelProp->setValue($this->engine, $modelMock);
-
-        // defaultLang and targetLangs needed for public methods
-        $defProp = $ref->getProperty('defaultLang');
-        $defProp->setAccessible(true);
-        $defProp->setValue($this->engine, 'de');
-
-        $tgtProp = $ref->getProperty('targetLangs');
-        $tgtProp->setAccessible(true);
-        $tgtProp->setValue($this->engine, ['en']);
+        $ref->getProperty('glossary')->setValue($this->engine, $this->glossaryMock);
+        $ref->getProperty('model')->setValue($this->engine, $modelMock);
+        $ref->getProperty('defaultLang')->setValue($this->engine, 'de');
+        $ref->getProperty('targetLangs')->setValue($this->engine, ['en']);
     }
 
     // ── Helper: call private method via reflection ────────────────────────────
