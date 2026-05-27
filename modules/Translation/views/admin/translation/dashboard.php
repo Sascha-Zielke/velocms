@@ -6,6 +6,8 @@
     <h1><?= t('translation.headline') ?> — <?= t('translation.dashboard') ?></h1>
     <div style="display:flex;gap:8px">
         <a href="/admin/apps/translation/editor" class="vcms-btn vcms-btn--ghost"><?= t('translation.editor') ?></a>
+        <a href="/admin/apps/translation/glossary" class="vcms-btn vcms-btn--ghost"><?= t('translation.glossary') ?></a>
+        <a href="/admin/apps/translation/export" class="vcms-btn vcms-btn--ghost"><?= t('translation.export') ?></a>
         <a href="/admin/apps/translation/settings" class="vcms-btn vcms-btn--ghost"><?= t('translation.settings') ?></a>
     </div>
 </div>

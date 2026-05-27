@@ -170,4 +170,16 @@
 })();
 </script>
 
+<!-- CSV Import -->
+<div class="vcms-card" style="padding:20px;margin-top:32px;max-width:600px">
+    <h3 style="margin:0 0 12px"><?= t('translation.import') ?></h3>
+    <p style="font-size:13px;color:var(--vcms-muted);margin:0 0 16px"><?= t('translation.import_hint') ?></p>
+    <form method="POST" action="/admin/apps/translation/import" enctype="multipart/form-data"
+          style="display:flex;gap:10px;align-items:center">
+        <?= csrf_field() ?>
+        <input type="file" name="csv_file" accept=".csv" required style="flex:1">
+        <button type="submit" class="vcms-btn vcms-btn--primary"><?= t('translation.import_btn') ?></button>
+    </form>
+</div>
+
 <?php $this->endSection() ?>

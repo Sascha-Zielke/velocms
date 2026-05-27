@@ -165,6 +165,85 @@ class AdminTranslationController extends Controller
         );
     }
 
+    public function export(): void
+    {
+        $db   = Database::getInstance()->getPdo();
+        $rows = $db->query(
+            'SELECT table_name, row_id, field, language, value, source
+             FROM velocms_translations ORDER BY table_name, row_id, field, language'
+        )->fetchAll(\PDO::FETCH_ASSOC);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="translations-' . date('Y-m-d') . '.csv"');
+        header('Cache-Control: no-cache');
+
+        $out = fopen('php://output', 'w');
+        fputcsv($out, ['table_name', 'row_id', 'field', 'language', 'value', 'source']);
+        foreach ($rows as $row) {
+            fputcsv($out, [
+                $row['table_name'],
+                $row['row_id'],
+                $row['field'],
+                $row['language'],
+                $row['value'],
+                $row['source'],
+            ]);
+        }
+        fclose($out);
+        exit;
+    }
+
+    public function import(): void
+    {
+        Auth::verifyCsrf();
+
+        $file = $_FILES['csv_file'] ?? null;
+        if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
+            $this->redirectWithError('/admin/apps/translation/settings', t('translation.import_error'));
+        }
+
+        $handle = fopen($file['tmp_name'], 'r');
+        if ($handle === false) {
+            $this->redirectWithError('/admin/apps/translation/settings', t('translation.import_error'));
+        }
+
+        $header  = fgetcsv($handle);
+        $allowed = ['table_name', 'row_id', 'field', 'language', 'value', 'source'];
+        if ($header !== $allowed) {
+            fclose($handle);
+            $this->redirectWithError('/admin/apps/translation/settings', t('translation.import_error'));
+        }
+
+        $count      = 0;
+        $transModel = new TranslationModel();
+        while (($cols = fgetcsv($handle)) !== false) {
+            if (count($cols) < 5) {
+                continue;
+            }
+            [$table, $rowId, $field, $lang, $value] = $cols;
+            $source = $cols[5] ?? 'manual';
+
+            if (!preg_match('/^[a-z][a-z0-9_]*$/', $table)) {
+                continue;
+            }
+            if (!preg_match('/^[a-z]{2}$/', $lang)) {
+                continue;
+            }
+            if (!in_array($source, ['auto', 'manual'], true)) {
+                $source = 'manual';
+            }
+
+            $transModel->upsert($table, (int) $rowId, $field, $lang, $value, $source, md5($value));
+            $count++;
+        }
+        fclose($handle);
+
+        $this->redirectWithSuccess(
+            '/admin/apps/translation/settings',
+            sprintf(t('translation.import_success'), $count)
+        );
+    }
+
     private function saveSetting(string $key, string $value): void
     {
         $db   = Database::getInstance()->getPdo();

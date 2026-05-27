@@ -29,7 +29,7 @@
 | 3 | Auto-Translation Engine + Trigger | ✅ Abgeschlossen |
 | 4 | Admin-Dashboard + manueller Editor | ✅ Abgeschlossen |
 | 5 | Content-Abdeckung: Blog, Pages, Nav, SEO | ✅ Abgeschlossen |
-| 6 | Erweiterte Features: Glossar, Export/Import | 🔲 Offen |
+| 6 | Erweiterte Features: Glossar, Export/Import | ✅ Abgeschlossen |
 | 7 | Tests + Final-Audit | 🔲 Offen |
 
 ---
@@ -138,18 +138,30 @@ views/layouts/frontend.php                           (hreflang-Tags im <head>)
 ---
 
 ## Phase 6 — Erweiterte Features
-**Status:** 🔲 Offen
+**Status:** ✅ Abgeschlossen
 
-### Geplante Dateien
+### Umgesetzte Dateien
 ```
 modules/Translation/
-├── migrations/003_create_glossary_table.php
-├── Controllers/AdminGlossaryController.php
-├── views/admin/translation/glossary.php
-├── Controllers/AdminTranslationExportController.php
+├── migrations/003_create_glossary_table.php     (velocms_glossary Tabelle)
+├── Models/GlossaryModel.php                     (CRUD für Glossar-Einträge)
+├── Controllers/AdminGlossaryController.php      (index, save, delete)
+├── views/admin/translation/glossary.php         (Glossar-Verwaltung)
+├── Services/TranslationEngine.php               (Glossar-Substitution vor API-Call)
+├── Controllers/AdminTranslationController.php   (+ export, import Aktionen)
+├── views/admin/translation/settings.php        (+ CSV-Import-Formular)
+├── views/admin/translation/dashboard.php       (+ Glossar- und Export-Links)
+lang/de.php + lang/en.php                       (Neue Schlüssel für Glossar + CSV)
+TranslationModule.php                           (Neue Routen)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
+**Architektur-Entscheidung Glossar:** DeepL Free unterstützt keine nativen Glossare.
+Lösung: Lokale Platzhalter-Substitution (`[[VCMS_n]]`) vor dem API-Call, Wiederherstellung danach.
+Funktioniert mit DeepL und Anthropic.
+
+**CSV-Format:** `table_name,row_id,field,language,value,source`
+
+**Audit 1 (Code-Review):** ✅  
 **Audit 2 (Live-Verify):** 🔲  
 **Commit:** —
 

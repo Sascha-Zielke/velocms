@@ -213,6 +213,24 @@ return [
     'translation.provider_deepl'       => 'DeepL (primary)',
     'translation.provider_anthropic'   => 'Anthropic Claude (fallback)',
 
+    // Translation App — Glossary
+    'translation.glossary'             => 'Glossary',
+    'translation.glossary_hint'        => 'Terms in the glossary are never auto-translated — they are replaced with the defined target term.',
+    'translation.glossary_new'         => 'New entry',
+    'translation.glossary_empty'       => 'No entries yet.',
+    'translation.glossary_source'      => 'Source term',
+    'translation.glossary_target'      => 'Target term',
+    'translation.glossary_source_lang' => 'Source language',
+    'translation.glossary_target_lang' => 'Target language',
+
+    // Translation App — CSV Export/Import
+    'translation.export'               => 'CSV Export',
+    'translation.import'               => 'CSV Import',
+    'translation.import_hint'          => 'CSV must have columns: table_name, row_id, field, language, value, source',
+    'translation.import_btn'           => 'Import',
+    'translation.import_success'       => '%d entries imported.',
+    'translation.import_error'         => 'Invalid CSV file. Please check the format.',
+
     // Language switcher (frontend + admin)
     'lang.de'                          => 'German',
     'lang.en'                          => 'English',

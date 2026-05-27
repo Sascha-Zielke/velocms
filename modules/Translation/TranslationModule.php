@@ -21,6 +21,13 @@ class TranslationModule extends Module
         $this->router->post('/admin/apps/translation/editor/[i:id]/unlock', 'Translation\Controllers\AdminTranslationController@unlockTranslation');
         $this->router->get('/admin/apps/translation/settings', 'Translation\Controllers\AdminTranslationController@settings');
         $this->router->post('/admin/apps/translation/settings', 'Translation\Controllers\AdminTranslationController@saveSettings');
+        $this->router->get('/admin/apps/translation/export',    'Translation\Controllers\AdminTranslationController@export');
+        $this->router->post('/admin/apps/translation/import',   'Translation\Controllers\AdminTranslationController@import');
+
+        // ── Glossary ──────────────────────────────────────────────────────────
+        $this->router->get('/admin/apps/translation/glossary',              'Translation\Controllers\AdminGlossaryController@index');
+        $this->router->post('/admin/apps/translation/glossary/save',        'Translation\Controllers\AdminGlossaryController@save');
+        $this->router->post('/admin/apps/translation/glossary/delete/[i:id]', 'Translation\Controllers\AdminGlossaryController@delete');
 
         // ── Sidebar: "Apps" section header ────────────────────────────────────
         // type='section' items render as non-clickable group labels.

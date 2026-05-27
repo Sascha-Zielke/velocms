@@ -344,6 +344,24 @@ return [
     'translation.provider_deepl'       => 'DeepL (primär)',
     'translation.provider_anthropic'   => 'Anthropic Claude (Fallback)',
 
+    // Translation App — Glossary
+    'translation.glossary'             => 'Glossar',
+    'translation.glossary_hint'        => 'Begriffe im Glossar werden beim automatischen Übersetzen nicht verändert — sie werden durch den definierten Zielterm ersetzt.',
+    'translation.glossary_new'         => 'Neuer Eintrag',
+    'translation.glossary_empty'       => 'Noch keine Einträge vorhanden.',
+    'translation.glossary_source'      => 'Quell-Begriff',
+    'translation.glossary_target'      => 'Ziel-Begriff',
+    'translation.glossary_source_lang' => 'Quellsprache',
+    'translation.glossary_target_lang' => 'Zielsprache',
+
+    // Translation App — CSV Export/Import
+    'translation.export'               => 'CSV Export',
+    'translation.import'               => 'CSV Import',
+    'translation.import_hint'          => 'CSV muss folgende Spalten haben: table_name, row_id, field, language, value, source',
+    'translation.import_btn'           => 'Importieren',
+    'translation.import_success'       => '%d Einträge importiert.',
+    'translation.import_error'         => 'Ungültige CSV-Datei. Bitte prüfe das Format.',
+
     // Language switcher (frontend + admin)
     'lang.de'                          => 'Deutsch',
     'lang.en'                          => 'Englisch',

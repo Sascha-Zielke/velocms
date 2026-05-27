@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace VeloCMS\Modules\Translation\Services;
 
 use VeloCMS\Core\Services\TranslationService;
+use VeloCMS\Modules\Translation\Models\GlossaryModel;
 use VeloCMS\Modules\Translation\Models\TranslationModel;
 
 class TranslationEngine
 {
     private TranslationModel $model;
+    private GlossaryModel $glossary;
     private TranslationService $service;
     private string $defaultLang;
     /** @var string[] */
@@ -18,6 +20,7 @@ class TranslationEngine
     public function __construct()
     {
         $this->model   = new TranslationModel();
+        $this->glossary = new GlossaryModel();
         $this->service = new TranslationService();
 
         $activeLangs       = json_decode(setting('active_languages', '["de","en"]'), true) ?: ['de', 'en'];
@@ -142,6 +145,12 @@ class TranslationEngine
             return;
         }
 
+        // Apply glossary: replace protected terms with placeholders before translating
+        $placeholderMaps = [];
+        foreach ($pending as $i => $text) {
+            [$pending[$i], $placeholderMaps[$i]] = $this->applyGlossary($text, $this->defaultLang, $lang);
+        }
+
         $translated = $this->service->translateBatch(
             $pending,
             strtoupper($lang),
@@ -149,7 +158,42 @@ class TranslationEngine
         );
 
         foreach ($pendingKeys as $i => [$field, $hash]) {
-            $this->model->upsert($table, $rowId, $field, $lang, $translated[$i], 'auto', $hash);
+            $result = $this->restoreGlossary($translated[$i], $placeholderMaps[$i]);
+            $this->model->upsert($table, $rowId, $field, $lang, $result, 'auto', $hash);
         }
+    }
+
+    /**
+     * Replace glossary source terms with numeric placeholders.
+     *
+     * @return array{0: string, 1: array<string,string>}
+     */
+    private function applyGlossary(string $text, string $sourceLang, string $targetLang): array
+    {
+        $terms = $this->glossary->getAll($sourceLang, $targetLang);
+        if (empty($terms)) {
+            return [$text, []];
+        }
+
+        $map = [];
+        foreach ($terms as $i => $term) {
+            $placeholder = '[[VCMS_' . $i . ']]';
+            $pattern     = '/(?<![a-zA-Z0-9])' . preg_quote($term['source_term'], '/') . '(?![a-zA-Z0-9])/u';
+            if (preg_match($pattern, $text)) {
+                $text    = preg_replace($pattern, $placeholder, $text) ?? $text;
+                $map[$placeholder] = $term['target_term'];
+            }
+        }
+
+        return [$text, $map];
+    }
+
+    /** Restore glossary target terms from placeholders. */
+    private function restoreGlossary(string $text, array $map): string
+    {
+        if (empty($map)) {
+            return $text;
+        }
+        return str_replace(array_keys($map), array_values($map), $text);
     }
 }
