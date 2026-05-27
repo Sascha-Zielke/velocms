@@ -13,8 +13,9 @@ class MaxiworxModule extends Module
 
     public function boot(): void
     {
-        $host = strtolower($_SERVER['HTTP_HOST'] ?? '');
-        if (!str_contains($host, 'maxiworx')) {
+        // Only register routes for the Maxiworx tenant
+        $domain = \VeloCMS\Core\Tenant::domain();
+        if (!str_contains($domain, 'maxiworx')) {
             return;
         }
 
