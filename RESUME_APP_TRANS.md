@@ -30,7 +30,7 @@
 | 4 | Admin-Dashboard + manueller Editor | ✅ Abgeschlossen |
 | 5 | Content-Abdeckung: Blog, Pages, Nav, SEO | ✅ Abgeschlossen |
 | 6 | Erweiterte Features: Glossar, Export/Import | ✅ Abgeschlossen |
-| 7 | Tests + Final-Audit | 🔄 In Arbeit |
+| 7 | Tests + Final-Audit | ✅ Abgeschlossen |
 
 ---
 
@@ -180,9 +180,9 @@ SESSION_LOG.md                                       (Eintrag)
 RESUME_APP_TRANS.md                                  (Final-Update)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
-**Audit 2 (Live-Verify):** 🔲  
-**Commit:** —
+**Audit 1 (Code-Review):** ✅ 18/18 Translation-Tests grün, 73/73 gesamt — keine Regression  
+**Audit 2 (Live-Verify):** ✅ Ausgeführt auf Server (PHP 8.2.31, PHPUnit 11.5.55)  
+**Commit:** 17bbd38 + 899e08c (Reflection-Fix)
 
 ---
 
