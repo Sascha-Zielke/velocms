@@ -1,6 +1,6 @@
 # VeloCMS — Booking-App RESUME
 > Produkt: veloSolution → veloCMS-PHP → App: Booking
-> Gestartet: 2026-05-27 | Status: 🔲 Phase 1 ausstehend
+> Gestartet: 2026-05-27 | Status: ✅ Phase 1 abgeschlossen — Phase 2 offen
 
 ---
 
@@ -143,7 +143,7 @@ velocms_booking_templates   (id, template_key VARCHAR(50), config JSON, created_
 
 | Phase | Titel | Status |
 |-------|-------|--------|
-| 1 | Foundation: Modulstruktur, Migrations, Core-Entities | 🔲 Offen |
+| 1 | Foundation: Modulstruktur, Migrations, Core-Entities | ✅ Abgeschlossen |
 | 2 | AvailabilityEngine + BookingService (SELECT FOR UPDATE) | 🔲 Offen |
 | 3 | Admin-UI: Dashboard, Ressourcen, Buchungsübersicht | 🔲 Offen |
 | 4 | Extension-System: BookingTemplateInterface + 3 Branchen-Templates | 🔲 Offen |
@@ -154,9 +154,9 @@ velocms_booking_templates   (id, template_key VARCHAR(50), config JSON, created_
 ---
 
 ## Phase 1 — Foundation
-**Status:** 🔲 Offen
+**Status:** ✅ Abgeschlossen
 
-### Geplante Dateien
+### Erstellte Dateien
 ```
 modules/Booking/BookingModule.php
 modules/Booking/migrations/001_create_booking_resources.php
@@ -175,9 +175,9 @@ lang/de.php                                                  (booking.* Keys)
 lang/en.php                                                  (booking.* Keys)
 ```
 
-**Audit 1 (Code-Review):** 🔲  
-**Audit 2 (Live-Verify):** 🔲  
-**Commit:** —
+**Audit 1 (Code-Review):** ✅ Fix: ResourceType::label() nutzt jetzt t() statt hardcoded German  
+**Audit 2 (Live-Verify):** ✅ 5 Migrations (Batch 13), PHP-Syntax ok, 73/73 Tests grün  
+**Commits:** b15db42 (Phase 1), f9e2fdd (ResourceType fix)
 
 ---
 
