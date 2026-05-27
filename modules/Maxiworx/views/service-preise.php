@@ -40,10 +40,11 @@ $serviceCards = !empty($services) ? array_map(function (array $s): array {
 }, $services) : $servicesDefault;
 ?>
 
-<?php $veSec0 = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
-<?php $veBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<?php $veSec0  = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
+<?php $veRBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0] ?? []) : []; ?>
+<?php $veBox0  = $veRBox0['id'] ?? 0; ?>
 <div class="mw-inner-hero" <?= $veSec0 ? "data-ve-section=\"{$veSec0}\" data-ve-label=\"Intro\"" : '' ?>>
-    <div class="mw-container" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>>
+    <div class="mw-container" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\" " . ve_gs_attrs($veRBox0) : '' ?>>
         <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
         <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
         <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
@@ -52,14 +53,14 @@ $serviceCards = !empty($services) ? array_map(function (array $s): array {
 
 <?php $veSec1 = ($veMode ?? false) ? ($rawSections[1]['id'] ?? 0) : 0; ?>
 <?php $veSec2 = ($veMode ?? false) ? ($rawSections[2]['id'] ?? 0) : 0; ?>
-<?php $veBox2 = ($veMode ?? false) ? ($rawSections[2]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
 <section class="mw-section" <?= $veSec1 ? "data-ve-section=\"{$veSec1}\" data-ve-label=\"Services\"" : '' ?>>
     <div class="mw-container">
 
         <div class="mw-services__grid" style="margin-bottom:3rem">
             <?php foreach ($serviceCards as $sIdx => $s): ?>
-            <?php $veBoxS = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][$sIdx]['id'] ?? 0) : 0; ?>
-            <div class="mw-service-card" <?= $veBoxS ? "data-ve-box=\"{$veBoxS}\"" : '' ?>>
+            <?php $veRBoxS = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][$sIdx] ?? []) : []; ?>
+            <?php $veBoxS  = $veRBoxS['id'] ?? 0; ?>
+            <div class="mw-service-card" <?= $veBoxS ? "data-ve-box=\"{$veBoxS}\" " . ve_gs_attrs($veRBoxS) : '' ?>>
                 <div class="mw-service-card__icon" aria-hidden="true"><?= e($s['icon'] ?? '') ?></div>
                 <h2 class="mw-service-card__title"><?= e($s['title'] ?? '') ?></h2>
                 <ul class="mw-service-card__text" style="list-style:none;padding:0">
@@ -75,8 +76,10 @@ $serviceCards = !empty($services) ? array_map(function (array $s): array {
             <?php endforeach ?>
         </div>
 
+        <?php $veRBox2 = ($veMode ?? false) ? ($rawSections[2]['rows'][0]['boxes'][0] ?? []) : []; ?>
+        <?php $veBox2  = $veRBox2['id'] ?? 0; ?>
         <?php if (!empty($pageContent['html'])): ?>
-        <div class="mw-prose" <?= $veBox2 ? "data-ve-box=\"{$veBox2}\"" : '' ?>><?= safe_html($pageContent['html']) ?></div>
+        <div class="mw-prose" <?= $veBox2 ? "data-ve-box=\"{$veBox2}\" " . ve_gs_attrs($veRBox2) : '' ?>><?= safe_html($pageContent['html']) ?></div>
         <?php else: ?>
         <div class="mw-prose">
             <h2>Pakete &amp; Bundles</h2>

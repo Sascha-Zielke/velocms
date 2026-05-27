@@ -56,6 +56,7 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
     <link rel="icon" href="<?= e($favicon) ?>">
     <?php endif ?>
     <link rel="stylesheet" href="/assets/css/frontend.css">
+    <?= ve_head((int)($pageId ?? ($page['id'] ?? 0))) ?>
     <?= $this->yield('head') ?>
 </head>
 <body class="vcms-frontend">
@@ -173,6 +174,7 @@ $ogImage     = $this->yield('og_image') ?: setting('logo_path');
 
 <script src="/assets/js/frontend.js"></script>
 <script src="/assets/js/lang-switcher.js"></script>
+<?= ve_scripts() ?>
 <?= $this->yield('scripts') ?>
 </body>
 </html>

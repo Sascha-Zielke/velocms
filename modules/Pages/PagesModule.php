@@ -33,6 +33,7 @@ class PagesModule extends Module
         $this->router->post('/admin/pages/section/[i:id]/delete', 'Pages\Controllers\AdminPagesController@deleteSection');
         $this->router->post('/admin/pages/row/[i:id]/delete',   'Pages\Controllers\AdminPagesController@deleteRow');
         $this->router->post('/admin/pages/section/[i:id]/settings', 'Pages\Controllers\AdminPagesController@saveSectionSettings');
+        $this->router->post('/admin/pages/[i:id]/grid/save',       'Pages\Controllers\AdminPagesController@saveGrid');
 
         // Frontend: root → homepage (configured slug or first published page)
         $this->router->get('/', 'Pages\Controllers\PagesController@home');

@@ -156,6 +156,76 @@ function setting(string $key, string $default = ''): string
     return (string) ($cache[$key] ?? $default);
 }
 
+// ─── Visual Editor helpers ──────────────────────────────────────────────────
+
+/**
+ * Returns Gridstack position attributes for a box array.
+ * Use on every [data-ve-box] element so Gridstack can read its grid position.
+ * Falls back to auto-position with full-width (w=24) when no position is saved yet.
+ */
+function ve_gs_attrs(array $box): string
+{
+    if (array_key_exists('grid_x', $box) && $box['grid_x'] !== null) {
+        return sprintf(
+            'data-gs-x="%d" data-gs-y="%d" data-gs-w="%d" data-gs-h="%d"',
+            (int) $box['grid_x'],
+            (int) $box['grid_y'],
+            max(1, (int) ($box['grid_w'] ?? 24)),
+            max(1, (int) ($box['grid_h'] ?? 4))
+        );
+    }
+
+    return 'data-gs-auto-position="1" data-gs-w="24" data-gs-h="4"';
+}
+
+/**
+ * Outputs VE CSS assets + meta tags into <head>.
+ * Any tenant layout calls <?= ve_head($pageId) ?> — no per-tenant config needed.
+ *
+ * @param int $pageId  Current page's DB id (used by JS to POST grid changes).
+ */
+function ve_head(int $pageId = 0): string
+{
+    if (!\VeloCMS\Core\Auth::check()) {
+        return '';
+    }
+    if (!isset($_GET['ve_edit']) && !isset($_GET['ve_embedded'])) {
+        return '';
+    }
+
+    $token = e($_SESSION['csrf_token'] ?? '');
+
+    return implode("\n    ", [
+        '<meta name="csrf-token"  content="' . $token . '">',
+        '<meta name="ve-page-id" content="' . $pageId . '">',
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@10/dist/gridstack.min.css">',
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@10/dist/gridstack-extra.min.css">',
+        '<link rel="stylesheet" href="/assets/css/visual-editor.css">',
+    ]);
+}
+
+/**
+ * Outputs VE JavaScript before </body>.
+ * Any tenant layout calls <?= ve_scripts() ?> — no per-tenant config needed.
+ */
+function ve_scripts(): string
+{
+    if (!\VeloCMS\Core\Auth::check()) {
+        return '';
+    }
+    if (!isset($_GET['ve_edit']) && !isset($_GET['ve_embedded'])) {
+        return '';
+    }
+
+    return implode("\n", [
+        '<script src="https://cdn.jsdelivr.net/npm/gridstack@10/dist/gridstack-all.js"></script>',
+        '<script src="https://cdn.jsdelivr.net/npm/sortablejs@1/Sortable.min.js"></script>',
+        '<script src="/assets/js/visual-editor.js"></script>',
+    ]);
+}
+
+// ─── Navigation ─────────────────────────────────────────────────────────────
+
 /**
  * Get active navigation items — cached per request.
  *

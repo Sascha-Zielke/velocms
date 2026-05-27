@@ -51,7 +51,8 @@ class PagesController extends Controller
             exit;
         }
 
-        $sections = $this->model->getFullPage((int) $page['id']);
-        $this->render('frontend/page', ['page' => $page, 'sections' => $sections]);
+        $pageId   = (int) $page['id'];
+        $sections = $this->model->getFullPage($pageId);
+        $this->render('frontend/page', ['page' => $page, 'sections' => $sections, 'pageId' => $pageId]);
     }
 }

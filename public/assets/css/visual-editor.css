@@ -1,9 +1,9 @@
 /*
- * VeloCMS Visual Editor — Overlay Styles
- * Injected into the frontend page when a logged-in admin uses ?ve_edit=1
+ * VeloCMS Visual Editor — Overlay Styles  v2.0
+ * Global — injected via ve_head() into any tenant layout using ?ve_edit=1 or ?ve_embedded=1
  */
 
-/* ── Toolbar (fixed top bar) ──────────────────────────────────────────────── */
+/* ── Toolbar (fixed top bar, standalone mode only) ───────────────────────── */
 .ve-toolbar {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -53,21 +53,103 @@
 }
 @media (max-width: 600px) { .ve-hint { display: none; } }
 
-/* ── Box overlay wrapper ──────────────────────────────────────────────────── */
+/* ── Body offset when toolbar is visible ─────────────────────────────────── */
+body.ve-active {
+    padding-top: 48px !important;
+}
+
+/* ── Section badge ───────────────────────────────────────────────────────── */
+.ve-section-badge {
+    position: absolute;
+    top: 0; left: 0;
+    background: rgba(201, 162, 39, 0.12);
+    border-right: 1px solid rgba(201, 162, 39, 0.3);
+    border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+    border-radius: 0 0 4px 0;
+    padding: 3px 10px;
+    font-size: 0.65rem;
+    color: rgba(201, 162, 39, 0.7);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* ── Gridstack section overrides ─────────────────────────────────────────── */
+/* In VE mode, sections that host Gridstack get a subtle grid background      */
+.grid-stack[data-ve-section] {
+    min-height: 120px;
+    background-image:
+        linear-gradient(rgba(201,162,39,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,162,39,0.03) 1px, transparent 1px);
+    background-size: 100% 60px, calc(100% / 24) 60px;
+}
+
+/* Gridstack drag placeholder */
+.grid-stack-placeholder > .placeholder-content {
+    background: rgba(201, 162, 39, 0.08);
+    border: 1px dashed rgba(201, 162, 39, 0.4);
+    border-radius: 4px;
+}
+
+/* ── Box wrapper (= Gridstack item) ──────────────────────────────────────── */
 .ve-box-wrap {
+    box-sizing: border-box;
+}
+.ve-box-wrap:hover > .ve-box-inner,
+.ve-box-wrap.is-active > .ve-box-inner {
+    outline: 2px dashed rgba(201, 162, 39, 0.6);
+    outline-offset: -2px;
+    border-radius: 3px;
+}
+
+/* Required by Gridstack — fills the item */
+.ve-box-inner.grid-stack-item-content {
     position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
-.ve-box-wrap:hover,
-.ve-box-wrap.is-active {
-    outline: 2px dashed rgba(201, 162, 39, 0.55);
-    outline-offset: 3px;
-    border-radius: 2px;
+
+/* ── Drag handle strip ───────────────────────────────────────────────────── */
+.ve-drag-handle {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 18px;
+    background: linear-gradient(90deg,
+        rgba(201,162,39,0.0) 0%,
+        rgba(201,162,39,0.0) 100%);
+    cursor: grab;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s;
 }
+.ve-box-wrap:hover .ve-drag-handle,
+.ve-box-wrap.is-active .ve-drag-handle {
+    opacity: 1;
+    background: linear-gradient(90deg,
+        rgba(201,162,39,0.15) 0%,
+        rgba(201,162,39,0.05) 100%);
+}
+.ve-drag-handle:active { cursor: grabbing; }
+/* Resize handles from Gridstack (make them visible) */
+.ve-box-wrap .ui-resizable-handle {
+    background: rgba(201,162,39,0.5);
+    border-radius: 3px;
+    z-index: 30;
+}
+.ve-box-wrap .ui-resizable-se {
+    width: 14px; height: 14px;
+    right: 2px; bottom: 2px;
+}
+
+/* ── Gear edit button ────────────────────────────────────────────────────── */
 .ve-box-btn {
     position: absolute;
-    top: 8px;
+    top: 20px;
     right: 8px;
-    z-index: 1000;
+    z-index: 40;
     width: 34px;
     height: 34px;
     background: #C9A227;
@@ -86,33 +168,16 @@
 .ve-box-wrap.is-active .ve-box-btn {
     display: flex;
 }
-.ve-box-btn:hover { background: #B8921F; transform: scale(1.05); }
+.ve-box-btn:hover  { background: #B8921F; transform: scale(1.05); }
+.ve-box-btn:active { transform: scale(0.97); }
 
-/* ── Section label badge ──────────────────────────────────────────────────── */
-.ve-section-badge {
-    position: absolute;
-    top: 0; left: 0;
-    background: rgba(201, 162, 39, 0.15);
-    border-right: 1px solid rgba(201, 162, 39, 0.3);
-    border-bottom: 1px solid rgba(201, 162, 39, 0.3);
-    border-radius: 0 0 4px 0;
-    padding: 3px 10px;
-    font-size: 0.65rem;
-    color: rgba(201, 162, 39, 0.7);
-    font-family: 'Barlow Condensed', sans-serif;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    pointer-events: none;
-    z-index: 50;
-}
-
-/* ── Edit Panel (slide-in from right) ────────────────────────────────────── */
+/* ── Edit panel (slide-in from right) ───────────────────────────────────── */
 .ve-panel {
     position: fixed;
-    top: 48px;
+    top: 0;
     right: -420px;
     width: 400px;
-    height: calc(100vh - 48px);
+    height: 100vh;
     background: #111;
     border-left: 1px solid rgba(201, 162, 39, 0.25);
     z-index: 99998;
@@ -121,6 +186,10 @@
     transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     box-shadow: -4px 0 24px rgba(0,0,0,0.5);
+}
+body.ve-active .ve-panel {
+    top: 48px;
+    height: calc(100vh - 48px);
 }
 .ve-panel.is-open {
     right: 0;
@@ -139,7 +208,6 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
@@ -158,10 +226,7 @@
 .ve-panel__body {
     flex: 1;
     overflow-y: auto;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    padding: 1rem;
     scrollbar-width: thin;
     scrollbar-color: rgba(201, 162, 39, 0.3) transparent;
 }
@@ -171,8 +236,42 @@
     flex-shrink: 0;
 }
 
-/* ── Form fields inside panel ────────────────────────────────────────────── */
-.ve-field {}
+/* ── Field list (SortableJS) ─────────────────────────────────────────────── */
+.ve-field-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.ve-field-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    background: rgba(255,255,255,0.02);
+    border-radius: 4px;
+    padding: 0.6rem 0.6rem 0.6rem 0;
+}
+.ve-field-item.ve-field-ghost {
+    opacity: 0.4;
+    background: rgba(201,162,39,0.08);
+    border: 1px dashed rgba(201,162,39,0.4);
+}
+.ve-field-drag {
+    cursor: grab;
+    color: rgba(255,255,255,0.25);
+    padding: 0.35rem 0.3rem 0 0.6rem;
+    font-size: 1.1rem;
+    user-select: none;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+.ve-field-drag:hover  { color: rgba(201,162,39,0.8); }
+.ve-field-drag:active { cursor: grabbing; }
+.ve-field { flex: 1; min-width: 0; }
+
+/* ── Form fields ─────────────────────────────────────────────────────────── */
 .ve-label {
     display: block;
     color: rgba(255,255,255,0.45);
@@ -228,8 +327,8 @@
     cursor: pointer;
     transition: background 0.15s, transform 0.1s;
 }
-.ve-btn-save:hover { background: #B8921F; }
-.ve-btn-save:active { transform: scale(0.98); }
+.ve-btn-save:hover    { background: #B8921F; }
+.ve-btn-save:active   { transform: scale(0.98); }
 .ve-btn-save:disabled {
     background: rgba(201, 162, 39, 0.4);
     cursor: not-allowed;
@@ -241,13 +340,4 @@
     text-align: center;
     padding: 2rem 0;
     font-size: 0.85rem;
-}
-
-/* ── Adjust page body when toolbar is shown ──────────────────────────────── */
-body.ve-active {
-    padding-top: 48px !important;
-}
-/* Shift panel-open layout */
-body.ve-panel-open .ve-panel {
-    /* panel is right-aligned, no body shift needed */
 }

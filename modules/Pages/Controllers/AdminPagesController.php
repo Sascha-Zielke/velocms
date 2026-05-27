@@ -181,6 +181,23 @@ class AdminPagesController extends Controller
         $this->json(['ok' => true]);
     }
 
+    public function saveGrid(string $id): void
+    {
+        Auth::verifyCsrf();
+
+        $pageId  = (int) $id;
+        $payload = json_decode(file_get_contents('php://input'), true) ?? [];
+        $grid    = $payload['grid'] ?? [];
+
+        if (!is_array($grid) || $pageId <= 0) {
+            $this->json(['ok' => false, 'error' => 'invalid_payload']);
+            return;
+        }
+
+        $this->model->saveGridLayout($pageId, $grid);
+        $this->json(['ok' => true]);
+    }
+
     public function saveSectionSettings(string $id): void
     {
         Auth::verifyCsrf();

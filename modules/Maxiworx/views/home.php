@@ -44,14 +44,15 @@ $ct = array_merge($ctaDefault,   $cta   ?? []);
 ?>
 
 <!-- ─── Hero ────────────────────────────────────────────────────────────────── -->
-<?php $veSec0 = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
-<?php $veBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<?php $veSec0  = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
+<?php $veRBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0] ?? []) : []; ?>
+<?php $veBox0  = $veRBox0['id'] ?? 0; ?>
 <section class="mw-hero" aria-label="Hero"
     <?= $veSec0 ? "data-ve-section=\"{$veSec0}\" data-ve-label=\"Hero\"" : '' ?>>
     <div class="mw-hero__bg"
          style="background-image:url('/assets/images/maxiworx/hero-studio.jpg')"
          role="presentation"></div>
-    <div class="mw-hero__content" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>>
+    <div class="mw-hero__content" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\" " . ve_gs_attrs($veRBox0) : '' ?>>
         <p class="mw-hero__sub"><?= e($h['subline']) ?></p>
         <h1 class="mw-hero__title"><?= $h['headline'] /* intentional — contains <br>, set in admin */ ?></h1>
         <p class="mw-hero__sub" style="margin-top:.5rem"><?= e($h['tagline']) ?></p>
@@ -68,8 +69,9 @@ $ct = array_merge($ctaDefault,   $cta   ?? []);
         <h2 class="mw-h2">Recent Productions</h2>
         <div class="mw-portfolio__grid" role="list">
             <?php foreach ($pf as $pIdx => $p): ?>
-            <?php $veBoxP = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][$pIdx]['id'] ?? 0) : 0; ?>
-            <div class="mw-portfolio__item" role="listitem" <?= $veBoxP ? "data-ve-box=\"{$veBoxP}\"" : '' ?>>
+            <?php $veRBoxP = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][$pIdx] ?? []) : []; ?>
+            <?php $veBoxP  = $veRBoxP['id'] ?? 0; ?>
+            <div class="mw-portfolio__item" role="listitem" <?= $veBoxP ? "data-ve-box=\"{$veBoxP}\" " . ve_gs_attrs($veRBoxP) : '' ?>>
                 <div class="mw-portfolio__placeholder">
                     <div style="text-align:center;padding:1rem">
                         <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:rgba(201,162,39,.6);margin-bottom:.3rem">
@@ -103,8 +105,9 @@ $ct = array_merge($ctaDefault,   $cta   ?? []);
 
             <div class="mw-hardware__items">
                 <?php foreach ($gr as $gIdx => $item): ?>
-                <?php $veBoxG = ($veMode ?? false) ? ($rawSections[2]['rows'][0]['boxes'][$gIdx]['id'] ?? 0) : 0; ?>
-                <div class="mw-hardware__item" <?= $veBoxG ? "data-ve-box=\"{$veBoxG}\"" : '' ?>>
+                <?php $veRBoxG = ($veMode ?? false) ? ($rawSections[2]['rows'][0]['boxes'][$gIdx] ?? []) : []; ?>
+                <?php $veBoxG  = $veRBoxG['id'] ?? 0; ?>
+                <div class="mw-hardware__item" <?= $veBoxG ? "data-ve-box=\"{$veBoxG}\" " . ve_gs_attrs($veRBoxG) : '' ?>>
                     <h3 class="mw-h3"><?= e($item['name'] ?? '') ?></h3>
                     <p><?= e($item['desc'] ?? '') ?></p>
                 </div>
@@ -135,8 +138,9 @@ $ct = array_merge($ctaDefault,   $cta   ?? []);
         </div>
         <div class="mw-services__grid">
             <?php foreach ($sv as $sIdx => $s): ?>
-            <?php $veBoxS = ($veMode ?? false) ? ($rawSections[3]['rows'][0]['boxes'][$sIdx]['id'] ?? 0) : 0; ?>
-            <div class="mw-service-card" <?= $veBoxS ? "data-ve-box=\"{$veBoxS}\"" : '' ?>>
+            <?php $veRBoxS = ($veMode ?? false) ? ($rawSections[3]['rows'][0]['boxes'][$sIdx] ?? []) : []; ?>
+            <?php $veBoxS  = $veRBoxS['id'] ?? 0; ?>
+            <div class="mw-service-card" <?= $veBoxS ? "data-ve-box=\"{$veBoxS}\" " . ve_gs_attrs($veRBoxS) : '' ?>>
                 <div class="mw-service-card__icon" aria-hidden="true"><?= e($s['icon'] ?? '') ?></div>
                 <h3 class="mw-service-card__title"><?= e($s['title'] ?? '') ?></h3>
                 <p class="mw-service-card__text"><?= e($s['text'] ?? '') ?></p>
@@ -151,12 +155,13 @@ $ct = array_merge($ctaDefault,   $cta   ?? []);
 </section>
 
 <!-- ─── CTA ──────────────────────────────────────────────────────────────────── -->
-<?php $veSec4 = ($veMode ?? false) ? ($rawSections[4]['id'] ?? 0) : 0; ?>
-<?php $veBox4 = ($veMode ?? false) ? ($rawSections[4]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<?php $veSec4  = ($veMode ?? false) ? ($rawSections[4]['id'] ?? 0) : 0; ?>
+<?php $veRBox4 = ($veMode ?? false) ? ($rawSections[4]['rows'][0]['boxes'][0] ?? []) : []; ?>
+<?php $veBox4  = $veRBox4['id'] ?? 0; ?>
 <section class="mw-section mw-cta" aria-label="Anfrage"
     <?= $veSec4 ? "data-ve-section=\"{$veSec4}\" data-ve-label=\"CTA\"" : '' ?>>
     <div class="mw-container">
-        <div class="mw-cta__inner" <?= $veBox4 ? "data-ve-box=\"{$veBox4}\"" : '' ?>>
+        <div class="mw-cta__inner" <?= $veBox4 ? "data-ve-box=\"{$veBox4}\" " . ve_gs_attrs($veRBox4) : '' ?>>
             <div>
                 <h2 class="mw-cta__title"><?= $ct['title'] /* may contain <br> */ ?></h2>
                 <p class="mw-cta__sub"><?= e($ct['text']) ?></p>

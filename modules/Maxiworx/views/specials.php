@@ -11,22 +11,24 @@ $heroTitle    = e($innerHero['title']    ?? 'Specials');
 $heroSubtitle = e($innerHero['subtitle'] ?? 'Aktuelle Angebote &amp; limitierte Slots.');
 ?>
 
-<?php $veSec0 = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
-<?php $veBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<?php $veSec0  = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
+<?php $veRBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0] ?? []) : []; ?>
+<?php $veBox0  = $veRBox0['id'] ?? 0; ?>
 <div class="mw-inner-hero" <?= $veSec0 ? "data-ve-section=\"{$veSec0}\" data-ve-label=\"Intro\"" : '' ?>>
-    <div class="mw-container" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>>
+    <div class="mw-container" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\" " . ve_gs_attrs($veRBox0) : '' ?>>
         <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
         <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
         <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
     </div>
 </div>
 
-<?php $veSec1 = ($veMode ?? false) ? ($rawSections[1]['id'] ?? 0) : 0; ?>
-<?php $veBox1 = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<?php $veSec1  = ($veMode ?? false) ? ($rawSections[1]['id'] ?? 0) : 0; ?>
+<?php $veRBox1 = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][0] ?? []) : []; ?>
+<?php $veBox1  = $veRBox1['id'] ?? 0; ?>
 <section class="mw-section" <?= $veSec1 ? "data-ve-section=\"{$veSec1}\" data-ve-label=\"Inhalt\"" : '' ?>>
     <div class="mw-container">
         <?php if (!empty($pageContent['html'])): ?>
-        <div class="mw-prose" <?= $veBox1 ? "data-ve-box=\"{$veBox1}\"" : '' ?>><?= safe_html($pageContent['html']) ?></div>
+        <div class="mw-prose" <?= $veBox1 ? "data-ve-box=\"{$veBox1}\" " . ve_gs_attrs($veRBox1) : '' ?>><?= safe_html($pageContent['html']) ?></div>
         <?php else: ?>
         <div class="mw-placeholder-content">
             <div class="mw-placeholder-banner">

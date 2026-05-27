@@ -203,6 +203,43 @@ class PagesModel extends Model
         $this->db->prepare("DELETE FROM velocms_boxes WHERE id=:id")->execute([':id' => $id]);
     }
 
+    /**
+     * Update grid positions (x, y, w, h) for a set of boxes.
+     * Only updates boxes that actually belong to $pageId — security guard.
+     */
+    public function saveGridLayout(int $pageId, array $grid): void
+    {
+        // Fetch all valid box IDs for this page
+        $stmt = $this->db->prepare(
+            "SELECT b.id FROM velocms_boxes b
+             JOIN velocms_rows r     ON b.row_id     = r.id
+             JOIN velocms_sections s ON r.section_id = s.id
+             WHERE s.page_id = :pid"
+        );
+        $stmt->execute([':pid' => $pageId]);
+        $validIds = array_flip($stmt->fetchAll(\PDO::FETCH_COLUMN));
+
+        $update = $this->db->prepare(
+            "UPDATE velocms_boxes
+             SET grid_x = :x, grid_y = :y, grid_w = :w, grid_h = :h, updated_at = NOW()
+             WHERE id = :id"
+        );
+
+        foreach ($grid as $item) {
+            $id = (int) ($item['box_id'] ?? 0);
+            if ($id <= 0 || !isset($validIds[$id])) {
+                continue; // Reject boxes that don't belong to this page
+            }
+            $update->execute([
+                ':id' => $id,
+                ':x'  => max(0, (int) ($item['x'] ?? 0)),
+                ':y'  => max(0, (int) ($item['y'] ?? 0)),
+                ':w'  => max(1, (int) ($item['w'] ?? 24)),
+                ':h'  => max(1, (int) ($item['h'] ?? 4)),
+            ]);
+        }
+    }
+
     public function getFullPage(int $pageId): array
     {
         $sections = $this->getSections($pageId);

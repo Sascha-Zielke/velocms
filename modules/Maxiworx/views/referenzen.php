@@ -24,10 +24,11 @@ $refsDefault = [
 $refs = !empty($projects) ? $projects : $refsDefault;
 ?>
 
-<?php $veSec0 = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
-<?php $veBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
+<?php $veSec0  = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
+<?php $veRBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0] ?? []) : []; ?>
+<?php $veBox0  = $veRBox0['id'] ?? 0; ?>
 <div class="mw-inner-hero" <?= $veSec0 ? "data-ve-section=\"{$veSec0}\" data-ve-label=\"Intro\"" : '' ?>>
-    <div class="mw-container" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>>
+    <div class="mw-container" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\" " . ve_gs_attrs($veRBox0) : '' ?>>
         <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
         <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
         <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
@@ -44,8 +45,9 @@ $refs = !empty($projects) ? $projects : $refsDefault;
         <?php endif ?>
         <div class="mw-portfolio__grid">
             <?php foreach ($refs as $rIdx => $r): ?>
-            <?php $veBoxR = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][$rIdx]['id'] ?? 0) : 0; ?>
-            <div class="mw-portfolio__item" <?= $veBoxR ? "data-ve-box=\"{$veBoxR}\"" : '' ?>>
+            <?php $veRBoxR = ($veMode ?? false) ? ($rawSections[1]['rows'][0]['boxes'][$rIdx] ?? []) : []; ?>
+            <?php $veBoxR  = $veRBoxR['id'] ?? 0; ?>
+            <div class="mw-portfolio__item" <?= $veBoxR ? "data-ve-box=\"{$veBoxR}\" " . ve_gs_attrs($veRBoxR) : '' ?>>
                 <div class="mw-portfolio__placeholder">
                     <div style="text-align:center;padding:1rem">
                         <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:rgba(201,162,39,.6);margin-bottom:.3rem">
