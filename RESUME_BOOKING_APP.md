@@ -1,6 +1,6 @@
 # VeloCMS — Booking-App RESUME
 > Produkt: veloSolution → veloCMS-PHP → App: Booking
-> Gestartet: 2026-05-27 | Status: ✅ Phase 5 abgeschlossen — Phase 6 offen
+> Gestartet: 2026-05-27 | Status: ✅ Phase 6 abgeschlossen — Phase 7 offen
 
 ---
 
@@ -148,7 +148,7 @@ velocms_booking_templates   (id, template_key VARCHAR(50), config JSON, created_
 | 3 | Admin-UI: Dashboard, Ressourcen, Buchungsübersicht | ✅ Abgeschlossen |
 | 4 | Extension-System: BookingTemplateInterface + 3 Branchen-Templates | ✅ Abgeschlossen |
 | 5 | REST-API + Frontend-Buchungswidget | ✅ Abgeschlossen |
-| 6 | E-Mail-Benachrichtigungen + Bestätigungen | 🔲 Offen |
+| 6 | E-Mail-Benachrichtigungen + Bestätigungen | ✅ Abgeschlossen |
 | 7 | Tests + Final-Audit | 🔲 Offen |
 
 ---
@@ -234,6 +234,23 @@ modules/Booking/BookingModule.php  (API-Routen hinzugefügt)
 **Audit 1 (Code-Review):** ✅ E-Mail-Validierung, Timezone-Guard, Template-Validierung vor DB, kein DOM-XSS im Widget  
 **Audit 2 (Live-Verify):** ✅ PHP-Syntax ok, 73/73 Tests grün  
 **Commit:** 855e3c5
+
+---
+
+## Phase 6 — E-Mail-Benachrichtigungen
+**Status:** ✅ Abgeschlossen
+
+### Erstellte/geänderte Dateien
+```
+modules/Booking/Core/Services/BookingMailer.php
+modules/Booking/Controllers/Api/ApiBookingController.php   (E-Mail nach Buchung)
+modules/Booking/Controllers/Admin/AdminBookingController.php (E-Mail bei confirm/cancel)
+lang/de.php + lang/en.php  (booking.mail_* Keys)
+```
+
+**Audit 1 (Code-Review):** ✅ Fix: Header-Injection-Schutz (CR/LF Strip in To/Subject/siteName)  
+**Audit 2 (Live-Verify):** ✅ PHP-Syntax ok, 73/73 Tests grün  
+**Commit:** ce67f32
 
 ---
 
