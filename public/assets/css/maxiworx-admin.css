@@ -1,0 +1,57 @@
+/*
+ * Maxiworx Admin Theme
+ * Loaded after admin.css on the Maxiworx tenant only.
+ * Overrides CSS custom properties — does NOT reset or duplicate VeloCMS admin styles.
+ */
+
+:root {
+    --vcms-accent:        #C9A227;
+    --vcms-accent-dark:   #B8921F;
+    --vcms-sidebar-bg:    #111111;
+    --vcms-sidebar-text:  rgba(255, 255, 255, 0.62);
+    --vcms-sidebar-hover: #1C1C1C;
+    --vcms-warning:       #C9A227;
+}
+
+/* ── Logo ──────────────────────────────────────────────────────────────────── */
+.vcms-logo a {
+    color: #C9A227;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────────────── */
+.vcms-nav__item:hover,
+.vcms-nav__item.is-active {
+    background: rgba(201, 162, 39, 0.10);
+    color: #C9A227;
+}
+
+.vcms-nav__section {
+    color: rgba(201, 162, 39, 0.45);
+}
+
+/* ── Primary buttons ─────────────────────────────────────────────────────────── */
+.vcms-btn--primary,
+button[type="submit"].vcms-btn {
+    background: #C9A227;
+    border-color:  #C9A227;
+    color: #111;
+}
+.vcms-btn--primary:hover,
+button[type="submit"].vcms-btn:hover {
+    background: #B8921F;
+    border-color:  #B8921F;
+}
+
+/* ── Accent text & borders ───────────────────────────────────────────────────── */
+a:focus-visible {
+    outline-color: #C9A227;
+}
+
+.vcms-alert--success {
+    border-left-color: #C9A227;
+    color: #C9A227;
+}

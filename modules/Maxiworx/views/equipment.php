@@ -5,17 +5,26 @@
 
 <?php $this->section('content'); ?>
 
+<?php
+$heroLabel    = e($innerHero['label']    ?? 'The Gear');
+$heroTitle    = e($innerHero['title']    ?? 'Equipment');
+$heroSubtitle = e($innerHero['subtitle'] ?? 'State-of-the-art analog and digital signal chain.');
+?>
+
 <div class="mw-inner-hero">
     <div class="mw-container">
-        <span class="mw-label mw-inner-hero__label">The Gear</span>
-        <h1 class="mw-inner-hero__title">Equipment</h1>
-        <p class="mw-inner-hero__sub">State-of-the-art analog and digital signal chain.</p>
+        <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
+        <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
+        <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
     </div>
 </div>
 
 <section class="mw-section">
     <div class="mw-container">
         <div class="mw-placeholder-content">
+            <?php if (!empty($pageContent['html'])): ?>
+            <div class="mw-prose"><?= safe_html($pageContent['html']) ?></div>
+            <?php else: ?>
             <div class="mw-placeholder-banner">
                 ⚙ Diese Seite wird gerade befüllt — hier erscheint in Kürze die vollständige Equipment-Liste.
             </div>
@@ -51,6 +60,7 @@
                     <li>Sennheiser MD 421 (×4)</li>
                 </ul>
             </div>
+            <?php endif ?>
         </div>
     </div>
 </section>

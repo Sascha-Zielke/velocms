@@ -6,17 +6,52 @@
 
 <?php $this->section('content'); ?>
 
+<?php
+// ── Fallback data (used when DB has not been seeded yet) ──────────────────────
+$heroDefault = [
+    'headline' => 'Where Sounds<br>Become Legends',
+    'subline'  => 'Munich — Superior Music Production',
+    'tagline'  => 'Recording · Mixing · Mastering',
+];
+$portfolioDefault = [
+    ['title' => 'Project Alpha',    'genre' => 'Hip-Hop / Trap'],
+    ['title' => 'Nachtklang EP',    'genre' => 'Electronic'],
+    ['title' => 'Silverline Mix',   'genre' => 'R&B / Soul'],
+    ['title' => 'Bassline Stories', 'genre' => 'House'],
+];
+$gearDefault = [
+    ['name' => 'SSL 4000 G Console',      'desc' => 'The legendary analog console that defined the sound of decades of chart-topping records.'],
+    ['name' => 'Neve 1073 Preamps',        'desc' => 'Classic British warmth and character for vocals, guitars, and drums.'],
+    ['name' => 'Manley VOXBOX',            'desc' => 'All-in-one channel strip — preamp, compressor, EQ, de-esser — precision in every chain.'],
+    ['name' => 'Studer A827 Tape Machine', 'desc' => '24-track analog tape for artists who want that unmistakable warmth.'],
+];
+$servicesDefault = [
+    ['icon' => '🎙', 'title' => 'Recording', 'text' => 'From single vocals to full live bands — our acoustic treatment and signal chain capture every nuance with pristine clarity.'],
+    ['icon' => '🎚', 'title' => 'Mixing',    'text' => 'We blend depth, width, and dynamics to give your tracks that polished, radio-ready sound while keeping your vision intact.'],
+    ['icon' => '💿', 'title' => 'Mastering', 'text' => 'Loudness, tonal balance, and streaming optimisation — every master is crafted for the platform and the audience.'],
+];
+$ctaDefault = [
+    'title' => 'Ready to Record<br>Your Next Hit?',
+    'text'  => 'Slots are limited. Book your session now and let\'s create something extraordinary together.',
+];
+
+// ── Merge DB data over defaults ────────────────────────────────────────────────
+$h  = array_merge($heroDefault,  $hero  ?? []);
+$pf = !empty($portfolio) ? $portfolio : $portfolioDefault;
+$gr = !empty($gear)      ? $gear      : $gearDefault;
+$sv = !empty($services)  ? $services  : $servicesDefault;
+$ct = array_merge($ctaDefault,   $cta   ?? []);
+?>
+
 <!-- ─── Hero ────────────────────────────────────────────────────────────────── -->
 <section class="mw-hero" aria-label="Hero">
     <div class="mw-hero__bg"
-         style="background-image:url('/assets/images/hero-studio.jpg')"
+         style="background-image:url('/assets/images/maxiworx/hero-studio.jpg')"
          role="presentation"></div>
     <div class="mw-hero__content">
-        <p class="mw-hero__sub">Munich — Superior Music Production</p>
-        <h1 class="mw-hero__title">Where Sounds<br>Become Legends</h1>
-        <p class="mw-hero__sub" style="margin-top:.5rem">
-            Recording · Mixing · Mastering
-        </p>
+        <p class="mw-hero__sub"><?= e($h['subline']) ?></p>
+        <h1 class="mw-hero__title"><?= $h['headline'] /* intentional — contains <br>, set in admin */ ?></h1>
+        <p class="mw-hero__sub" style="margin-top:.5rem"><?= e($h['tagline']) ?></p>
     </div>
     <div class="mw-hero__scroll" aria-hidden="true"></div>
 </section>
@@ -27,22 +62,15 @@
         <span class="mw-label">Referenzen</span>
         <h2 class="mw-h2">Recent Productions</h2>
         <div class="mw-portfolio__grid" role="list">
-            <?php
-            $projects = [
-                ['title' => 'Project Alpha',   'genre' => 'Hip-Hop / Trap'],
-                ['title' => 'Nachtklang EP',   'genre' => 'Electronic'],
-                ['title' => 'Silverline Mix',  'genre' => 'R&B / Soul'],
-                ['title' => 'Bassline Stories','genre' => 'House'],
-            ];
-            foreach ($projects as $p): ?>
+            <?php foreach ($pf as $p): ?>
             <div class="mw-portfolio__item" role="listitem">
                 <div class="mw-portfolio__placeholder">
                     <div style="text-align:center;padding:1rem">
                         <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:rgba(201,162,39,.6);margin-bottom:.3rem">
-                            <?= e($p['title']) ?>
+                            <?= e($p['title'] ?? '') ?>
                         </div>
                         <div style="font-size:.65rem;color:rgba(255,255,255,.2)">
-                            <?= e($p['genre']) ?>
+                            <?= e($p['genre'] ?? '') ?>
                         </div>
                     </div>
                 </div>
@@ -66,17 +94,10 @@
             </div>
 
             <div class="mw-hardware__items">
-                <?php
-                $gear = [
-                    ['name' => 'SSL 4000 G Console',       'desc' => 'The legendary analog console that defined the sound of decades of chart-topping records.'],
-                    ['name' => 'Neve 1073 Preamps',         'desc' => 'Classic British warmth and character for vocals, guitars, and drums.'],
-                    ['name' => 'Manley VOXBOX',             'desc' => 'All-in-one channel strip — preamp, compressor, EQ, de-esser — precision in every chain.'],
-                    ['name' => 'Studer A827 Tape Machine',  'desc' => '24-track analog tape for artists who want that unmistakable warmth.'],
-                ];
-                foreach ($gear as $item): ?>
+                <?php foreach ($gr as $item): ?>
                 <div class="mw-hardware__item">
-                    <h3 class="mw-h3"><?= e($item['name']) ?></h3>
-                    <p><?= e($item['desc']) ?></p>
+                    <h3 class="mw-h3"><?= e($item['name'] ?? '') ?></h3>
+                    <p><?= e($item['desc'] ?? '') ?></p>
                 </div>
                 <?php endforeach ?>
                 <a href="/equipment" class="mw-link-arrow">Full Equipment List →</a>
@@ -102,29 +123,11 @@
             <h2 class="mw-h2">Beyond the Booth</h2>
         </div>
         <div class="mw-services__grid">
-            <?php
-            $services = [
-                [
-                    'icon'  => '🎙',
-                    'title' => 'Recording',
-                    'text'  => 'From single vocals to full live bands — our acoustic treatment and signal chain capture every nuance with pristine clarity.',
-                ],
-                [
-                    'icon'  => '🎚',
-                    'title' => 'Mixing',
-                    'text'  => 'We blend depth, width, and dynamics to give your tracks that polished, radio-ready sound while keeping your vision intact.',
-                ],
-                [
-                    'icon'  => '💿',
-                    'title' => 'Mastering',
-                    'text'  => 'Loudness, tonal balance, and streaming optimisation — every master is crafted for the platform and the audience.',
-                ],
-            ];
-            foreach ($services as $s): ?>
+            <?php foreach ($sv as $s): ?>
             <div class="mw-service-card">
-                <div class="mw-service-card__icon" aria-hidden="true"><?= $s['icon'] ?></div>
-                <h3 class="mw-service-card__title"><?= e($s['title']) ?></h3>
-                <p class="mw-service-card__text"><?= e($s['text']) ?></p>
+                <div class="mw-service-card__icon" aria-hidden="true"><?= e($s['icon'] ?? '') ?></div>
+                <h3 class="mw-service-card__title"><?= e($s['title'] ?? '') ?></h3>
+                <p class="mw-service-card__text"><?= e($s['text'] ?? '') ?></p>
                 <div class="mw-service-card__line" aria-hidden="true"></div>
             </div>
             <?php endforeach ?>
@@ -140,8 +143,8 @@
     <div class="mw-container">
         <div class="mw-cta__inner">
             <div>
-                <h2 class="mw-cta__title">Ready to Record<br>Your Next Hit?</h2>
-                <p class="mw-cta__sub">Slots are limited. Book your session now and let's create something extraordinary together.</p>
+                <h2 class="mw-cta__title"><?= $ct['title'] /* may contain <br> */ ?></h2>
+                <p class="mw-cta__sub"><?= e($ct['text']) ?></p>
             </div>
             <div class="mw-cta__form" style="flex-direction:column;align-items:flex-start;gap:0.5rem">
                 <p class="mw-cta__label">Start with your e-mail</p>

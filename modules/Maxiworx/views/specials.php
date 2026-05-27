@@ -5,16 +5,25 @@
 
 <?php $this->section('content'); ?>
 
+<?php
+$heroLabel    = e($innerHero['label']    ?? 'Deals');
+$heroTitle    = e($innerHero['title']    ?? 'Specials');
+$heroSubtitle = e($innerHero['subtitle'] ?? 'Aktuelle Angebote &amp; limitierte Slots.');
+?>
+
 <div class="mw-inner-hero">
     <div class="mw-container">
-        <span class="mw-label mw-inner-hero__label">Deals</span>
-        <h1 class="mw-inner-hero__title">Specials</h1>
-        <p class="mw-inner-hero__sub">Aktuelle Angebote &amp; limitierte Slots.</p>
+        <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
+        <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
+        <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
     </div>
 </div>
 
 <section class="mw-section">
     <div class="mw-container">
+        <?php if (!empty($pageContent['html'])): ?>
+        <div class="mw-prose"><?= safe_html($pageContent['html']) ?></div>
+        <?php else: ?>
         <div class="mw-placeholder-content">
             <div class="mw-placeholder-banner">
                 ⚡ Aktuelle Specials werden in Kürze hier veröffentlicht. Trag dich in unsere Liste ein und erhalte als Erstes Bescheid.
@@ -28,6 +37,7 @@
                 <p>Halbtages-Slot (4 h) inkl. Audio-Nachbearbeitung, Intro/Outro-Schnitt und MP3-Delivery — ideal für Content Creator und Brands.</p>
             </div>
         </div>
+        <?php endif ?>
     </div>
 </section>
 

@@ -5,11 +5,22 @@
 
 <?php $this->section('content'); ?>
 
+<?php
+$heroLabel    = e($innerHero['label']    ?? 'Get in Touch');
+$heroTitle    = e($innerHero['title']    ?? 'Kontakt');
+$heroSubtitle = e($innerHero['subtitle'] ?? 'Fragen, Anfragen, Kooperationen — wir hören zu.');
+
+// Contact info — editable via DB, fallback to studio placeholder
+$infoAddress = $info['address']  ?? "Maxiworx Studio\nMusterstraße 12\n80331 München";
+$infoEmail   = $info['email']    ?? 'kontakt@maxiworx.de';
+$infoHours   = $info['hours']    ?? "Mo – Fr: 10:00 – 22:00 Uhr\nSa – So: nach Vereinbarung";
+?>
+
 <div class="mw-inner-hero">
     <div class="mw-container">
-        <span class="mw-label mw-inner-hero__label">Get in Touch</span>
-        <h1 class="mw-inner-hero__title">Kontakt</h1>
-        <p class="mw-inner-hero__sub">Fragen, Anfragen, Kooperationen — wir hören zu.</p>
+        <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
+        <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
+        <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
     </div>
 </div>
 
@@ -21,17 +32,21 @@
             <div>
                 <div class="mw-contact-info__item">
                     <span class="mw-contact-info__label">Studio</span>
-                    <span class="mw-contact-info__value">Maxiworx Studio<br>Musterstraße 12<br>80331 München</span>
+                    <span class="mw-contact-info__value">
+                        <?= nl2br(e($infoAddress)) ?>
+                    </span>
                 </div>
                 <div class="mw-contact-info__item">
                     <span class="mw-contact-info__label">E-Mail</span>
                     <span class="mw-contact-info__value">
-                        <a href="mailto:kontakt@maxiworx.de" style="color:var(--mw-gold)">kontakt@maxiworx.de</a>
+                        <a href="mailto:<?= e($infoEmail) ?>" style="color:var(--mw-gold)"><?= e($infoEmail) ?></a>
                     </span>
                 </div>
                 <div class="mw-contact-info__item">
                     <span class="mw-contact-info__label">Öffnungszeiten</span>
-                    <span class="mw-contact-info__value">Mo – Fr: 10:00 – 22:00 Uhr<br>Sa – So: nach Vereinbarung</span>
+                    <span class="mw-contact-info__value">
+                        <?= nl2br(e($infoHours)) ?>
+                    </span>
                 </div>
                 <div class="mw-contact-info__item">
                     <span class="mw-contact-info__label">Session buchen</span>

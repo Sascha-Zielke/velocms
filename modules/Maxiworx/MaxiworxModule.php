@@ -30,6 +30,13 @@ class MaxiworxModule extends Module
         $this->router->get('/datenschutz',     'Maxiworx\Controllers\MaxiworxController@datenschutz');
         $this->router->get('/agb',             'Maxiworx\Controllers\MaxiworxController@agb');
         $this->router->post('/book-session',   'Maxiworx\Controllers\MaxiworxController@bookSession');
+
+        // Admin nav — Visual Editor between Dashboard and Seiten
+        $this->admin->addMenuItem([
+            'label'    => 'Visual Editor',
+            'url'      => '/admin/pages',
+            'position' => 5,
+        ]);
     }
 
     public function install(): void {}
