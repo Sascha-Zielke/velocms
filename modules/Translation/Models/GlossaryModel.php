@@ -10,9 +10,9 @@ class GlossaryModel
 {
     private \PDO $db;
 
-    public function __construct()
+    public function __construct(?\PDO $db = null)
     {
-        $this->db = Database::getInstance()->getPdo();
+        $this->db = $db ?? Database::getInstance()->getPdo();
     }
 
     /** All terms for a language pair, ordered by source term. */

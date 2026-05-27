@@ -30,7 +30,7 @@
 | 4 | Admin-Dashboard + manueller Editor | ✅ Abgeschlossen |
 | 5 | Content-Abdeckung: Blog, Pages, Nav, SEO | ✅ Abgeschlossen |
 | 6 | Erweiterte Features: Glossar, Export/Import | ✅ Abgeschlossen |
-| 7 | Tests + Final-Audit | 🔲 Offen |
+| 7 | Tests + Final-Audit | 🔄 In Arbeit |
 
 ---
 
@@ -161,9 +161,9 @@ Funktioniert mit DeepL und Anthropic.
 
 **CSV-Format:** `table_name,row_id,field,language,value,source`
 
-**Audit 1 (Code-Review):** ✅  
+**Audit 1 (Code-Review):** ✅ (inkl. Nachfixes: HTML-sicheres Glossar, CSV-Validierung, ID-Placeholder)  
 **Audit 2 (Live-Verify):** 🔲  
-**Commit:** —
+**Commit:** 8747afd + e1ca07c
 
 ---
 

@@ -10,9 +10,9 @@ class TranslationModel
 {
     private \PDO $db;
 
-    public function __construct()
+    public function __construct(?\PDO $db = null)
     {
-        $this->db = Database::getInstance()->getPdo();
+        $this->db = $db ?? Database::getInstance()->getPdo();
     }
 
     public function get(string $table, int $rowId, string $field, string $lang): ?array
