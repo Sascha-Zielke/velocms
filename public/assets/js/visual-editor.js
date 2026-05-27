@@ -259,8 +259,10 @@
     }
 
     // ── Bootstrap ──────────────────────────────────────────────────────────
+    const IS_EMBEDDED = new URLSearchParams(window.location.search).has('ve_embedded');
+
     document.addEventListener('DOMContentLoaded', function () {
-        buildToolbar();
+        if (!IS_EMBEDDED) buildToolbar();
         buildSectionBadges();
         buildBoxOverlays();
         buildPanel();

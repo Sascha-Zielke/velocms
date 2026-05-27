@@ -24,6 +24,15 @@ class AdminPagesController extends Controller
         $this->render('admin/index', ['pages' => $this->model->getAll()]);
     }
 
+    public function visualEditor(string $slug = ''): void
+    {
+        $pages = $this->model->getAll();
+        if ($slug === '') {
+            $slug = setting('homepage_slug', $pages[0]['slug'] ?? '');
+        }
+        $this->render('admin/visual-editor', ['pages' => $pages, 'currentSlug' => $slug]);
+    }
+
     public function new(): void
     {
         $this->render('admin/edit', ['page' => null, 'sections' => []]);

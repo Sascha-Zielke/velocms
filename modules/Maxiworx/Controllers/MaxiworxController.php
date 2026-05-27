@@ -12,10 +12,10 @@ class MaxiworxController extends Controller
 {
     // ─── Page data helpers ───────────────────────────────────────────────────
 
-    /** True when a logged-in admin opens the page with ?ve_edit=1 */
+    /** True when a logged-in admin opens the page with ?ve_edit=1 or ?ve_embedded=1 */
     private function isVeMode(): bool
     {
-        return Auth::check() && isset($_GET['ve_edit']);
+        return Auth::check() && (isset($_GET['ve_edit']) || isset($_GET['ve_embedded']));
     }
 
     /** Return the DB id of a section by index, or 0 if not found. */

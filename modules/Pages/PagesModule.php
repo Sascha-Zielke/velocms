@@ -12,6 +12,10 @@ class PagesModule extends Module
 
     public function boot(): void
     {
+        // Visual Editor (iframe-based)
+        $this->router->get('/admin/visual-editor',              'Pages\Controllers\AdminPagesController@visualEditor');
+        $this->router->get('/admin/visual-editor/[*:slug]',     'Pages\Controllers\AdminPagesController@visualEditor');
+
         // Admin routes
         $this->router->get('/admin/pages',                      'Pages\Controllers\AdminPagesController@index');
         $this->router->get('/admin/pages/new',                  'Pages\Controllers\AdminPagesController@new');

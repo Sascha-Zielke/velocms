@@ -34,7 +34,7 @@ class MaxiworxModule extends Module
         // Admin nav — Visual Editor between Dashboard and Seiten
         $this->admin->addMenuItem([
             'label'    => 'Visual Editor',
-            'url'      => '/admin/pages',
+            'url'      => '/admin/visual-editor',
             'position' => 5,
         ]);
     }
