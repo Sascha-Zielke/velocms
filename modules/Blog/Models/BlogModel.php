@@ -74,17 +74,32 @@ class BlogModel extends Model
 
     public function update(int $id, array $data): void
     {
+        $status = in_array($data['status'] ?? '', ['draft', 'published', 'archived'], true)
+                  ? $data['status'] : 'draft';
         $stmt = $this->db->prepare("
             UPDATE {$this->table} SET
-                title=:title, title_en=:title_en, slug=:slug,
-                excerpt=:excerpt, excerpt_en=:excerpt_en,
-                content=:content, content_en=:content_en,
+                title=:title, slug=:slug,
+                excerpt=:excerpt, content=:content,
                 cover_image=:cover_image, status=:status,
                 meta_title=:meta_title, meta_description=:meta_description,
                 author_id=:author_id, published_at=:published_at
             WHERE id=:id
         ");
-        $stmt->execute(array_merge($this->prepareData($data), [':id' => $id]));
+        $stmt->execute([
+            ':title'            => substr($data['title'] ?? '', 0, 255),
+            ':slug'             => substr($data['slug'] ?? '', 0, 255),
+            ':excerpt'          => $data['excerpt'] ?? null,
+            ':content'          => $data['content'] ?? '',
+            ':cover_image'      => substr($data['cover_image'] ?? '', 0, 500),
+            ':status'           => $status,
+            ':meta_title'       => substr($data['meta_title'] ?? '', 0, 255),
+            ':meta_description' => substr($data['meta_description'] ?? '', 0, 320),
+            ':author_id'        => (int) ($data['author_id'] ?? 1),
+            ':published_at'     => ($status === 'published' && empty($data['published_at']))
+                                   ? date('Y-m-d H:i:s')
+                                   : ($data['published_at'] ?? null),
+            ':id'               => $id,
+        ]);
     }
 
     public function delete(int $id): void

@@ -127,12 +127,9 @@ class AdminBlogController extends Controller
         $slug = $this->sanitizeSlug($this->input('slug', $existing['slug'] ?? ''));
         return [
             'title'            => $this->input('title', ''),
-            'title_en'         => $this->input('title_en', ''),
             'slug'             => $slug,
             'excerpt'          => $this->input('excerpt', null),
-            'excerpt_en'       => $this->input('excerpt_en', null),
             'content'          => $this->input('content', ''),
-            'content_en'       => $this->input('content_en', ''),
             'cover_image'      => $this->input('cover_image', ''),
             'status'           => $this->input('status', 'draft'),
             'meta_title'       => $this->input('meta_title', ''),

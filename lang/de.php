@@ -301,17 +301,11 @@ return [
     // Translation App — status labels
     'translation.source_auto'          => 'KI-generiert',
     'translation.source_manual'        => 'Manuell',
-    'translation.status_ok'            => 'Übersetzt',
     'translation.status_stale'         => 'Veraltet',
-    'translation.status_missing'       => 'Fehlt',
-    'translation.status_locked'        => 'Gesperrt (manuell)',
 
     // Translation App — actions
-    'translation.action_translate_all' => 'Alle ausstehenden übersetzen',
     'translation.action_retranslate'   => 'Neu übersetzen',
     'translation.action_unlock'        => 'Sperre aufheben',
-    'translation.action_export'        => 'CSV exportieren',
-    'translation.action_import'        => 'CSV importieren',
 
     // Translation App — settings form
     'translation.settings_languages'   => 'Aktive Sprachen',
@@ -326,7 +320,6 @@ return [
     'translation.progress_auto'        => 'KI-generiert',
     'translation.progress_manual'      => 'Manuell',
     'translation.progress_stale'       => 'Veraltet',
-    'translation.progress_missing'     => 'Fehlt',
 
     // Translation App — editor
     'translation.editor'               => 'Editor',

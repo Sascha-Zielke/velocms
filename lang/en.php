@@ -170,17 +170,11 @@ return [
     // Translation App — status labels
     'translation.source_auto'          => 'AI-generated',
     'translation.source_manual'        => 'Manual',
-    'translation.status_ok'            => 'Translated',
     'translation.status_stale'         => 'Outdated',
-    'translation.status_missing'       => 'Missing',
-    'translation.status_locked'        => 'Locked (manual)',
 
     // Translation App — actions
-    'translation.action_translate_all' => 'Translate all pending',
     'translation.action_retranslate'   => 'Re-translate',
     'translation.action_unlock'        => 'Remove lock',
-    'translation.action_export'        => 'Export CSV',
-    'translation.action_import'        => 'Import CSV',
 
     // Translation App — settings form
     'translation.settings_languages'   => 'Active languages',
@@ -195,7 +189,6 @@ return [
     'translation.progress_auto'        => 'AI-generated',
     'translation.progress_manual'      => 'Manual',
     'translation.progress_stale'       => 'Outdated',
-    'translation.progress_missing'     => 'Missing',
 
     // Translation App — editor
     'translation.editor'               => 'Editor',

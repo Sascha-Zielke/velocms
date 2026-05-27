@@ -13,8 +13,6 @@ class TranslationModule extends Module
 
     public function boot(): void
     {
-        // ── Admin routes (dashboard + settings — controllers built in Phase 4) ──
-        // Placeholder route so the menu link doesn't 404 before Phase 4
         $this->router->get('/admin/apps/translation', 'Translation\Controllers\AdminTranslationController@dashboard');
         $this->router->get('/admin/apps/translation/editor', 'Translation\Controllers\AdminTranslationController@editor');
         $this->router->post('/admin/apps/translation/editor/[i:id]/save', 'Translation\Controllers\AdminTranslationController@saveTranslation');
@@ -29,9 +27,6 @@ class TranslationModule extends Module
         $this->router->post('/admin/apps/translation/glossary/save',        'Translation\Controllers\AdminGlossaryController@save');
         $this->router->post('/admin/apps/translation/glossary/delete/[i:id]', 'Translation\Controllers\AdminGlossaryController@delete');
 
-        // ── Sidebar: "Apps" section header ────────────────────────────────────
-        // type='section' items render as non-clickable group labels.
-        // Deduplicated by AdminMenu — safe to register from multiple app-modules.
         $this->admin->addMenuItem([
             'type'     => 'section',
             'label'    => t('nav.apps'),
@@ -39,7 +34,6 @@ class TranslationModule extends Module
             'min_role' => 'admin',
         ]);
 
-        // ── Translation app link ───────────────────────────────────────────────
         $this->admin->addMenuItem([
             'label'    => t('nav.translation'),
             'url'      => '/admin/apps/translation',
