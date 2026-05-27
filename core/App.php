@@ -13,6 +13,13 @@ class App
         self::registerExceptionHandler();
         self::startSession();
 
+        // Allow the Visual Editor to be loaded inside an admin iframe.
+        // Without this, any server-level X-Frame-Options: DENY would block it.
+        if (isset($_GET['ve_embedded']) || isset($_GET['ve_edit'])) {
+            header('X-Frame-Options: SAMEORIGIN');
+            header("Content-Security-Policy: frame-ancestors 'self'");
+        }
+
         $config = require BASE_PATH . '/config/config.php';
 
         if (!empty($config['db_host'])) {
