@@ -24,6 +24,11 @@ class BookingModule extends Module
         TemplateRegistry::register(new HandwerkerTemplate());
         TemplateRegistry::register(new StudioTemplate());
 
+        // Public API
+        $this->router->get('/api/booking/resources',          'Booking\Controllers\Api\ApiAvailabilityController@resources');
+        $this->router->get('/api/booking/availability',       'Booking\Controllers\Api\ApiAvailabilityController@slots');
+        $this->router->post('/api/booking/book',              'Booking\Controllers\Api\ApiBookingController@book');
+
         // Booking dashboard
         $this->router->get('/admin/apps/booking',                             'Booking\Controllers\Admin\AdminBookingController@index');
         $this->router->get('/admin/apps/booking/detail/[i:id]',              'Booking\Controllers\Admin\AdminBookingController@detail');
