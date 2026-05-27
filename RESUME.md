@@ -1,5 +1,5 @@
 # VeloCMS — RESUME.md
-> Stand: 2026-05-27 | Letzte Session: Maxiworx Refactor (Phase 25b) abgeschlossen
+> Stand: 2026-05-27 | Letzte Session: Visual Editor vollständig implementiert (Phase 26)
 
 ## Server
 - IP: 95.217.185.113 | SSH Port: 22 | User: velocms
@@ -31,6 +31,7 @@
 | 24 | Booking-App (7 Phasen: Foundation, AvailabilityEngine, Admin-UI, Templates, API, Mail, Tests) | ✅ DONE |
 | 25 | Maxiworx Website (CSS-Theme, Layout, 9 Views, Module+Controller, Booking-Overlay) | ✅ DONE |
 | 25b | Maxiworx Refactor: DB-Content, Gold-Admin-Theme, Visual Editor Nav | ✅ DONE |
+| 26  | Visual Editor: echtes WYSIWYG mit Gear-Overlays, Slide-in Panel, theme.css | ✅ DONE |
 
 ## Maxiworx Tenant — Vollständiger Stand (2026-05-27)
 
@@ -41,14 +42,19 @@
 - Basic Auth: /etc/nginx/.htpasswd_maxiworx (Preview-Schutz)
 - Admin-User: s.zielke84@gmail.com
 
-### Code-Architektur (nach Phase 25b)
-- modules/Maxiworx/MaxiworxModule.php — Tenant-Guard via Tenant::domain(), routes, Visual Editor Nav-Item
-- modules/Maxiworx/Controllers/MaxiworxController.php — lädt jede Page aus DB via PagesModel; graceful [] fallback
-- modules/Maxiworx/views/ — 9 Views (home + 8 Unterseiten); DB-Content mit hardcoded Fallbacks
-- public/assets/css/maxiworx.css — Frontend-Theme (Gold #C9A227, Dark #0D0D0D, Barlow-Fonts)
-- public/assets/css/maxiworx-admin.css — Admin-Theme (CSS-Variablen-Override: Gold/Dark)
-- views/layouts/admin.php — lädt maxiworx-admin.css per Tenant::domain()-Check; zeigt "Maxiworx" als Logo
-- views/layouts/maxiworx.php — Custom Frontend-Layout (Header, Footer, Booking-Overlay)
+### Code-Architektur (nach Phase 26)
+- modules/Maxiworx/MaxiworxModule.php — Tenant-Guard via Tenant::domain(), routes
+- modules/Maxiworx/Controllers/MaxiworxController.php — isVeMode(), boxId(), sectionId(); pass veMode+rawSections to all 9 views
+- modules/Maxiworx/views/ — 9 Views; data-ve-section + data-ve-box auf allen editierbaren Elementen
+- public/assets/css/maxiworx.css — Frontend-Komponenten-CSS
+- public/assets/css/sites/maxiworx.webzite-newmedia.com/theme.css — Design-Tokens + Admin-CSS-Variablen (lädt in Admin UND Frontend)
+- public/assets/css/visual-editor.css — Visual Editor Overlay-Styles (Toolbar, Gear-Btn, Panel, Felder)
+- public/assets/js/visual-editor.js — Visual Editor JS (Overlays, Panel, AJAX fetch/save, fieldLabel-Map)
+- views/layouts/admin.php — lädt theme.css automatisch für JEDEN Tenant per file_exists()-Check
+- views/layouts/maxiworx.php — lädt theme.css immer; injiziert VE-Assets wenn Auth+?ve_edit=1
+- modules/Pages/PagesModule.php — GET /admin/pages/box/[i:id]/data Route hinzugefügt
+- modules/Pages/Controllers/AdminPagesController.php — boxData() Action: gibt box JSON zurück
+- modules/Pages/views/admin/index.php — ⚙ VE Button per Seite → /{slug}?ve_edit=1
 - scripts/mw_seed_pages.php — Einmalig ausgeführt 2026-05-27; erstellt alle 9 Pages in DB
 
 ### DB-Content (velocms_maxiworx nach Seed)
@@ -64,10 +70,10 @@
 
 ## Nächste Schritte (Prio-Reihenfolge)
 
-1. **Logo** — public/assets/images/maxiworx/logo.png platzieren (User hat das Logo)
-2. **Bilder** — Hero-Foto (hero-studio.jpg), Hardware-Grid-Bilder, Portfolio-Artwork
-3. **Rechtstexte** — Impressum, Datenschutz, AGB via Visual Editor befüllen (/admin/pages)
-4. **Backoffice-Website-Workflow.md** — Section 7 mit Learnings aus Phase 25+25b befüllen
+1. **Visual Editor testen** — Auf maxiworx.webzite-newmedia.com/{slug}?ve_edit=1 einloggen, Gear-Icons prüfen, Box speichern
+2. **Logo** — public/assets/images/maxiworx/logo.png platzieren (User hat das Logo)
+3. **Bilder** — Hero-Foto (hero-studio.jpg), Hardware-Grid-Bilder, Portfolio-Artwork
+4. **Rechtstexte** — Impressum, Datenschutz, AGB via Visual Editor befüllen
 5. **Domain-Wechsel** — maxiworx.de wenn Kunde ready; DNS → Nginx vhost anpassen
 
 ## Wichtige Server-Hinweise
