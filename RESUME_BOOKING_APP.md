@@ -1,6 +1,6 @@
 # VeloCMS — Booking-App RESUME
 > Produkt: veloSolution → veloCMS-PHP → App: Booking
-> Gestartet: 2026-05-27 | Status: ✅ Phase 2 abgeschlossen — Phase 3 offen
+> Gestartet: 2026-05-27 | Status: ✅ Phase 3 abgeschlossen — Phase 4 offen
 
 ---
 
@@ -145,7 +145,7 @@ velocms_booking_templates   (id, template_key VARCHAR(50), config JSON, created_
 |-------|-------|--------|
 | 1 | Foundation: Modulstruktur, Migrations, Core-Entities | ✅ Abgeschlossen |
 | 2 | AvailabilityEngine + BookingService (SELECT FOR UPDATE) | ✅ Abgeschlossen |
-| 3 | Admin-UI: Dashboard, Ressourcen, Buchungsübersicht | 🔲 Offen |
+| 3 | Admin-UI: Dashboard, Ressourcen, Buchungsübersicht | ✅ Abgeschlossen |
 | 4 | Extension-System: BookingTemplateInterface + 3 Branchen-Templates | 🔲 Offen |
 | 5 | REST-API + Frontend-Buchungswidget | 🔲 Offen |
 | 6 | E-Mail-Benachrichtigungen + Bestätigungen | 🔲 Offen |
@@ -178,6 +178,26 @@ lang/en.php                                                  (booking.* Keys)
 **Audit 1 (Code-Review):** ✅ Fix: ResourceType::label() nutzt jetzt t() statt hardcoded German  
 **Audit 2 (Live-Verify):** ✅ 5 Migrations (Batch 13), PHP-Syntax ok, 73/73 Tests grün  
 **Commits:** b15db42 (Phase 1), f9e2fdd (ResourceType fix)
+
+---
+
+## Phase 3 — Admin-UI
+**Status:** ✅ Abgeschlossen
+
+### Erstellte Dateien
+```
+modules/Booking/Controllers/Admin/AdminBookingController.php
+modules/Booking/Controllers/Admin/AdminResourceController.php
+modules/Booking/views/admin/booking/index.php
+modules/Booking/views/admin/booking/detail.php
+modules/Booking/views/admin/resource/index.php
+modules/Booking/views/admin/resource/form.php
+modules/Booking/BookingModule.php  (Routen hinzugefügt)
+```
+
+**Audit 1 (Code-Review):** ✅ CSRF, Auth, Output-Escaping, Typ-Whitelist für ResourceType  
+**Audit 2 (Live-Verify):** ✅ PHP-Syntax ok, 73/73 Tests grün  
+**Commit:** 7c3a8ee
 
 ---
 
