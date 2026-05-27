@@ -1,6 +1,6 @@
 # VeloCMS — Booking-App RESUME
 > Produkt: veloSolution → veloCMS-PHP → App: Booking
-> Gestartet: 2026-05-27 | Status: ✅ Phase 3 abgeschlossen — Phase 4 offen
+> Gestartet: 2026-05-27 | Status: ✅ Phase 4 abgeschlossen — Phase 5 offen
 
 ---
 
@@ -146,7 +146,7 @@ velocms_booking_templates   (id, template_key VARCHAR(50), config JSON, created_
 | 1 | Foundation: Modulstruktur, Migrations, Core-Entities | ✅ Abgeschlossen |
 | 2 | AvailabilityEngine + BookingService (SELECT FOR UPDATE) | ✅ Abgeschlossen |
 | 3 | Admin-UI: Dashboard, Ressourcen, Buchungsübersicht | ✅ Abgeschlossen |
-| 4 | Extension-System: BookingTemplateInterface + 3 Branchen-Templates | 🔲 Offen |
+| 4 | Extension-System: BookingTemplateInterface + 3 Branchen-Templates | ✅ Abgeschlossen |
 | 5 | REST-API + Frontend-Buchungswidget | 🔲 Offen |
 | 6 | E-Mail-Benachrichtigungen + Bestätigungen | 🔲 Offen |
 | 7 | Tests + Final-Audit | 🔲 Offen |
@@ -198,6 +198,25 @@ modules/Booking/BookingModule.php  (Routen hinzugefügt)
 **Audit 1 (Code-Review):** ✅ CSRF, Auth, Output-Escaping, Typ-Whitelist für ResourceType  
 **Audit 2 (Live-Verify):** ✅ PHP-Syntax ok, 73/73 Tests grün  
 **Commit:** 7c3a8ee
+
+---
+
+## Phase 4 — Extension-System
+**Status:** ✅ Abgeschlossen
+
+### Erstellte Dateien
+```
+modules/Booking/Core/Services/TemplateRegistry.php
+modules/Booking/Extensions/Generic/GenericTemplate.php
+modules/Booking/Extensions/Restaurant/RestaurantTemplate.php
+modules/Booking/Extensions/Handwerker/HandwerkerTemplate.php
+modules/Booking/Extensions/Studio/StudioTemplate.php
+modules/Booking/BookingModule.php  (Template-Registrierung im boot())
+```
+
+**Audit 1 (Code-Review):** ✅ Interface vollständig implementiert, t() für Labels, validate() gibt string[] zurück  
+**Audit 2 (Live-Verify):** ✅ PHP-Syntax ok, 73/73 Tests grün  
+**Commit:** da7d57c
 
 ---
 
