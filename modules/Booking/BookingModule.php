@@ -13,6 +13,21 @@ class BookingModule extends Module
 
     public function boot(): void
     {
+        // Booking dashboard
+        $this->router->get('/admin/apps/booking',                             'Booking\Controllers\Admin\AdminBookingController@index');
+        $this->router->get('/admin/apps/booking/detail/[i:id]',              'Booking\Controllers\Admin\AdminBookingController@detail');
+        $this->router->post('/admin/apps/booking/confirm/[i:id]',            'Booking\Controllers\Admin\AdminBookingController@confirm');
+        $this->router->post('/admin/apps/booking/cancel/[i:id]',             'Booking\Controllers\Admin\AdminBookingController@cancel');
+
+        // Resource management
+        $this->router->get('/admin/apps/booking/resources',                   'Booking\Controllers\Admin\AdminResourceController@index');
+        $this->router->get('/admin/apps/booking/resources/create',            'Booking\Controllers\Admin\AdminResourceController@create');
+        $this->router->post('/admin/apps/booking/resources/store',            'Booking\Controllers\Admin\AdminResourceController@store');
+        $this->router->get('/admin/apps/booking/resources/edit/[i:id]',      'Booking\Controllers\Admin\AdminResourceController@edit');
+        $this->router->post('/admin/apps/booking/resources/update/[i:id]',   'Booking\Controllers\Admin\AdminResourceController@update');
+        $this->router->post('/admin/apps/booking/resources/delete/[i:id]',   'Booking\Controllers\Admin\AdminResourceController@delete');
+
+        // Admin nav
         $this->admin->addMenuItem([
             'type'     => 'section',
             'label'    => t('nav.apps'),
