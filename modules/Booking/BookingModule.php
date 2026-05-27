@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace VeloCMS\Modules\Booking;
 
 use VeloCMS\Core\Module;
+use VeloCMS\Modules\Booking\Core\Services\TemplateRegistry;
+use VeloCMS\Modules\Booking\Extensions\Generic\GenericTemplate;
+use VeloCMS\Modules\Booking\Extensions\Handwerker\HandwerkerTemplate;
+use VeloCMS\Modules\Booking\Extensions\Restaurant\RestaurantTemplate;
+use VeloCMS\Modules\Booking\Extensions\Studio\StudioTemplate;
 
 class BookingModule extends Module
 {
@@ -13,6 +18,12 @@ class BookingModule extends Module
 
     public function boot(): void
     {
+        // Register industry templates
+        TemplateRegistry::register(new GenericTemplate());
+        TemplateRegistry::register(new RestaurantTemplate());
+        TemplateRegistry::register(new HandwerkerTemplate());
+        TemplateRegistry::register(new StudioTemplate());
+
         // Booking dashboard
         $this->router->get('/admin/apps/booking',                             'Booking\Controllers\Admin\AdminBookingController@index');
         $this->router->get('/admin/apps/booking/detail/[i:id]',              'Booking\Controllers\Admin\AdminBookingController@detail');
