@@ -6,6 +6,7 @@ namespace VeloCMS\Modules\Booking\Controllers\Admin;
 
 use VeloCMS\Core\Auth;
 use VeloCMS\Core\Controller;
+use VeloCMS\Modules\Booking\Core\Services\BookingMailer;
 use VeloCMS\Modules\Booking\Core\Services\BookingService;
 use VeloCMS\Modules\Booking\Core\ValueObjects\BookingStatus;
 use VeloCMS\Modules\Booking\Models\BookingModel;
@@ -62,14 +63,27 @@ class AdminBookingController extends Controller
     public function confirm(int $id): void
     {
         Auth::verifyCsrf();
-        $this->service->confirm($id);
+        $booking = $this->bookingModel->find($id);
+        if ($booking !== null && $this->service->confirm($id)) {
+            $confirmed = $this->bookingModel->find($id);
+            $resource  = $confirmed !== null ? $this->resourceModel->find($confirmed->resourceId) : null;
+            if ($confirmed !== null && $resource !== null) {
+                (new BookingMailer())->sendCustomerConfirmation($confirmed, $resource);
+            }
+        }
         $this->redirectWithSuccess('/admin/apps/booking/detail/' . $id, t('success.saved'));
     }
 
     public function cancel(int $id): void
     {
         Auth::verifyCsrf();
-        $this->service->cancel($id);
+        $booking = $this->bookingModel->find($id);
+        if ($booking !== null && $this->service->cancel($id)) {
+            $canceled = $this->bookingModel->find($id);
+            if ($canceled !== null) {
+                (new BookingMailer())->sendCancellationNotice($canceled);
+            }
+        }
         $this->redirectWithSuccess('/admin/apps/booking/detail/' . $id, t('success.saved'));
     }
 }

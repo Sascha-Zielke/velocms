@@ -332,4 +332,15 @@ return [
     'booking.template_handwerker'        => 'Handwerker',
     'booking.template_studio'            => 'Studio',
 
+    // Booking App — Email notifications
+    'booking.mail_confirm_subject'       => 'Booking confirmation',
+    'booking.mail_confirm_greeting'      => 'Dear',
+    'booking.mail_confirm_body'          => 'Your booking has been confirmed. Here are the details:',
+    'booking.mail_confirm_pending'       => 'Your booking request has been received and will be reviewed. You will be notified once confirmed.',
+    'booking.mail_confirm_footer'        => 'Thank you for your booking!',
+    'booking.mail_admin_subject'         => 'New booking',
+    'booking.mail_admin_body'            => 'A new booking has been received:',
+    'booking.mail_canceled_subject'      => 'Booking canceled',
+    'booking.mail_canceled_body'         => 'Your booking has been canceled.',
+
 ];

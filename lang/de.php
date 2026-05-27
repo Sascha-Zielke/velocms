@@ -450,4 +450,15 @@ return [
     'booking.template_handwerker'        => 'Handwerker',
     'booking.template_studio'            => 'Studio',
 
+    // Booking App — E-Mail-Benachrichtigungen
+    'booking.mail_confirm_subject'       => 'Buchungsbestätigung',
+    'booking.mail_confirm_greeting'      => 'Sehr geehrte/r',
+    'booking.mail_confirm_body'          => 'Ihre Buchung wurde bestätigt. Hier die Details:',
+    'booking.mail_confirm_pending'       => 'Ihre Buchungsanfrage ist eingegangen und wird geprüft. Sie werden bei Bestätigung benachrichtigt.',
+    'booking.mail_confirm_footer'        => 'Vielen Dank für Ihre Buchung!',
+    'booking.mail_admin_subject'         => 'Neue Buchung',
+    'booking.mail_admin_body'            => 'Eine neue Buchung ist eingegangen:',
+    'booking.mail_canceled_subject'      => 'Buchung storniert',
+    'booking.mail_canceled_body'         => 'Ihre Buchung wurde storniert.',
+
 ];

@@ -7,6 +7,7 @@ namespace VeloCMS\Modules\Booking\Controllers\Api;
 use VeloCMS\Core\Controller;
 use VeloCMS\Modules\Booking\Core\Services\AvailabilityEngine;
 use VeloCMS\Modules\Booking\Core\Services\BookingConflictException;
+use VeloCMS\Modules\Booking\Core\Services\BookingMailer;
 use VeloCMS\Modules\Booking\Core\Services\BookingOutsideSlotsException;
 use VeloCMS\Modules\Booking\Core\Services\BookingService;
 use VeloCMS\Modules\Booking\Core\Services\TemplateRegistry;
@@ -117,6 +118,11 @@ class ApiBookingController extends Controller
         } catch (BookingOutsideSlotsException) {
             $this->json(['errors' => [t('booking.error_outside_slots')]], 422);
         }
+
+        // Send confirmation email in background (fire-and-forget)
+        $mailer = new BookingMailer();
+        $mailer->sendCustomerConfirmation($booking, $resource);
+        $mailer->sendAdminNotification($booking, $resource);
 
         $this->json([
             'booking_id' => $booking->id,
