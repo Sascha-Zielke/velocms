@@ -402,4 +402,52 @@ return [
     'contact.settings_retention_hint'   => 'Nachrichten älter als dieser Wert können über "Alte löschen" entfernt werden.',
     'contact.settings_privacy_url'      => 'URL der Datenschutzerklärung',
 
+    // Booking App — Navigation
+    'nav.booking'                        => 'Buchungen',
+
+    // Booking App — general
+    'booking.headline'                   => 'Booking-App',
+    'booking.dashboard'                  => 'Übersicht',
+    'booking.settings'                   => 'Einstellungen',
+    'booking.no_data'                    => 'Noch keine Buchungen vorhanden.',
+
+    // Booking App — status labels
+    'booking.status_pending'             => 'Ausstehend',
+    'booking.status_confirmed'           => 'Bestätigt',
+    'booking.status_canceled'            => 'Storniert',
+
+    // Booking App — resource types
+    'booking.type_human'                 => 'Person',
+    'booking.type_room'                  => 'Raum',
+    'booking.type_asset'                 => 'Gegenstand',
+
+    // Booking App — fields
+    'booking.field_resource'             => 'Ressource',
+    'booking.field_customer_name'        => 'Name',
+    'booking.field_customer_email'       => 'E-Mail',
+    'booking.field_customer_phone'       => 'Telefon',
+    'booking.field_start_at'             => 'Von',
+    'booking.field_end_at'               => 'Bis',
+    'booking.field_notes'                => 'Anmerkungen',
+    'booking.field_status'               => 'Status',
+    'booking.field_template'             => 'Branchenvorlage',
+    'booking.field_duration'             => 'Dauer (Min.)',
+
+    // Booking App — actions
+    'booking.action_confirm'             => 'Bestätigen',
+    'booking.action_cancel'              => 'Stornieren',
+    'booking.action_new'                 => 'Neue Buchung',
+
+    // Booking App — errors
+    'booking.error_conflict'             => 'Die gewählte Zeit ist bereits belegt.',
+    'booking.error_outside_slots'        => 'Die gewählte Zeit liegt außerhalb der Verfügbarkeit.',
+    'booking.error_too_far_ahead'        => 'Buchungen sind maximal :days Tage im Voraus möglich.',
+    'booking.error_duration_too_short'   => 'Mindestbuchungsdauer: :min Minuten.',
+
+    // Booking App — templates
+    'booking.template_generic'           => 'Generisch',
+    'booking.template_restaurant'        => 'Restaurant',
+    'booking.template_handwerker'        => 'Handwerker',
+    'booking.template_studio'            => 'Studio',
+
 ];
