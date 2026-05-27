@@ -13,9 +13,9 @@ enum ResourceType: string
     public function label(): string
     {
         return match($this) {
-            self::Human => 'Person',
-            self::Room  => 'Raum',
-            self::Asset => 'Gegenstand',
+            self::Human => t('booking.type_human'),
+            self::Room  => t('booking.type_room'),
+            self::Asset => t('booking.type_asset'),
         };
     }
 }
