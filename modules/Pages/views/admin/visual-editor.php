@@ -46,6 +46,7 @@
         width: 100%;
         border: none;
         display: block;
+        overflow: hidden;
     }
 </style>
 
