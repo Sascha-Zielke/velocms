@@ -6,10 +6,15 @@
     /* Full-bleed iframe — override admin content padding for this page */
     #vcms-content {
         padding: 0 !important;
+        max-width: 100% !important;
         display: flex;
         flex-direction: column;
-        height: calc(100vh - 0px);
+        height: 100vh;
         overflow: hidden;
+    }
+    .vcms-main {
+        display: flex;
+        flex-direction: column;
     }
     .ve-admin-topbar {
         display: flex;
