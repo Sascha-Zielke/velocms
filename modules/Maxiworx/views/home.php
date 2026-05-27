@@ -1,4 +1,4 @@
-<?php $this->extend('layouts/maxiworx'); ?>
+<?php $this->extend('maxiworx'); ?>
 
 <?php $this->section('title'); ?>Maxiworx — Superior Music Production<?php $this->endSection(); ?>
 

@@ -1,4 +1,4 @@
-<?php $this->extend('layouts/maxiworx'); ?>
+<?php $this->extend('maxiworx'); ?>
 
 <?php $this->section('title'); ?>Service & Preise<?php $this->endSection(); ?>
 <?php $this->section('meta_description'); ?>Recording, Mixing &amp; Mastering — transparente Preise für professionelle Studioarbeit bei Maxiworx.<?php $this->endSection(); ?>

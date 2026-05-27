@@ -1,4 +1,4 @@
-<?php $this->extend('layouts/maxiworx'); ?>
+<?php $this->extend('maxiworx'); ?>
 
 <?php $this->section('title'); ?>Kontakt<?php $this->endSection(); ?>
 <?php $this->section('meta_description'); ?>Kontaktiere Maxiworx — Superior Music Production Munich. Wir freuen uns auf dein Projekt.<?php $this->endSection(); ?>

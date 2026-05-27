@@ -1,4 +1,4 @@
-<?php $this->extend('layouts/maxiworx'); ?>
+<?php $this->extend('maxiworx'); ?>
 
 <?php $this->section('title'); ?>Equipment<?php $this->endSection(); ?>
 <?php $this->section('meta_description'); ?>Unser professionelles Studio-Equipment — SSL-Console, Neve-Preamps, Manley und mehr.<?php $this->endSection(); ?>

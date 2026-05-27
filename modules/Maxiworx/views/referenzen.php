@@ -1,4 +1,4 @@
-<?php $this->extend('layouts/maxiworx'); ?>
+<?php $this->extend('maxiworx'); ?>
 
 <?php $this->section('title'); ?>Referenzen<?php $this->endSection(); ?>
 <?php $this->section('meta_description'); ?>Produktionen aus dem Maxiworx Studio — unsere Referenzen aus Hip-Hop, Electronic, R&amp;B und mehr.<?php $this->endSection(); ?>

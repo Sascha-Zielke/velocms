@@ -1,4 +1,4 @@
-<?php $this->extend('layouts/maxiworx'); ?>
+<?php $this->extend('maxiworx'); ?>
 
 <?php $this->section('title'); ?>Datenschutzerklärung<?php $this->endSection(); ?>
 <?php $this->section('meta_description'); ?>Datenschutzerklärung — Maxiworx, Superior Music Production Munich.<?php $this->endSection(); ?>

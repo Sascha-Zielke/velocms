@@ -1,4 +1,4 @@
-<?php $this->extend('layouts/maxiworx'); ?>
+<?php $this->extend('maxiworx'); ?>
 
 <?php $this->section('title'); ?>Specials<?php $this->endSection(); ?>
 <?php $this->section('meta_description'); ?>Exklusive Angebote und Aktionen bei Maxiworx — Superior Music Production Munich.<?php $this->endSection(); ?>
