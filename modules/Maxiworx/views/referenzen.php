@@ -27,8 +27,8 @@ $refs = !empty($projects) ? $projects : $refsDefault;
 <?php $veSec0 = ($veMode ?? false) ? ($rawSections[0]['id'] ?? 0) : 0; ?>
 <?php $veBox0 = ($veMode ?? false) ? ($rawSections[0]['rows'][0]['boxes'][0]['id'] ?? 0) : 0; ?>
 <div class="mw-inner-hero" <?= $veSec0 ? "data-ve-section=\"{$veSec0}\" data-ve-label=\"Intro\"" : '' ?>>
-    <div class="mw-container">
-        <span class="mw-label mw-inner-hero__label" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>><?= $heroLabel ?></span>
+    <div class="mw-container" <?= $veBox0 ? "data-ve-box=\"{$veBox0}\"" : '' ?>>
+        <span class="mw-label mw-inner-hero__label"><?= $heroLabel ?></span>
         <h1 class="mw-inner-hero__title"><?= $heroTitle ?></h1>
         <p class="mw-inner-hero__sub"><?= $heroSubtitle ?></p>
     </div>
